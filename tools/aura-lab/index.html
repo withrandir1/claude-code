@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>aura-lab · Withrandir</title>
+<style>
+  :root {
+    --bg: #07070c; --panel: #10101a; --line: #24243a; --text: #e8e8f0; --dim: #8a8aa3; --accent: #d4af37;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { padding: 10px 16px; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: baseline; }
+  header h1 { font-size: 15px; margin: 0; letter-spacing: .08em; }
+  header span { color: var(--dim); }
+  main { display: flex; flex-wrap: wrap; gap: 12px; padding: 12px; align-items: flex-start; justify-content: center; }
+  .col { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+  .left { width: 250px; display: flex; flex-direction: column; gap: 10px; }
+  .center, .right { display: flex; flex-direction: column; gap: 8px; }
+  .center { width: 622px; }
+  .right { width: 422px; }
+  h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--dim); margin: 0 0 4px; font-weight: 600; }
+  .digits { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .digit { border: 2px solid transparent; border-radius: 8px; padding: 6px 0 4px; cursor: pointer; font-weight: 700; font-size: 16px; color: #111; display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
+  .digit small { font-size: 7px; font-weight: 600; opacity: .8; }
+  .digit.sel { border-color: #fff; box-shadow: 0 0 0 2px var(--bg), 0 0 12px rgba(255,255,255,.5); }
+  .meaning { color: var(--dim); min-height: 34px; font-size: 12px; }
+  label { display: flex; flex-direction: column; gap: 3px; color: var(--dim); font-size: 12px; }
+  .row { display: flex; gap: 6px; align-items: center; }
+  .row > * { flex: 1; }
+  input[type=text], select { background: #0b0b14; color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 5px 7px; font: inherit; }
+  input[type=range] { width: 100%; }
+  button { background: #1b1b2c; color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; font: inherit; cursor: pointer; }
+  button:hover:not(:disabled) { border-color: #4a4a70; }
+  button:disabled { opacity: .4; cursor: default; }
+  button.primary { background: var(--accent); color: #111; font-weight: 700; border-color: var(--accent); }
+  button.on { background: #2a3a2a; border-color: #5c5; }
+  .val button.active { border-color: #fff; font-weight: 700; }
+  .val .fear.active { background: #3a1620; }
+  .val .love.active { background: #3a2a10; }
+  canvas { display: block; border-radius: 8px; background: #05050a; }
+  .status { font: 12px/1.5 ui-monospace, Menlo, Consolas, monospace; color: var(--text); display: flex; flex-wrap: wrap; gap: 4px 14px; }
+  .status b { color: var(--accent); font-weight: 600; }
+  .note { font-size: 12px; color: var(--dim); min-height: 18px; }
+  .note.bad { color: #ff7a7a; }
+  .note.good { color: #9be89b; }
+  .log { height: 250px; overflow-y: auto; font: 11px/1.45 ui-monospace, Menlo, Consolas, monospace; border-top: 1px solid var(--line); padding-top: 6px; }
+  .log div { display: flex; gap: 6px; align-items: baseline; padding: 1px 0; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; display: inline-block; transform: translateY(1px); }
+  .log .n { color: var(--dim); }
+  .hint { color: var(--dim); font-size: 11px; }
+</style>
+</head>
+<body>
+<header><h1>AURA-LAB</h1><span>конфигуратор-симуляция семантики Withrandir · φ = 1.6180339887</span></header>
+<main>
+  <section class="col left">
+    <div>
+      <h2>Цифра</h2>
+      <div class="digits" id="digits"></div>
+    </div>
+    <div class="meaning" id="meaning"></div>
+    <label>intensity: <span id="intVal">0.60</span>
+      <input type="range" id="intensity" min="0" max="1" step="0.01" value="0.6">
+    </label>
+    <div>
+      <h2>Валентность</h2>
+      <div class="row val">
+        <button class="fear" id="valFear">страх −1</button>
+        <button class="love active" id="valLove">любовь +1</button>
+      </div>
+    </div>
+    <label>tag
+      <input type="text" id="tag" placeholder="пусто → авто-тег для 1–6, 9">
+    </label>
+    <label class="row" style="flex-direction:row;gap:6px;align-items:center"><input type="checkbox" id="autoTag" checked style="flex:none"> авто-тег</label>
+    <label>parents
+      <select id="parents"></select>
+    </label>
+    <button class="primary" id="add">добавить событие</button>
+    <div class="row">
+      <button id="undo" disabled>undo</button>
+      <button id="reset">reset</button>
+    </div>
+    <button id="autosim">автосим: выкл</button>
+    <div class="row">
+      <button id="export">экспорт JSON</button>
+      <button id="importBtn">импорт JSON</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json,.json" hidden>
+    <div class="hint">Клавиши: 0–9 — сразу добавить событие с этой цифрой, Enter — добавить выбранную, V — сменить валентность.</div>
+  </section>
+
+  <section class="col center">
+    <h2>Аура · тень тессеракта</h2>
+    <canvas id="aura" width="600" height="600"></canvas>
+    <div class="status" id="status"></div>
+    <div class="note" id="note"></div>
+  </section>
+
+  <section class="col right">
+    <h2>Граф тегов</h2>
+    <canvas id="graph" width="400" height="400"></canvas>
+    <h2 style="margin-top:6px">Лог событий</h2>
+    <div class="log" id="log"></div>
+  </section>
+</main>
+
+<script>
+'use strict';
+
+// =====================================================================
+// PALETTE
+// Временная палитра: в репозитории палитры приложения не найдено.
+// Заменить hex-коды здесь, когда появится утверждённая палитра.
+// =====================================================================
+const PALETTE = {
+  white:      '#F5F5F7', // 0
+  blue:       '#2F6BFF', // 1
+  green:      '#22C55E', // 2
+  yellow:     '#FACC15', // 3
+  orange:     '#FF8A1F', // 4
+  red:        '#EF4444', // 5
+  pink:       '#FF4FA3', // 6
+  purple:     '#8B5CF6', // 7
+  create:     '#7FE7FF', // 8 (кнопка)
+  withrandir: '#D4AF37', // 9 (кнопка, кольца, спираль)
+};
+
+const PHI = 1.6180339887;
+const DECAY = 0.97;
+const PRUNE = 0.05;
+
+const DIGITS = [
+  { d: 0, key: 'white',      name: 'белый',      meaning: 'замкнутый цикл, целостность. Вручную: замыкает открытую цепь длины ≥ 3.' },
+  { d: 1, key: 'blue',       name: 'синий',      meaning: 'один луч, один узел.' },
+  { d: 2, key: 'green',      name: 'зелёный',    meaning: 'последовательный рост цепи.' },
+  { d: 3, key: 'yellow',     name: 'жёлтый',     meaning: 'открытая цепь из 3, может замкнуться; если замыкается → становится 0.' },
+  { d: 4, key: 'orange',     name: 'оранжевый',  meaning: 'тетраэдр, все связаны со всеми ровно, первый объём.' },
+  { d: 5, key: 'red',        name: 'красный',    meaning: 'замкнутая структура плюс лишняя связь, фокус.' },
+  { d: 6, key: 'pink',       name: 'розовый',    meaning: 'выход в новое измерение (6 узлов, полная связность).' },
+  { d: 7, key: 'purple',     name: 'фиолетовый', meaning: 'обратный ход по циклу, от цели назад: усиливает reverse на входящем пути, разворачивает вращение XW.' },
+  { d: 8, key: 'create',     name: 'create',     meaning: 'переход на порядок выше: при наличии цикла level+1, аура ×φ, веса ÷φ. Без цикла не срабатывает.' },
+  { d: 9, key: 'withrandir', name: 'withrandir', meaning: 'зеркало 6, новый виток спирали: spiralTurns+1, radius ×φ, шаг вращения ZW.' },
+];
+
+// Цвет вершины тессеракта / узла графа по цифре. 8 и 9 сворачиваются в 3 бита (8→0, 9→1): перенос разряда.
+function digitColor(d) { return PALETTE[DIGITS[d].key]; }
+function bitsColor(d) { return PALETTE[DIGITS[d & 7].key]; }
+
+function hexToRgb(h) {
+  const n = parseInt(h.slice(1), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+function rgba(h, a) { const [r, g, b] = hexToRgb(h); return `rgba(${r},${g},${b},${a})`; }
+function mixHex(a, b) {
+  const x = hexToRgb(a), y = hexToRgb(b);
+  return '#' + x.map((v, i) => Math.round((v + y[i]) / 2).toString(16).padStart(2, '0')).join('');
+}
+
+// =====================================================================
+// MODEL
+// Всё состояние в одном объекте state. Модель меняется только в step(event).
+// Лог append-only; undo снимает последнее событие и переигрывает лог (step детерминирован).
+// =====================================================================
+function freshModel() {
+  return {
+    t: 0,                        // номер последнего шага
+    level: 0,                    // разряд (переносы через 8)
+    spiralTurns: 0,              // витки спирали (события 9)
+    rings: 0,                    // число колец фона (9 и успешные 8)
+    auraScale: 1,                // ×φ на каждый перенос разряда
+    radius: 1,                   // радиус спирали, ×φ на каждое 9
+    valence: 1,                  // валентность последнего события
+    lastValence: null,
+    energy: new Array(16).fill(0), // [v*8 + color] — свечение вершин тессеракта
+    recent: [],                  // intensity последних 10 шагов
+    xwDir: 1,                    // направление вращения XW (7 разворачивает)
+    xwSteps: 0,                  // шаги по 90° в XW (смена валентности)
+    zwSteps: 0,                  // шаги по 90° в ZW (события 9)
+    graph: { nodes: {}, edges: {} },
+    notes: {},                   // t -> {text, kind} — что сделало событие
+    analysis: { order: 0, openChains: 0, cycles: 0, nodes: 0, longestPath: [] },
+  };
+}
+
+const state = {
+  log: [],
+  model: freshModel(),
+  undoAvailable: false,
+  ui: { digit: 1, intensity: 0.6, valence: 1, autoSim: false, lastNote: null },
+  view: { xwFree: 0, xwStep: 0, zwStep: 0, yz: 0, yaw: -0.5, pitch: 0.38, dispScale: 1, zoom: 1,
+          idle: 0, lastEventMs: performance.now(), flash: 0 },
+  layout: {},                    // tag -> {x, y, vx, vy} (только для отрисовки графа)
+};
+
+function eventByT(t) {
+  for (let i = state.log.length - 1; i >= 0; i--) if (state.log[i].t === t) return state.log[i];
+  return null;
+}
+
+// Один шаг модели. Порядок: затухание → применение события → удаление слабых рёбер → анализ.
+function step(ev) {
+  const m = state.model;
+  const g = m.graph;
+  m.t = ev.t;
+
+  // 1. decay 0.97 на всё накопленное
+  for (let i = 0; i < 16; i++) m.energy[i] *= DECAY;
+  for (const k in g.nodes) g.nodes[k].energy *= DECAY;
+  for (const k in g.edges) { g.edges[k].forward *= DECAY; g.edges[k].reverse *= DECAY; }
+
+  // 2. энергия вершины (цвет, валентность)
+  m.energy[vertexIndex(ev.digit & 7, ev.valence)] += ev.intensity;
+  m.recent.push(ev.intensity);
+  if (m.recent.length > 10) m.recent.shift();
+
+  // смена валентности → шаг 90° в плоскости XW
+  if (m.lastValence !== null && ev.valence !== m.lastValence) m.xwSteps += m.xwDir;
+  m.lastValence = ev.valence;
+  m.valence = ev.valence;
+
+  // 3. узел тега
+  if (ev.tag) {
+    const n = ensureNode(ev.tag);
+    n.color = ev.digit;
+    n.energy += ev.intensity;
+  }
+
+  // 4. хеббовское правило: parent -> new, forward += intensity
+  for (const p of ev.parents) {
+    const pe = eventByT(p);
+    if (pe && pe.tag && ev.tag && pe.tag !== ev.tag) addForward(pe.tag, ev.tag, ev.intensity);
+  }
+
+  // 5. правила цифр
+  let note = null;
+  if (ev.digit === 0) {
+    const chain = analyze().longestPath;
+    if (chain.length >= 3) {
+      const first = chain[0], last = chain[chain.length - 1];
+      addForward(last, first, ev.intensity);
+      g.nodes[last].color = 0; // замкнувшаяся цепь становится 0 (белый)
+      note = { kind: 'good', text: `0: цепь ${chain.join(' → ')} замкнута ребром ${last} → ${first}` };
+    } else {
+      note = { kind: 'bad', text: '0: нет открытой цепи длины ≥ 3 — замыкать нечего' };
+    }
+  } else if (ev.digit === 7) {
+    m.xwDir *= -1;
+    const start = ev.tag || tagOfFirstParent(ev);
+    const n = start ? walkBack(start, ev.intensity) : 0;
+    note = { kind: 'good', text: `7: обратный ход, reverse усилен на ${n} рёбрах пути к «${start || '—'}»; XW развёрнут` };
+  } else if (ev.digit === 8) {
+    if (analyze().cycles > 0) {
+      m.level += 1;
+      m.auraScale *= PHI;
+      m.rings += 1;
+      for (const k in g.edges) { g.edges[k].forward /= PHI; g.edges[k].reverse /= PHI; }
+      note = { kind: 'good', text: `8 create: перенос разряда → level ${m.level}, аура ×φ, веса ÷φ` };
+    } else {
+      note = { kind: 'bad', text: '8 create: не сработал — в графе нет замкнутого цикла' };
+    }
+  } else if (ev.digit === 9) {
+    m.spiralTurns += 1;
+    m.radius *= PHI;
+    m.rings += 1;
+    m.zwSteps += 1;
+    note = { kind: 'good', text: `9 withrandir: новый виток спирали (${m.spiralTurns}), radius ×φ, шаг ZW` };
+  }
+
+  // 6. удаление слабых рёбер
+  for (const k in g.edges) if (g.edges[k].forward + g.edges[k].reverse < PRUNE) delete g.edges[k];
+
+  m.analysis = analyze();
+  if (note) m.notes[ev.t] = note;
+  return note;
+}
+
+function vertexIndex(color, valence) { return (valence > 0 ? 8 : 0) + color; }
+
+function tagOfFirstParent(ev) {
+  for (const p of ev.parents) { const pe = eventByT(p); if (pe && pe.tag) return pe.tag; }
+  return null;
+}
+
+// =====================================================================
+// GRAPH
+// Узлы = теги, рёбра двунаправленные {a, b, forward (a→b), reverse (b→a)}.
+// Направленный граф для циклов/цепей строится по ориентации a→b.
+// =====================================================================
+function ensureNode(tag) {
+  const g = state.model.graph;
+  if (!g.nodes[tag]) g.nodes[tag] = { tag, color: 0, energy: 0 };
+  return g.nodes[tag];
+}
+
+function addForward(a, b, w) {
+  const E = state.model.graph.edges;
+  if (E[a + '|' + b]) E[a + '|' + b].forward += w;
+  else if (E[b + '|' + a]) E[b + '|' + a].reverse += w;
+  else E[a + '|' + b] = { a, b, forward: w, reverse: 0 };
+}
+
+// 7: от узла start идём назад по самым сильным входящим рёбрам, усиливая reverse.
+function walkBack(start, w) {
+  const E = state.model.graph.edges;
+  const seen = new Set([start]);
+  let cur = start, count = 0;
+  for (;;) {
+    let best = null;
+    for (const k in E) {
+      const e = E[k];
+      if (e.b === cur && !seen.has(e.a) && (!best || e.forward > best.forward)) best = e;
+    }
+    // путь может идти и по ребру замыкания цикла обратно к старту
+    if (!best) {
+      for (const k in E) { const e = E[k]; if (e.b === cur && e.a === start && count > 0) best = e; }
+      if (best) { best.reverse += w; count++; }
+      break;
+    }
+    best.reverse += w;
+    count++;
+    seen.add(best.a);
+    cur = best.a;
+  }
+  return count;
+}
+
+function analyze() {
+  const g = state.model.graph;
+  const tags = Object.keys(g.nodes).sort();
+  const idx = new Map(tags.map((t, i) => [t, i]));
+  const out = tags.map(() => []);
+  const und = tags.map(() => []);
+  for (const k in g.edges) {
+    const e = g.edges[k];
+    const a = idx.get(e.a), b = idx.get(e.b);
+    out[a].push(b); und[a].push(b); und[b].push(a);
+  }
+  const n = tags.length;
+
+  // Tarjan SCC: узлы в SCC размером ≥ 2 лежат на цикле
+  const onCycle = new Array(n).fill(false);
+  { let index = 0; const st = [], on = [], ix = new Array(n).fill(-1), low = new Array(n).fill(0);
+    const strong = v => {
+      ix[v] = low[v] = index++; st.push(v); on[v] = true;
+      for (const w of out[v]) {
+        if (ix[w] < 0) { strong(w); low[v] = Math.min(low[v], low[w]); }
+        else if (on[w]) low[v] = Math.min(low[v], ix[w]);
+      }
+      if (low[v] === ix[v]) {
+        const comp = []; let w;
+        do { w = st.pop(); on[w] = false; comp.push(w); } while (w !== v);
+        if (comp.length > 1) comp.forEach(c => onCycle[c] = true);
+      }
+    };
+    for (let v = 0; v < n; v++) if (ix[v] < 0) strong(v);
+  }
+
+  // Число элементарных направленных циклов (с потолком)
+  const CAP = 999;
+  let cycles = 0;
+  for (let s = 0; s < n && cycles < CAP; s++) {
+    if (!onCycle[s]) continue;
+    const vis = new Array(n).fill(false);
+    const dfs = v => {
+      vis[v] = true;
+      for (const w of out[v]) {
+        if (cycles >= CAP) break;
+        if (w === s) cycles++;
+        else if (w > s && !vis[w] && onCycle[w]) dfs(w);
+      }
+      vis[v] = false;
+    };
+    dfs(s);
+  }
+
+  // Слабые компоненты: ацикличная компонента из ≥ 2 узлов = открытая цепь
+  const comp = new Array(n).fill(-1);
+  const comps = [];
+  for (let v = 0; v < n; v++) {
+    if (comp[v] >= 0) continue;
+    const list = [v]; comp[v] = comps.length;
+    for (let i = 0; i < list.length; i++) for (const w of und[list[i]]) if (comp[w] < 0) { comp[w] = comps.length; list.push(w); }
+    comps.push(list);
+  }
+  let openChains = 0;
+  const acyclic = comps.map(list => !list.some(v => onCycle[v]));
+  comps.forEach((list, i) => { if (acyclic[i] && list.length >= 2) openChains++; });
+
+  // Самая длинная цепь (по числу узлов) в ацикличных компонентах
+  const memo = new Array(n).fill(0), next = new Array(n).fill(-1);
+  const longest = v => {
+    if (memo[v]) return memo[v];
+    let best = 1;
+    for (const w of out[v]) { const l = 1 + longest(w); if (l > best) { best = l; next[v] = w; } }
+    return memo[v] = best;
+  };
+  let bestLen = 0, bestStart = -1;
+  for (let v = 0; v < n; v++) {
+    if (!acyclic[comp[v]]) continue;
+    const l = longest(v);
+    if (l > bestLen) { bestLen = l; bestStart = v; }
+  }
+  const longestPath = [];
+  for (let v = bestStart; v >= 0; v = next[v]) longestPath.push(tags[v]);
+
+  const order = cycles > 0 ? 0 : Math.min(bestLen, 7);
+  return { order, openChains, cycles, nodes: n, longestPath };
+}
+
+// =====================================================================
+// AURA
+// Тессеракт: вершина (b2,b1,b0,v). x=b0, y=b1, z=b2, w=v (±1). v=0 страх (внутренний куб), v=1 любовь (внешний).
+// Вращения: ZW (шаги от 9), XW (скорость от intensity, шаги от валентности, 7 разворачивает), YZ (медленно).
+// Проекция 4D→3D перспективой по w, затем камера (yaw/pitch), затем 3D→2D перспективой по z.
+// =====================================================================
+const TV = [];
+for (let v = 0; v < 2; v++) for (let c = 0; c < 8; c++) {
+  TV.push({ color: c, v, p: [c & 1 ? 1 : -1, c & 2 ? 1 : -1, c & 4 ? 1 : -1, v ? 1 : -1] });
+}
+const TE = [];
+for (let i = 0; i < 16; i++) for (let j = i + 1; j < 16; j++) {
+  const d = (TV[i].color ^ TV[j].color) | ((TV[i].v ^ TV[j].v) << 3);
+  if (d && (d & (d - 1)) === 0) TE.push([i, j]);
+}
+
+const DIAG_PITCH = Math.atan(1 / Math.SQRT2); // вид вдоль главной диагонали куба
+const QUARTER = Math.PI / 2;
+const D4 = 3, D3 = 9, UNIT = 44, R0 = 34;
+
+function approach(cur, target, rate, dt) { return cur + (target - cur) * (1 - Math.exp(-rate * dt)); }
+function nearest(a, step, off = 0) { return off + Math.round((a - off) / step) * step; }
+
+function updateView(dt, now) {
+  const m = state.model, v = state.view;
+  const idleTarget = now - v.lastEventMs > 5000 ? 1 : 0;
+  v.idle = approach(v.idle, idleTarget, idleTarget ? 0.6 : 4, dt);
+  const act = 1 - v.idle;
+  const recentSum = m.recent.reduce((s, x) => s + x, 0);
+
+  v.xwFree += (0.06 + 0.22 * recentSum) * m.xwDir * act * dt;
+  v.yz += 0.07 * act * dt;
+  v.yaw += 0.12 * act * dt;
+  v.xwStep = approach(v.xwStep, m.xwSteps * QUARTER, 5, dt);
+  v.zwStep = approach(v.zwStep, m.zwSteps * QUARTER, 5, dt);
+
+  if (v.idle > 0.01) {
+    // покой: все углы стягиваются к симметричным, камера — к главной диагонали
+    const r = 1.2 * v.idle;
+    v.xwFree = approach(v.xwFree, nearest(v.xwFree, QUARTER), r, dt);
+    v.yz = approach(v.yz, nearest(v.yz, QUARTER), r, dt);
+    v.yaw = approach(v.yaw, nearest(v.yaw, QUARTER, -Math.PI / 4), r, dt);
+    v.pitch = approach(v.pitch, DIAG_PITCH, r, dt);
+  } else {
+    v.pitch = approach(v.pitch, 0.38, 1, dt);
+  }
+
+  v.dispScale = approach(v.dispScale, m.auraScale, 3, dt);
+  // авто-зум только когда аура перестаёт помещаться в 600×600
+  const extent = UNIT * 1.5 * Math.sqrt(3) * 1.25 * v.dispScale;
+  v.zoom = approach(v.zoom, Math.min(1, 270 / extent), 3, dt);
+  v.flash = Math.max(0, v.flash - dt);
+}
+
+function project(p, v) {
+  let [x, y, z, w] = p;
+  let c, s, t;
+  const zw = v.zwStep; c = Math.cos(zw); s = Math.sin(zw); t = z * c - w * s; w = z * s + w * c; z = t;
+  const xw = v.xwFree + v.xwStep; c = Math.cos(xw); s = Math.sin(xw); t = x * c - w * s; w = x * s + w * c; x = t;
+  c = Math.cos(v.yz); s = Math.sin(v.yz); t = y * c - z * s; z = y * s + z * c; y = t;
+  const k4 = D4 / (D4 - w);
+  x *= k4; y *= k4; z *= k4;
+  c = Math.cos(v.yaw); s = Math.sin(v.yaw); t = x * c + z * s; z = -x * s + z * c; x = t;
+  c = Math.cos(v.pitch); s = Math.sin(v.pitch); t = y * c - z * s; z = y * s + z * c; y = t;
+  const k3 = D3 / (D3 - z);
+  const S = UNIT * v.dispScale * v.zoom * k3;
+  return { x: 300 + x * S, y: 300 - y * S, z, k: k3 };
+}
+
+function drawAura(ctx) {
+  const m = state.model, v = state.view;
+  ctx.fillStyle = '#05050a';
+  ctx.fillRect(0, 0, 600, 600);
+
+  // фоновое свечение: смесь цветов по энергии
+  let tot = 0, rr = 0, gg = 0, bb = 0;
+  for (let i = 0; i < 16; i++) {
+    const e = m.energy[i]; if (!e) continue;
+    const [r, g, b] = hexToRgb(bitsColor(i & 7));
+    rr += r * e; gg += g * e; bb += b * e; tot += e;
+  }
+  if (tot > 0) {
+    const a = Math.min(0.35, 0.05 + tot * 0.04);
+    const grad = ctx.createRadialGradient(300, 300, 0, 300, 300, 290);
+    grad.addColorStop(0, `rgba(${rr / tot | 0},${gg / tot | 0},${bb / tot | 0},${a})`);
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad; ctx.fillRect(0, 0, 600, 600);
+  }
+
+  // кольца r0·φ^k и золотая спираль — появляются только от 9 и переноса через 8
+  const S = v.dispScale * v.zoom;
+  if (m.rings > 0) {
+    ctx.save();
+    ctx.lineWidth = 1;
+    for (let k = 0; k < m.rings; k++) {
+      ctx.strokeStyle = rgba(PALETTE.withrandir, 0.55 - Math.min(0.35, k * 0.05));
+      ctx.beginPath(); ctx.arc(300, 300, R0 * Math.pow(PHI, k) * S, 0, Math.PI * 2); ctx.stroke();
+    }
+    // r = r0·φ^(2θ/π): за четверть оборота радиус растёт в φ раз
+    const rMax = R0 * Math.pow(PHI, m.rings - 1);
+    const thMax = (QUARTER) * (m.rings - 1) + QUARTER;
+    ctx.strokeStyle = rgba(PALETTE.withrandir, 0.7);
+    ctx.beginPath();
+    const rot = performance.now() / 12000;
+    for (let th = -4 * Math.PI; th <= thMax; th += 0.04) {
+      const r = R0 * Math.pow(PHI, th / QUARTER) * S;
+      if (r > rMax * PHI * S) break;
+      const x = 300 + r * Math.cos(th + rot), y = 300 + r * Math.sin(th + rot);
+      th === -4 * Math.PI ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // тессеракт
+  const P = TV.map(t => project(t.p, v));
+  ctx.lineWidth = 1;
+  for (const [i, j] of TE) {
+    const col = mixHex(bitsColor(TV[i].color), bitsColor(TV[j].color));
+    const e = m.energy[i] + m.energy[j];
+    ctx.strokeStyle = rgba(col, Math.min(0.85, 0.22 + e * 0.12));
+    ctx.beginPath(); ctx.moveTo(P[i].x, P[i].y); ctx.lineTo(P[j].x, P[j].y); ctx.stroke();
+  }
+  const order = [...TV.keys()].sort((a, b) => P[a].z - P[b].z);
+  ctx.globalCompositeOperation = 'lighter';
+  for (const i of order) {
+    const e = m.energy[i];
+    if (e < 0.005) continue;
+    const col = bitsColor(TV[i].color);
+    const r = Math.min(60, 6 + 16 * Math.sqrt(e)) * P[i].k * Math.max(0.6, v.zoom);
+    const grad = ctx.createRadialGradient(P[i].x, P[i].y, 0, P[i].x, P[i].y, r);
+    grad.addColorStop(0, rgba(col, Math.min(0.9, 0.25 + e * 0.3)));
+    grad.addColorStop(1, rgba(col, 0));
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(P[i].x, P[i].y, r, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.globalCompositeOperation = 'source-over';
+  for (const i of order) {
+    const col = bitsColor(TV[i].color);
+    ctx.beginPath(); ctx.arc(P[i].x, P[i].y, 3.2 * P[i].k, 0, Math.PI * 2);
+    if (TV[i].v) { ctx.fillStyle = col; ctx.fill(); }           // любовь: сплошная точка
+    else { ctx.strokeStyle = col; ctx.lineWidth = 1.4; ctx.stroke(); } // страх: кольцо
+  }
+
+  // подписи
+  ctx.fillStyle = 'rgba(232,232,240,0.55)';
+  ctx.font = '11px ui-monospace, Menlo, monospace';
+  ctx.fillText(`level ${m.level} · ×${m.auraScale.toFixed(3)}`, 12, 20);
+  if (v.idle > 0.5) ctx.fillText('покой · вид вдоль диагонали', 12, 588);
+  if (v.zoom < 0.99) ctx.fillText(`zoom ${v.zoom.toFixed(2)}`, 530, 20);
+  if (v.flash > 0 && state.ui.lastNote) {
+    ctx.fillStyle = state.ui.lastNote.kind === 'bad' ? `rgba(255,122,122,${Math.min(1, v.flash)})` : `rgba(155,232,155,${Math.min(1, v.flash)})`;
+    ctx.font = '13px system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(state.ui.lastNote.text.slice(0, 80), 300, 560);
+    ctx.textAlign = 'left';
+  }
+}
+
+// ---- граф тегов: простая силовая раскладка ----
+function syncLayout() {
+  const g = state.model.graph, L = state.layout;
+  for (const tag in L) if (!g.nodes[tag]) delete L[tag];
+  for (const tag in g.nodes) {
+    if (L[tag]) continue;
+    let px = 200, py = 200;
+    for (const k in g.edges) {
+      const e = g.edges[k];
+      if (e.b === tag && L[e.a]) { px = L[e.a].x; py = L[e.a].y; break; }
+    }
+    L[tag] = { x: px + (Math.random() - 0.5) * 60, y: py + (Math.random() - 0.5) * 60, vx: 0, vy: 0 };
+  }
+}
+
+function layoutTick() {
+  const g = state.model.graph, L = state.layout;
+  const tags = Object.keys(L);
+  for (let i = 0; i < tags.length; i++) {
+    const a = L[tags[i]];
+    for (let j = i + 1; j < tags.length; j++) {
+      const b = L[tags[j]];
+      let dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy + 0.01;
+      const f = 900 / d2, d = Math.sqrt(d2);
+      dx /= d; dy /= d;
+      a.vx += dx * f; a.vy += dy * f; b.vx -= dx * f; b.vy -= dy * f;
+    }
+  }
+  for (const k in g.edges) {
+    const e = g.edges[k], a = L[e.a], b = L[e.b];
+    if (!a || !b) continue;
+    const dx = b.x - a.x, dy = b.y - a.y, d = Math.sqrt(dx * dx + dy * dy) + 0.01;
+    const f = (d - 70) * 0.02;
+    a.vx += dx / d * f; a.vy += dy / d * f; b.vx -= dx / d * f; b.vy -= dy / d * f;
+  }
+  for (const t of tags) {
+    const p = L[t];
+    p.vx += (200 - p.x) * 0.004; p.vy += (200 - p.y) * 0.004;
+    p.vx *= 0.82; p.vy *= 0.82;
+    p.x = Math.max(16, Math.min(384, p.x + p.vx));
+    p.y = Math.max(16, Math.min(384, p.y + p.vy));
+  }
+}
+
+function drawGraph(ctx) {
+  const g = state.model.graph, L = state.layout;
+  ctx.fillStyle = '#05050a';
+  ctx.fillRect(0, 0, 400, 400);
+  for (const k in g.edges) {
+    const e = g.edges[k], a = L[e.a], b = L[e.b];
+    if (!a || !b) continue;
+    const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1;
+    const ux = dx / d, uy = dy / d, nx = -uy * 4, ny = ux * 4;
+    const col = mixHex(digitColor(g.nodes[e.a].color), digitColor(g.nodes[e.b].color));
+    // forward: сплошная линия a→b, толщина по весу
+    ctx.setLineDash([]);
+    ctx.strokeStyle = rgba(col, 0.85);
+    ctx.lineWidth = Math.min(8, 0.8 + e.forward * 3);
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    // стрелка
+    const ax = b.x - ux * 12, ay = b.y - uy * 12;
+    ctx.fillStyle = rgba(col, 0.9);
+    ctx.beginPath(); ctx.moveTo(ax + ux * 6, ay + uy * 6); ctx.lineTo(ax - ux * 2 + nx, ay - uy * 2 + ny); ctx.lineTo(ax - ux * 2 - nx, ay - uy * 2 - ny); ctx.fill();
+    // reverse: пунктир со смещением
+    if (e.reverse > 0.01) {
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = rgba(PALETTE.purple, 0.9);
+      ctx.lineWidth = Math.min(6, 0.8 + e.reverse * 3);
+      ctx.beginPath(); ctx.moveTo(a.x + nx * 1.5, a.y + ny * 1.5); ctx.lineTo(b.x + nx * 1.5, b.y + ny * 1.5); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+  ctx.font = '11px system-ui, sans-serif';
+  for (const tag in g.nodes) {
+    const n = g.nodes[tag], p = L[tag];
+    if (!p) continue;
+    const r = 5 + Math.min(10, 5 * Math.sqrt(n.energy));
+    const col = digitColor(n.color);
+    ctx.fillStyle = rgba(col, 0.25);
+    ctx.beginPath(); ctx.arc(p.x, p.y, r + 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = col;
+    ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(232,232,240,0.85)';
+    ctx.fillText(tag, p.x + r + 4, p.y + 4);
+  }
+  if (!Object.keys(g.nodes).length) {
+    ctx.fillStyle = '#555'; ctx.fillText('граф пуст — добавьте события с тегами', 90, 200);
+  }
+}
+
+// =====================================================================
+// UI
+// =====================================================================
+const $ = id => document.getElementById(id);
+const auraCtx = setupCanvas($('aura'), 600, 600);
+const graphCtx = setupCanvas($('graph'), 400, 400);
+
+function setupCanvas(cv, w, h) {
+  const dpr = window.devicePixelRatio || 1;
+  cv.width = w * dpr; cv.height = h * dpr;
+  cv.style.width = w + 'px'; cv.style.height = h + 'px';
+  const ctx = cv.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return ctx;
+}
+
+function buildDigits() {
+  const box = $('digits');
+  for (const D of DIGITS) {
+    const b = document.createElement('button');
+    b.className = 'digit';
+    b.style.background = digitColor(D.d);
+    if (D.d === 1 || D.d === 7) b.style.color = '#fff';
+    b.innerHTML = `${D.d}<small>${D.d >= 8 ? D.name : D.name}</small>`;
+    b.title = D.meaning;
+    b.onclick = () => selectDigit(D.d);
+    b.dataset.d = D.d;
+    box.appendChild(b);
+  }
+}
+
+function selectDigit(d) {
+  state.ui.digit = d;
+  for (const b of $('digits').children) b.classList.toggle('sel', +b.dataset.d === d);
+  $('meaning').textContent = `${d} · ${DIGITS[d].name}: ${DIGITS[d].meaning}`;
+}
+
+function setValence(v) {
+  state.ui.valence = v;
+  $('valFear').classList.toggle('active', v < 0);
+  $('valLove').classList.toggle('active', v > 0);
+}
+
+function latestTagged() {
+  for (let i = state.log.length - 1; i >= 0; i--) if (state.log[i].tag) return state.log[i];
+  return null;
+}
+function latestWithTag(tag) {
+  for (let i = state.log.length - 1; i >= 0; i--) if (state.log[i].tag === tag) return state.log[i];
+  return null;
+}
+
+function autoTagFor(d) {
+  const base = DIGITS[d].name;
+  let i = 1;
+  while (state.model.graph.nodes[`${base}-${i}`]) i++;
+  return `${base}-${i}`;
+}
+
+// Собрать событие из UI (или из частичного описания) и провести через step().
+// Все авто-решения (тег, parents) фиксируются в самом событии, поэтому лог переигрывается детерминированно.
+function addEvent(partial = {}) {
+  const d = partial.digit ?? state.ui.digit;
+  let tag = partial.tag ?? $('tag').value.trim();
+  if (!tag && (partial.autoTag ?? $('autoTag').checked) && ((d >= 1 && d <= 6) || d === 9)) tag = autoTagFor(d);
+  let parents = partial.parents;
+  if (!parents) {
+    const sel = $('parents').value;
+    if (sel === '__auto') { const p = latestTagged(); parents = p ? [p.t] : []; }
+    else if (sel === '__none') parents = [];
+    else { const p = latestWithTag(sel); parents = p ? [p.t] : []; }
+  }
+  const ev = {
+    t: (state.log.length ? state.log[state.log.length - 1].t : 0) + 1,
+    digit: d,
+    intensity: +(partial.intensity ?? state.ui.intensity),
+    valence: (partial.valence ?? state.ui.valence) > 0 ? 1 : -1,
+    tag,
+    parents,
+  };
+  state.log.push(ev);
+  const note = step(ev);
+  state.undoAvailable = true;
+  state.ui.lastNote = note;
+  state.view.lastEventMs = performance.now();
+  state.view.flash = note ? 3 : 0;
+  $('tag').value = '';
+  refreshUI();
+  return ev;
+}
+
+function replay() {
+  state.model = freshModel();
+  for (const ev of state.log) step(ev);
+  const last = state.log[state.log.length - 1];
+  state.ui.lastNote = last ? state.model.notes[last.t] || null : null;
+}
+
+function undo() {
+  if (!state.undoAvailable || !state.log.length) return;
+  state.log.pop();
+  replay();
+  state.undoAvailable = false;
+  refreshUI();
+}
+
+function reset() {
+  state.log = [];
+  state.model = freshModel();
+  state.undoAvailable = false;
+  state.ui.lastNote = null;
+  state.layout = {};
+  state.view.xwFree = state.view.xwStep = state.view.zwStep = state.view.yz = 0;
+  refreshUI();
+}
+
+let simTimer = null;
+const SIM_TAGS = ['дом', 'море', 'мама', 'друг', 'работа', 'сон', 'музыка', 'город', 'письмо', 'дорога', 'свет', 'тишина'];
+const SIM_WEIGHTS = [0.6, 1.2, 1.4, 1.1, 0.8, 0.6, 0.5, 0.5, 0.35, 0.35];
+function simEvent() {
+  let r = Math.random() * SIM_WEIGHTS.reduce((a, b) => a + b, 0), d = 0;
+  while ((r -= SIM_WEIGHTS[d]) > 0) d++;
+  const prev = latestTagged();
+  const tagged = (d >= 1 && d <= 6) || d === 9;
+  const tag = tagged ? SIM_TAGS[Math.random() * SIM_TAGS.length | 0] : '';
+  let parents = [];
+  const q = Math.random();
+  if (prev && q < 0.7) parents = [prev.t];
+  else if (q < 0.9 && state.log.length) {
+    const tags = Object.keys(state.model.graph.nodes);
+    const p = tags.length ? latestWithTag(tags[Math.random() * tags.length | 0]) : null;
+    if (p) parents = [p.t];
+  }
+  const valence = Math.random() < 0.8 ? state.model.valence : -state.model.valence;
+  addEvent({ digit: d, tag, parents, intensity: +(0.2 + Math.random() * 0.8).toFixed(2), valence, autoTag: false });
+}
+function toggleSim() {
+  state.ui.autoSim = !state.ui.autoSim;
+  if (state.ui.autoSim) simTimer = setInterval(simEvent, 1000); else clearInterval(simTimer);
+  $('autosim').textContent = `автосим: ${state.ui.autoSim ? 'вкл' : 'выкл'}`;
+  $('autosim').classList.toggle('on', state.ui.autoSim);
+}
+
+function exportLog() {
+  const data = { app: 'aura-lab', version: 1, phi: PHI, decay: DECAY, events: state.log };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `aura-lab-log-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')}.json`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function importLog(text) {
+  const data = JSON.parse(text);
+  const events = Array.isArray(data) ? data : data.events;
+  if (!Array.isArray(events)) throw new Error('нет массива events');
+  const clean = events.map((e, i) => {
+    const digit = +e.digit;
+    if (!(digit >= 0 && digit <= 9 && Number.isInteger(digit))) throw new Error(`событие ${i}: digit вне 0..9`);
+    return {
+      t: Number.isFinite(+e.t) ? +e.t : i + 1,
+      digit,
+      intensity: Math.max(0, Math.min(1, +e.intensity || 0)),
+      valence: +e.valence < 0 ? -1 : 1,
+      tag: typeof e.tag === 'string' ? e.tag : '',
+      parents: Array.isArray(e.parents) ? e.parents.map(Number).filter(Number.isFinite) : [],
+    };
+  });
+  reset();
+  state.log = clean;
+  replay();
+  refreshUI();
+}
+
+function refreshUI() {
+  syncLayout();
+  const m = state.model, a = m.analysis;
+  $('undo').disabled = !state.undoAvailable;
+  $('status').innerHTML = [
+    `level <b>${m.level}</b>`,
+    `order <b>${a.order}</b>`,
+    `открытых цепей <b>${a.openChains}</b>`,
+    `циклов <b>${a.cycles}${a.cycles >= 999 ? '+' : ''}</b>`,
+    `узлов <b>${a.nodes}</b>`,
+    `spiralTurns <b>${m.spiralTurns}</b>`,
+    `валентность <b>${m.valence > 0 ? '+1 любовь' : '−1 страх'}</b>`,
+    `масштаб <b>×${m.auraScale.toFixed(3)}</b>`,
+    `колец <b>${m.rings}</b>`,
+  ].map(s => `<span>${s}</span>`).join('');
+  const note = state.ui.lastNote;
+  $('note').textContent = note ? note.text : '';
+  $('note').className = 'note' + (note ? ' ' + note.kind : '');
+
+  // parents: авто / нет / существующие теги
+  const sel = $('parents'), prev = sel.value || '__auto';
+  const tags = Object.keys(m.graph.nodes).sort();
+  sel.innerHTML = `<option value="__auto">авто: последний тег${latestTagged() ? ` (${latestTagged().tag})` : ''}</option><option value="__none">— без parents —</option>` +
+    tags.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
+  sel.value = [...sel.options].some(o => o.value === prev) ? prev : '__auto';
+
+  // лог: новые сверху
+  const rows = [];
+  for (let i = state.log.length - 1; i >= 0 && rows.length < 300; i--) {
+    const e = state.log[i], n = m.notes[e.t];
+    rows.push(`<div><span class="n">#${e.t}</span><span class="dot" style="background:${digitColor(e.digit)}"></span>` +
+      `<span>${e.digit}${e.digit >= 8 ? ' ' + DIGITS[e.digit].name : ''}</span>` +
+      `<span class="n">i=${e.intensity.toFixed(2)} ${e.valence > 0 ? '+1' : '−1'}</span>` +
+      `<span>${escapeHtml(e.tag || '·')}</span>` +
+      `<span class="n">${e.parents.length ? '← #' + e.parents.join(',#') : ''}${n && n.kind === 'bad' ? ' ✗' : ''}</span></div>`);
+  }
+  $('log').innerHTML = rows.join('') || '<span class="hint">лог пуст</span>';
+}
+
+function escapeHtml(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+// ---- wiring ----
+buildDigits();
+selectDigit(1);
+$('intensity').oninput = e => { state.ui.intensity = +e.target.value; $('intVal').textContent = state.ui.intensity.toFixed(2); };
+$('valFear').onclick = () => setValence(-1);
+$('valLove').onclick = () => setValence(1);
+$('add').onclick = () => addEvent();
+$('undo').onclick = undo;
+$('reset').onclick = reset;
+$('autosim').onclick = toggleSim;
+$('export').onclick = exportLog;
+$('importBtn').onclick = () => $('importFile').click();
+$('importFile').onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  f.text().then(importLog).catch(err => alert('Ошибка импорта: ' + err.message));
+  e.target.value = '';
+};
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' && e.target.type === 'text') { if (e.key === 'Enter') addEvent(); return; }
+  if (e.target.tagName === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (/^[0-9]$/.test(e.key)) { selectDigit(+e.key); addEvent(); }
+  else if (e.key === 'Enter') addEvent();
+  else if (e.key === 'v' || e.key === 'V' || e.key === 'м' || e.key === 'М') setValence(-state.ui.valence);
+});
+refreshUI();
+
+let lastFrame = performance.now();
+function frame(now) {
+  const dt = Math.min(0.1, (now - lastFrame) / 1000);
+  lastFrame = now;
+  updateView(dt, now);
+  layoutTick();
+  drawAura(auraCtx);
+  drawGraph(graphCtx);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+// хук для проверки из консоли / автотестов
+window.auraLab = { state, addEvent, undo, reset, analyze, importLog, step };
+</script>
+</body>
+</html>
