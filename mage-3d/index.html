@@ -88,14 +88,5 @@ button:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
   </div>
 </div>
 
-<script type="importmap">
-{ "imports": {
-  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
-} }
-</script>
-<script type="module">
-import { boot } from './js/main.js';
-document.querySelector('#fallback').remove();
-boot({ stage: document.querySelector('#stage'), $: (s) => document.querySelector(s) });
-</script>
+<!-- Сборка: js/mage.bundle.js = js/*.js + Three.js r170 (esbuild). Исходники — в js/. -->
+<script src="js/mage.bundle.js"></script>

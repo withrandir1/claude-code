@@ -60,3 +60,13 @@ SLOTS.hat.skins.witch = { name: 'Ведьмина', build: hatWitch };
 
 Продакшен-скины лучше моделировать в Blender с теми же точками крепления.
 Код скелета, анимаций и гардероба при этом не меняется.
+
+## Сборка
+
+Страница грузит один файл `js/mage.bundle.js`: исходники из `js/` вместе с Three.js r170, без внешних загрузок.
+После правки исходников пересобрать:
+
+```bash
+npm i three@0.170.0 esbuild@0.24.0
+npx esbuild mage-3d/js/entry.js --bundle --minify --format=iife --target=es2020 --outfile=mage-3d/js/mage.bundle.js
+```
