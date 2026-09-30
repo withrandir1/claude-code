@@ -1,0 +1,282 @@
+<title>Референсы мага</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* Layout: лист художника — направления стиля сеткой, ниже силуэты, пропорции, палитра, каталог частей. Всё на небе приложения. */
+:root {
+  --paper: #f3f9ff;
+  --card: #ffffff;
+  --ink: #0b3f7a;
+  --ink-soft: #5b86b8;
+  --line: #d6e8fb;
+  --sky: #0396ff;
+  --sky-hi: #6fc3ff;
+  --font: "Nunito", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+html, body { background: var(--paper); color: var(--ink); }
+body { font-family: var(--font); font-size: 16px; line-height: 1.5; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 64px; display: grid; gap: 40px; }
+h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 900; line-height: 1.05; margin: 0; text-wrap: balance; }
+h2 { font-size: 22px; font-weight: 900; margin: 0; }
+.lead { margin: 8px 0 0; color: var(--ink-soft); font-weight: 600; max-width: 64ch; }
+section { display: grid; gap: 14px; }
+section > p { margin: 0; color: var(--ink-soft); font-weight: 600; max-width: 68ch; }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.card { background: var(--card); border: 2px solid var(--line); border-radius: 24px; padding: 10px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.sky { border-radius: 16px; background: radial-gradient(75% 60% at 50% 40%, var(--sky-hi), var(--sky) 80%); aspect-ratio: 5 / 6; max-width: 100%; display: grid; place-items: center; overflow: hidden; }
+.sky svg { width: 100%; height: 100%; display: block; }
+.meta { padding: 0 6px 6px; display: grid; gap: 4px; }
+.letter { font-size: 12px; font-weight: 900; letter-spacing: .1em; color: var(--sky); }
+.name { font-size: 18px; font-weight: 900; line-height: 1.2; }
+.desc { font-size: 14px; color: var(--ink-soft); font-weight: 600; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tags span { font-size: 12px; font-weight: 800; color: var(--ink); background: var(--paper); border-radius: 999px; padding: 3px 9px; }
+.parts { display: grid; gap: 14px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 900px) { .parts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.part .sky { aspect-ratio: 1; }
+.row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 700px) { .row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.chip-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: linear-gradient(180deg, var(--sky), var(--sky-hi)); border-radius: 18px; padding: 10px 14px; color: #fff; font-weight: 900; font-size: 17px; }
+.chip-head svg { width: 56px; height: 53px; flex: none; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 20px; align-items: center; }
+@media (max-width: 800px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.swatches { display: grid; gap: 10px; }
+.sw-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.sw { display: grid; gap: 4px; justify-items: center; font-size: 11px; font-weight: 800; color: var(--ink-soft); width: 64px; }
+.sw i { width: 56px; height: 56px; border-radius: 16px; border: 2px solid var(--line); display: block; }
+.refs { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.refs li { background: var(--card); border: 2px solid var(--line); border-radius: 16px; padding: 12px 14px; display: grid; gap: 2px; }
+.refs a { color: var(--sky); font-weight: 800; text-decoration: none; }
+.refs a:hover { text-decoration: underline; }
+.refs span { font-size: 14px; color: var(--ink-soft); font-weight: 600; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Референсы мага</h1>
+    <p class="lead">Серебристый странник со спины. Четыре направления стиля на одном силуэте, проверка на маленьком знаке, пропорции, палитра и первые сменные части. Выбери направление буквой, и детали, которые берём из других.</p>
+  </header>
+
+  <section>
+    <h2>Направления стиля</h2>
+    <div class="grid" id="styles"></div>
+  </section>
+
+  <section>
+    <h2>Силуэт на знаке 56 pt</h2>
+    <p>Хороший персонаж узнаётся по одной заливке. Так маг будет выглядеть в шапке приложения.</p>
+    <div class="row" id="silhouettes"></div>
+  </section>
+
+  <section class="two">
+    <div class="card"><div class="sky" id="proportions"></div></div>
+    <div style="display:grid;gap:14px;min-width:0">
+      <h2>Пропорции</h2>
+      <p style="margin:0;color:var(--ink-soft);font-weight:600">Шляпа — главный знак мага, поэтому она крупная: больше трети роста. Голова с волосами маленькая, тело — тёплый колокол. Со спины читаются три вещи: изгиб кончика шляпы, белая прядь по спине и посох.</p>
+      <div class="swatches">
+        <div class="label" style="font-size:12px;font-weight:900;letter-spacing:.08em;color:var(--ink-soft)">СЕРЕБРО СТРАННИКА</div>
+        <div class="sw-row" id="palette"></div>
+        <div class="label" style="font-size:12px;font-weight:900;letter-spacing:.08em;color:var(--ink-soft)">8 СОСТОЯНИЙ · ТОЛЬКО СВЕТ ПОСОХА</div>
+        <div class="sw-row" id="states"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Шляпы</h2>
+    <p>Маг всегда в шляпе. Каждая шляпа — отдельный скин с пружинящим кончиком.</p>
+    <div class="parts" id="hats"></div>
+  </section>
+  <section>
+    <h2>Посохи</h2>
+    <div class="parts" id="staffs"></div>
+  </section>
+  <section>
+    <h2>Ботинки</h2>
+    <p>Показаны сбоку, чтобы был виден нос.</p>
+    <div class="parts" id="boots"></div>
+  </section>
+
+  <section>
+    <h2>Куда смотреть</h2>
+    <ul class="refs">
+      <li><a href="https://en.wikipedia.org/wiki/Cut_the_Rope" target="_blank" rel="noopener">Om Nom, Cut the Rope</a><span>Мягкие формы, большие простые массы, живость в мелочах.</span></li>
+      <li><a href="https://design.duolingo.com/" target="_blank" rel="noopener">Duolingo, дизайн-гайд</a><span>Персонажи из простых фигур, плоские заливки, сильный силуэт.</span></li>
+      <li><a href="https://en.wikipedia.org/wiki/My_Talking_Tom" target="_blank" rel="noopener">My Talking Tom</a><span>Реакции на касание и возня в покое. Модель поведения, не стиля.</span></li>
+      <li><a href="https://github.com/MetaMask/logo" target="_blank" rel="noopener">Логотип MetaMask</a><span>Гранёная 3D-модель, которая следит за курсором.</span></li>
+      <li><span style="color:var(--ink);font-weight:800">Твой референс: маг с посохом и лягушкой</span><span>Широкополая шляпа, белая борода, рукава с треугольниками, загнутые носы, сфера в когтях.</span></li>
+    </ul>
+  </section>
+</div>
+
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  let uid = 0;
+
+  // ---------- Палитры направлений ----------
+  const SOFT = { robe: ['#f4f8fc', '#c7d4e4'], hat: ['#eef3f9', '#c2cfe0'], hair: ['#ffffff', '#dfe7f1'], trim: '#9cc1e8', mark: '#ffffff', wood: ['#d9b48c', '#a8805a'], boot: '#b3c8e0', orb: '#bfe6ff', gold: '#ffd17c' };
+  const FLAT = { ...SOFT, robe: ['#eef3f9', '#eef3f9'], hat: ['#e6edf6', '#e6edf6'], hair: ['#ffffff', '#ffffff'] };
+  const CLASSIC = { ...SOFT, trim: '#7fa9dd', gold: '#f3ad2c' };
+
+  const grad = (defs, [a, b], dir = 'v') => {
+    const id = 'g' + (++uid);
+    defs.push(`<linearGradient id="${id}" x1="0" y1="0" x2="${dir === 'v' ? 0 : 1}" y2="${dir === 'v' ? 1 : 0}"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`);
+    return `url(#${id})`;
+  };
+  function triPattern(defs, size = 14) {
+    const id = 'f' + (++uid);
+    const tris = [];
+    for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) {
+      const x0 = x * size, y0 = y * size, o1 = ((x * 7 + y * 3) % 5) * .05, o2 = ((x * 3 + y * 5 + 2) % 5) * .05;
+      tris.push(`<path d="M${x0},${y0}L${x0 + size},${y0}L${x0},${y0 + size}Z" fill="#fff" opacity="${o1 * 2.4}"/>`);
+      tris.push(`<path d="M${x0 + size},${y0}L${x0 + size},${y0 + size}L${x0},${y0 + size}Z" fill="#0b3f7a" opacity="${o2 * 1.1}"/>`);
+    }
+    defs.push(`<pattern id="${id}" width="${size * 4}" height="${size * 4}" patternUnits="userSpaceOnUse">${tris.join('')}</pattern>`);
+    return `url(#${id})`;
+  }
+  function trimPattern(defs, base, mark) {
+    const id = 't' + (++uid);
+    defs.push(`<pattern id="${id}" width="12" height="10" patternUnits="userSpaceOnUse"><rect width="12" height="10" fill="${base}"/><path d="M2,8L6,2L10,8Z" fill="${mark}"/></pattern>`);
+    return `url(#${id})`;
+  }
+
+  // ---------- Части (вид со спины, поле 200 × 240) ----------
+  const HAT = {
+    wanderer: (p, d, g) => `
+      <path d="M30,86 Q60,74 100,74 Q140,74 170,86 Q176,92 164,95 Q134,90 100,90 Q66,90 36,95 Q24,92 30,86Z" fill="${g(p.hat)}"/>
+      <path d="M70,84 Q80,56 94,36 Q104,20 122,14 Q134,11 132,20 Q120,26 113,40 Q118,62 130,84Z" fill="${g(p.hat)}"/>
+      <path d="M70,84 Q72,78 74,72 L126,72 Q128,78 130,84Z" fill="${p.trim}"/>
+      <path d="M100,72 l2.6,4.6 5,1 -3.6,3.6 .8,5 -4.8,-2.4 -4.8,2.4 .8,-5 -3.6,-3.6 5,-1Z" fill="${p.mark}" opacity=".95"/>
+      <circle cx="131" cy="17" r="4.5" fill="${p.trim}"/>`,
+    stargazer: (p, d, g) => `
+      <path d="M44,88 Q70,78 100,78 Q130,78 156,88 Q160,93 150,95 Q126,90 100,90 Q74,90 50,95 Q40,93 44,88Z" fill="${g(p.hat)}"/>
+      <path d="M74,86 Q84,50 94,22 Q98,8 104,6 Q108,10 108,20 Q116,50 126,86Z" fill="${g(p.hat)}"/>
+      <path d="M74,86 L76,76 L124,76 L126,86Z" fill="${p.trim}"/>
+      ${[[92, 60, 3], [110, 44, 2.4], [97, 32, 2], [114, 66, 2.6], [102, 18, 1.6]].map(([x, y, r]) => `<path d="M${x},${y - r * 1.8} Q${x + r * .3},${y - r * .3} ${x + r * 1.8},${y} Q${x + r * .3},${y + r * .3} ${x},${y + r * 1.8} Q${x - r * .3},${y + r * .3} ${x - r * 1.8},${y} Q${x - r * .3},${y - r * .3} ${x},${y - r * 1.8}Z" fill="${p.gold}"/>`).join('')}`,
+    cap: (p, d, g) => `
+      <path d="M66,90 Q64,62 82,46 Q100,32 118,40 Q146,52 150,78 Q154,96 142,100 Q136,84 128,74 Q132,86 134,92 Q100,98 66,90Z" fill="${g(p.hat)}"/>
+      <path d="M66,90 Q100,98 134,92 L133,84 Q100,90 67,82Z" fill="${p.trim}"/>
+      <circle cx="144" cy="102" r="8" fill="${p.mark}"/><circle cx="141" cy="99" r="3" fill="#fff" opacity=".8"/>`,
+    feather: (p, d, g) => `
+      <path d="M22,90 Q60,74 100,74 Q140,74 178,90 Q182,97 170,98 Q136,88 100,88 Q64,88 30,98 Q18,97 22,90Z" fill="${g(p.hat)}"/>
+      <path d="M68,86 Q70,58 100,52 Q130,58 132,86Z" fill="${g(p.hat)}"/>
+      <path d="M68,86 L69,78 L131,78 L132,86Z" fill="${p.trim}"/>
+      <path d="M122,80 Q140,44 168,30 Q156,52 150,64 Q142,76 126,84Z" fill="${p.mark}"/>
+      <path d="M124,82 Q146,56 164,36" stroke="${p.trim}" stroke-width="1.6" fill="none"/>`,
+  };
+  const STAFF = {
+    orb: (p, x, top) => `
+      <path d="M${x},226 Q${x - 3},170 ${x + 2},120 Q${x + 4},${top + 30} ${x},${top + 14}" stroke="${p.wood[1]}" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M${x},226 Q${x - 3},170 ${x + 2},120 Q${x + 4},${top + 30} ${x},${top + 14}" stroke="${p.wood[0]}" stroke-width="3.5" fill="none" stroke-linecap="round" transform="translate(-1.2 0)"/>
+      <circle cx="${x}" cy="${top}" r="18" fill="${p.orb}" opacity=".35"/>
+      <circle cx="${x}" cy="${top}" r="11" fill="#e8f6ff"/><circle cx="${x}" cy="${top}" r="5" fill="${p.orb}"/><circle cx="${x - 4}" cy="${top - 4}" r="2.4" fill="#fff"/>
+      <path d="M${x},${top + 14} Q${x - 14},${top + 8} ${x - 10},${top - 8} M${x},${top + 14} Q${x + 14},${top + 8} ${x + 10},${top - 8}" stroke="${p.wood[1]}" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+    star: (p, x, top) => `
+      <rect x="${x - 3}" y="${top + 10}" width="6" height="${226 - top - 10}" rx="3" fill="${p.wood[0]}"/>
+      <circle cx="${x}" cy="${top}" r="16" fill="${p.orb}" opacity=".35"/>
+      <path d="M${x},${top - 14} Q${x + 2},${top - 2} ${x + 14},${top} Q${x + 2},${top + 2} ${x},${top + 14} Q${x - 2},${top + 2} ${x - 14},${top} Q${x - 2},${top - 2} ${x},${top - 14}Z" fill="#fff"/>`,
+    crystal: (p, x, top) => `
+      <rect x="${x - 3}" y="${top + 12}" width="6" height="${226 - top - 12}" rx="3" fill="${p.wood[0]}"/>
+      <circle cx="${x}" cy="${top}" r="16" fill="${p.orb}" opacity=".3"/>
+      <path d="M${x},${top - 16} L${x + 7},${top - 5} L${x + 7},${top + 7} L${x},${top + 14} L${x - 7},${top + 7} L${x - 7},${top - 5}Z" fill="#dcecfb"/>
+      <path d="M${x},${top - 16} L${x - 7},${top - 5} L${x - 7},${top + 7} L${x},${top + 14} L${x - 2},${top}Z" fill="#fff"/>
+      <path d="M${x - 8},${top + 13} Q${x},${top + 18} ${x + 8},${top + 13}" stroke="${p.trim}" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+    branch: (p, x, top) => `
+      <path d="M${x},226 Q${x + 4},160 ${x - 2},110 Q${x - 6},${top + 20} ${x + 4},${top}" stroke="${p.wood[1]}" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M${x + 4},${top} Q${x + 14},${top - 10} ${x + 12},${top - 18} M${x + 1},${top + 16} Q${x - 12},${top + 8} ${x - 14},${top - 2}" stroke="${p.wood[1]}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      ${[[x + 12, top - 20, 30], [x - 15, top - 4, -40], [x + 8, top + 26, 60], [x - 8, top + 44, -20]].map(([lx, ly, r]) => `<ellipse cx="${lx}" cy="${ly}" rx="6" ry="3" fill="#bdfd7f" transform="rotate(${r} ${lx} ${ly})"/>`).join('')}
+      <circle cx="${x + 4}" cy="${top + 4}" r="4" fill="${p.gold}"/><circle cx="${x + 4}" cy="${top + 4}" r="9" fill="${p.gold}" opacity=".3"/>`,
+  };
+
+  function mage({ palette: p, style = 'soft', hat = 'wanderer', staff = 'orb', silhouette = null }) {
+    const defs = [];
+    const g = (pair) => silhouette ? silhouette : (style === 'flat' ? pair[0] : grad(defs, pair));
+    const trim = silhouette || trimPattern(defs, p.trim, p.mark);
+    const out = [];
+    if (!silhouette) out.push(`<ellipse cx="100" cy="228" rx="56" ry="7" fill="#0a4f9c" opacity=".22"/>`);
+    // посох (правая рука со спины — слева от зрителя)
+    out.push(silhouette ? `<g fill="${silhouette}" stroke="${silhouette}">${STAFF[staff](Object.fromEntries(Object.entries(p).map(([k, v]) => [k, Array.isArray(v) ? [silhouette, silhouette] : silhouette])), 34, 52)}</g>` : STAFF[staff](p, 34, 52));
+    // ботинки
+    out.push(`<ellipse cx="84" cy="222" rx="13" ry="7" fill="${silhouette || p.boot}"/><ellipse cx="116" cy="222" rx="13" ry="7" fill="${silhouette || p.boot}"/>`);
+    // рукава
+    out.push(`<path d="M78,114 C64,128 50,150 40,174 Q54,188 70,178 C74,160 80,142 88,126Z" fill="${g(p.robe)}"/>`);
+    out.push(`<path d="M122,114 C136,128 150,150 160,174 Q146,188 130,178 C126,160 120,142 112,126Z" fill="${g(p.robe)}"/>`);
+    if (!silhouette) out.push(`<path d="M40,174 Q54,188 70,178 L67,170 Q54,178 43,166Z" fill="${trim}"/><path d="M160,174 Q146,188 130,178 L133,170 Q146,178 157,166Z" fill="${trim}"/>`);
+    out.push(`<circle cx="46" cy="180" r="6.5" fill="${silhouette || '#f2c6aa'}"/><circle cx="154" cy="180" r="6.5" fill="${silhouette || '#f2c6aa'}"/>`);
+    // мантия-колокол
+    out.push(`<path d="M76,110 C68,150 56,188 48,212 Q100,232 152,212 C144,188 132,150 124,110 Q100,100 76,110Z" fill="${g(p.robe)}"/>`);
+    if (!silhouette) {
+      out.push(`<path d="M50,204 Q100,222 150,204 L152,212 Q100,232 48,212Z" fill="${trim}"/>`);
+      if (style !== 'flat') out.push(`<path d="M80,130 Q76,170 66,204" stroke="#fff" stroke-width="4" opacity=".45" fill="none" stroke-linecap="round"/><path d="M120,140 Q124,176 130,206" stroke="#9fb2cc" stroke-width="3" opacity=".35" fill="none" stroke-linecap="round"/>`);
+      out.push(`<path d="M64,160 Q100,170 136,160" stroke="${p.trim}" stroke-width="6" fill="none" stroke-linecap="round"/>`);
+      out.push(`<circle cx="100" cy="166" r="5" fill="${p.trim}"/><path d="M97,169 Q94,180 92,188 M103,169 Q106,180 108,188" stroke="${p.trim}" stroke-width="4" fill="none" stroke-linecap="round"/>`);
+    }
+    // шарф и волосы по спине
+    out.push(`<ellipse cx="100" cy="108" rx="26" ry="8" fill="${silhouette || p.trim}"/>`);
+    out.push(`<path d="M80,86 C76,108 84,128 100,140 C116,128 124,108 120,86Z" fill="${g(p.hair)}"/>`);
+    if (!silhouette && style !== 'flat') out.push(`<path d="M92,96 Q92,118 98,134 M108,96 Q108,118 102,134" stroke="#dfe7f1" stroke-width="2" fill="none" stroke-linecap="round"/>`);
+    // шляпа
+    out.push(silhouette ? `<g fill="${silhouette}">${HAT[hat]({ ...p, hat: [silhouette, silhouette], trim: silhouette, mark: silhouette, gold: silhouette }, defs, () => silhouette)}</g>` : HAT[hat](p, defs, g));
+    let body = out.join('');
+    if (style === 'facet' && !silhouette) {
+      const fp = triPattern(defs);
+      const cid = 'c' + (++uid);
+      defs.push(`<clipPath id="${cid}">${body.replace(/fill="[^"]*"/g, '').replace(/stroke="[^"]*"/g, '')}</clipPath>`);
+      body += `<rect width="200" height="240" fill="${fp}" clip-path="url(#${cid})"/>`;
+    }
+    return `<svg viewBox="0 0 200 240" role="img" aria-label="Маг со спины"><defs>${defs.join('')}</defs>${body}</svg>`;
+  }
+
+  // ---------- Направления ----------
+  const STYLES = [
+    { letter: 'A', name: 'Серебряный странник', desc: 'Мягкий объём, как у Om Nom. Серебро с лёгкими тенями, спокойный и тёплый.', tags: ['мягкие формы', 'объём', 'серебро'], opts: { palette: SOFT, style: 'soft', hat: 'wanderer', staff: 'orb' } },
+    { letter: 'B', name: 'Плоский, как Duolingo', desc: 'Крупные простые фигуры, плоская заливка без градиентов. Максимально читаемый силуэт.', tags: ['флэт', 'геометрия', 'знак'], opts: { palette: FLAT, style: 'flat', hat: 'wanderer', staff: 'star' } },
+    { letter: 'C', name: 'Классика с референса', desc: 'Широкие поля со звездой, орнамент, сфера в когтях, золото в деталях. Сказочный маг.', tags: ['сказка', 'орнамент', 'детали'], opts: { palette: CLASSIC, style: 'soft', hat: 'feather', staff: 'orb' } },
+    { letter: 'D', name: 'Гранёный, как MetaMask', desc: 'Те же формы, разбитые на грани. Современно и технологично, хорошо крутится в 3D.', tags: ['low-poly', 'грани', '3D'], opts: { palette: SOFT, style: 'facet', hat: 'stargazer', staff: 'crystal' } },
+  ];
+  $('#styles').innerHTML = STYLES.map((s) => `
+    <article class="card">
+      <div class="sky">${mage(s.opts)}</div>
+      <div class="meta">
+        <div class="letter">НАПРАВЛЕНИЕ ${s.letter}</div>
+        <div class="name">${s.name}</div>
+        <div class="desc">${s.desc}</div>
+        <div class="tags">${s.tags.map((t) => `<span>${t}</span>`).join('')}</div>
+      </div>
+    </article>`).join('');
+
+  $('#silhouettes').innerHTML = STYLES.map((s) => `
+    <div class="card"><div class="chip-head"><span>${s.letter}</span>${mage({ ...s.opts, silhouette: '#ffffff' }).replace('<svg ', '<svg preserveAspectRatio="xMidYMid meet" ')}</div></div>`).join('');
+
+  // ---------- Пропорции ----------
+  $('#proportions').innerHTML = mage({ palette: SOFT, style: 'soft' }).replace('</svg>', `
+    <g font-family="Nunito, system-ui, sans-serif" font-size="8" font-weight="800" fill="#fff">
+      ${[[12, 96, 'шляпа 38%'], [96, 140, 'голова 16%'], [140, 230, 'тело 46%']].map(([a, b, t]) => `
+        <path d="M182,${a} L188,${a} L188,${b} L182,${b}" stroke="#fff" stroke-width="1.4" fill="none"/>
+        <text x="179" y="${(a + b) / 2 + 3}" text-anchor="end">${t}</text>`).join('')}
+    </g></svg>`);
+
+  // ---------- Палитра ----------
+  const pal = [['#ffffff', 'волосы'], ['#f4f8fc', 'мантия свет'], ['#c7d4e4', 'мантия тень'], ['#9cc1e8', 'орнамент'], ['#b3c8e0', 'ботинки'], ['#d9b48c', 'посох'], ['#f2c6aa', 'руки']];
+  $('#palette').innerHTML = pal.map(([c, n]) => `<div class="sw"><i style="background:${c}"></i>${n}</div>`).join('');
+  const states = [['#FFFFFF', 'white'], ['#ED7A92', 'pink'], ['#D83B5C', 'red'], ['#FF6333', 'orange'], ['#F3AD2C', 'yellow'], ['#6FB52B', 'green'], ['#045DC3', 'blue'], ['#553AC1', 'purple']];
+  $('#states').innerHTML = states.map(([c, n]) => `<div class="sw"><i style="background:${c}"></i>${n}</div>`).join('');
+
+  // ---------- Каталог частей ----------
+  const partCard = (svg, name, note) => `<article class="card part"><div class="sky">${svg}</div><div class="meta"><div class="name">${name}</div><div class="desc">${note}</div></div></article>`;
+  const hatNames = { wanderer: ['Странник', 'Широкие волнистые поля, кончик загнут вбок, звезда на ленте.'], stargazer: ['Звездочёт', 'Высокий прямой колпак с золотыми звёздами.'], cap: ['Колпак', 'Мягкий, падает назад, с помпоном. Пружинит сильнее всех.'], feather: ['С пером', 'Очень широкие поля, низкая тулья, перо сбоку.'] };
+  $('#hats').innerHTML = Object.keys(HAT).map((h) => partCard(`<svg viewBox="10 0 180 120">${HAT[h](SOFT, [], (pair) => pair[0])}<ellipse cx="100" cy="104" rx="22" ry="12" fill="#ffffff"/></svg>`, ...hatNames[h])).join('');
+  const staffNames = { orb: ['Сфера в когтях', 'Витое дерево, стеклянная сфера со светом состояния.'], star: ['Звезда', 'Прямой посох, четырёхлучевая звезда.'], crystal: ['Кристалл', 'Гранёный ледяной кристалл в серебряной оправе.'], branch: ['Живая ветвь', 'Ветка с листьями и тёплым огоньком.'] };
+  $('#staffs').innerHTML = Object.keys(STAFF).map((s) => partCard(`<svg viewBox="-30 20 130 130">${STAFF[s](SOFT, 36, 52)}</svg>`, ...staffNames[s])).join('');
+  const BOOTS = {
+    curl: ['Загнутые носы', 'Нос закручен вверх, помпон на кончике.', `<path d="M20,70 Q20,52 40,50 L58,50 Q66,50 70,60 Q90,62 100,52 Q108,42 102,34 Q112,38 112,50 Q110,74 84,78 L28,78 Q20,78 20,70Z" fill="#b3c8e0"/><circle cx="102" cy="33" r="5" fill="#fff"/><path d="M40,50 L58,50" stroke="#9cc1e8" stroke-width="5" stroke-linecap="round"/>`],
+    round: ['Круглые', 'Простые мягкие ботинки, спокойные.', `<path d="M24,70 Q22,50 44,48 L62,48 Q70,48 72,58 Q96,56 100,68 Q100,78 88,78 L32,78 Q24,78 24,70Z" fill="#b3c8e0"/><path d="M44,48 L62,48" stroke="#9cc1e8" stroke-width="5" stroke-linecap="round"/>`],
+    pointy: ['Остроносые', 'Длинный острый нос, лёгкий изгиб.', `<path d="M22,70 Q22,52 42,50 L60,50 Q68,50 70,60 Q100,62 120,58 Q104,76 80,78 L30,78 Q22,78 22,70Z" fill="#b3c8e0"/><path d="M42,50 L60,50" stroke="#9cc1e8" stroke-width="5" stroke-linecap="round"/>`],
+  };
+  $('#boots').innerHTML = Object.values(BOOTS).map(([n, d, svg]) => partCard(`<svg viewBox="0 20 130 80"><ellipse cx="66" cy="80" rx="46" ry="4" fill="#0a4f9c" opacity=".2"/>${svg}</svg>`, n, d)).join('');
+})();
+</script>
