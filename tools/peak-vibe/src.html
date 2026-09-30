@@ -523,17 +523,18 @@ function cloudShape(text, W, H) {
   const rnd = seeded(text);
   const base = { x: W * .03, y: H * .5, w: W * .94, h: H * .47 };
   const n = Math.min(5, Math.max(3, Math.round(W / H * 1.25)));
-  const peak = Math.min(n - 1, Math.ceil((n - 1) * .6));
+  const peak = (n - 1) / 2;   // по центру; у чётного n — два равных средних
   const puffs = [];
   for (let i = 0; i < n; i++) {
     const along = (i + .5) / n;
-    const r = i === peak ? H * .42 : H * (.24 + .12 * (1 - Math.abs(along - .6) * 1.7) + .05 * rnd());
-    const x = W * (.16 + .68 * along) + (rnd() - .5) * W * .05;
-    const y = i === peak ? H * .45 : H * .62 - r * .5;
+    const top = Math.abs(i - peak) < 1;
+    const r = top ? H * (n % 2 ? .42 : .38) : H * (.25 + .1 * (1 - Math.abs(along - .5) * 2) + .03 * rnd());
+    const x = W * (.16 + .68 * along);
+    const y = top ? H * (n % 2 ? .45 : .47) : H * .62 - r * .5;
     puffs.push({ x, y, r });
   }
   const side = H * .27;
-  puffs.push({ x: W * .03 + side, y: H * .97 - side, r: side }, { x: W * .97 - side * .9, y: H * .97 - side * .9, r: side * .9 });
+  puffs.push({ x: W * .03 + side, y: H * .97 - side, r: side }, { x: W * .97 - side, y: H * .97 - side, r: side });
   return { base, puffs };
 }
 function tracePuffs(ctx, sh, dy = k => 0) {
@@ -581,7 +582,7 @@ function drawNote(u, ringTop, bgLab, neu) {
   const pearl = neu && S.color === 'white' && !idle;
   const text = isOwn ? OWN_SPELL : STATES[S.color].spell;
   const spellLab = lab(STATES[S.color].hex);
-  const float = REDUCED ? 0 : Math.sin(clock * 2 * Math.PI / 7) * 3 * u;
+  const float = 0;
   note.hidden = !(has && neu); toy.hidden = !(has && !neu);
   const cx = phone.clientWidth / 2, R = T.ringSize * u / 2, cy = (ringTop + T.ringSize / 2) * u;
   if (has && !neu) {
@@ -617,7 +618,7 @@ function drawNote(u, ringTop, bgLab, neu) {
   note.style.width = W + 'px'; note.style.height = H + 'px';
   label.style.left = (W - tw) / 2 + 'px';
   label.style.top = (H * CLOUD.textY - th / 2 + H * .04) + 'px';
-  const left = Math.min(cx + R * .05, phone.clientWidth - 10 * u - W);
+  const left = Math.max(13 * u, Math.min(cx + R * .42 - W / 2, phone.clientWidth - 13 * u - W));
   note.style.left = left + 'px';
   note.style.top = (cy - R * .8 - H / 2 + float) + 'px';
   if (isOwn) opalText(label, 0);
