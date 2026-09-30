@@ -1,0 +1,673 @@
+<title>Withrandir Peak</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap">
+<style>
+/* Макет: телефон 402 × 874 pt — копия главного экрана (покой и выбор силы); под ним панель прототипа. */
+:root {
+  --page: #e9f3fd; --ink: #16324f; --muted: #5a7390; --chip: #ffffff; --line: rgba(22, 50, 79, .12);
+  --brand: "Nunito", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --page: #0d2238; --ink: #e6f1fc; --muted: #93aac2; --chip: #16314f; --line: rgba(230, 241, 252, .14); color-scheme: dark; } }
+:root[data-theme="dark"] { --page: #0d2238; --ink: #e6f1fc; --muted: #93aac2; --chip: #16314f; --line: rgba(230, 241, 252, .14); color-scheme: dark; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body { background: var(--page); color: var(--ink); font: 600 15px/1.4 var(--brand); padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+body.rec { padding: 0; background: #000; }
+
+/* ---------- телефон ---------- */
+.phone {
+  --u: calc(var(--pw) / 377);
+  position: relative; width: var(--pw); height: calc(var(--pw) * 874 / 402);
+  border-radius: calc(var(--pw) * 0.14); overflow: hidden; touch-action: none; user-select: none;
+  -webkit-user-select: none; box-shadow: 0 20px 60px rgba(3, 80, 160, .25); cursor: ns-resize;
+  font-family: var(--brand); color: #fff;
+}
+body.rec .phone { border-radius: 0; box-shadow: none; }
+.abs { position: absolute; }
+.bg { position: absolute; inset: 0; }
+.glow { left: 50%; width: calc(var(--u) * 560); height: calc(var(--u) * 560);
+  transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(closest-side, rgba(255,255,255,.55), rgba(255,255,255,.18) 55%, rgba(255,255,255,0)); }
+.status { left: 0; right: 0; top: 0; height: calc(var(--u) * 50); display: flex; align-items: center;
+  justify-content: space-between; padding: calc(var(--u) * 6) calc(var(--u) * 32) 0 calc(var(--u) * 46);
+  font: 700 calc(var(--u) * 16) / 1 -apple-system, system-ui, sans-serif; }
+.island { left: 50%; top: calc(var(--u) * 11); width: calc(var(--u) * 116); height: calc(var(--u) * 34);
+  transform: translateX(-50%); background: #000; border-radius: 99px; }
+.header { left: calc(var(--u) * 13); right: calc(var(--u) * 13); top: calc(var(--u) * 56);
+  height: calc(var(--u) * 69); display: flex; align-items: center; gap: calc(var(--u) * 6); }
+.logo { width: calc(var(--u) * 69); height: calc(var(--u) * 69); flex: none; overflow: visible; }
+.brand { font-weight: 900; font-size: calc(var(--u) * 40); letter-spacing: calc(var(--u) * -1.2); }
+.wizard { position: absolute; right: 0; top: 50%; width: calc(var(--u) * 56); height: calc(var(--u) * 53);
+  transform: translateY(calc(-50% + var(--u) * 9)); }
+.wizard svg { width: 100%; height: 100%; display: block; }
+.wizard.ink [fill="white"] { fill: var(--ink-c); } .wizard.ink [stroke="white"] { stroke: var(--ink-c); }
+
+.ring { left: 50%; width: calc(var(--u) * 299); height: calc(var(--u) * 299); transform: translateX(-50%); border-radius: 50%; }
+.ring .core, .orbHalo, canvas.orb { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); border-radius: 50%; }
+.wave { position: absolute; left: 50%; border-radius: 50%; transform: translate(-50%, -50%); border: solid rgba(255,255,255,.9); opacity: 0; }
+.spark { width: calc(var(--u) * 40); height: calc(var(--u) * 40); opacity: 0; pointer-events: none; overflow: visible; }
+
+.value { left: 0; right: 0; text-align: center; font-weight: 900; font-size: calc(var(--u) * 26); font-variant-numeric: tabular-nums; }
+.addSpell { left: 0; right: 0; top: calc(var(--u) * 553); text-align: center; font-weight: 900; font-size: calc(var(--u) * 46); letter-spacing: calc(var(--u) * -1.2); }
+.circleTitle { left: 0; right: 0; text-align: center; font-weight: 900; font-size: calc(var(--u) * 36); letter-spacing: calc(var(--u) * -.9); }
+.add { left: 50%; width: calc(var(--u) * 100); height: calc(var(--u) * 100); transform: translateX(-50%); border-radius: 50%;
+  background: rgba(255,255,255,.55); display: grid; place-items: center; }
+.add::before { content: ""; width: calc(var(--u) * 89); height: calc(var(--u) * 89); border-radius: 50%; background: #fff; grid-area: 1 / 1; }
+.add i { grid-area: 1 / 1; position: relative; width: calc(var(--u) * 40); height: calc(var(--u) * 40); }
+.add i::before, .add i::after { content: ""; position: absolute; left: 50%; top: 50%; background: #d9d9d9; border-radius: calc(var(--u) * 5);
+  width: calc(var(--u) * 40); height: calc(var(--u) * 9); transform: translate(-50%, -50%); }
+.add i::after { transform: translate(-50%, -50%) rotate(90deg); }
+
+/* Материал «плашка»: Action Button и облачко спелла — белая плашка, край светится цветом фона,
+   внутрь бегут цветные лучи (BeamGlow), наружу — белое свечение. */
+.plate { position: absolute; background: #fff; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.plate .beam { position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  padding: calc(var(--u) * 12); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; filter: blur(calc(var(--u) * 9)); }
+.plate .label { position: relative; font-weight: 900; white-space: nowrap; }
+.button { left: calc(var(--u) * 11); right: calc(var(--u) * 11); bottom: calc(var(--u) * 21); height: calc(var(--u) * 146); border-radius: calc(var(--u) * 47); }
+.button .label { font-size: calc(var(--u) * 48); letter-spacing: calc(var(--u) * -1.2); }
+.note { position: absolute; pointer-events: none; }
+.note canvas { position: absolute; }
+.note .label { position: absolute; font-weight: 900; font-size: calc(var(--u) * 27); letter-spacing: calc(var(--u) * -.5);
+  line-height: 1.02; text-align: center; max-width: calc(var(--u) * 190); width: max-content; }
+.home { left: 50%; bottom: calc(var(--u) * 7); width: calc(var(--u) * 134); height: calc(var(--u) * 5);
+  transform: translateX(-50%); border-radius: 9px; background: rgba(255,255,255,.7); }
+
+/* старое облачко (ToyCloud), для режима «сейчас» */
+.toy { position: absolute; width: calc(var(--u) * 140); height: calc(var(--u) * 86); }
+.toy b { position: absolute; border-radius: 50%; background: #fff; box-shadow: 0 0 0 calc(var(--u) * 7) rgba(255,255,255,.4); }
+.toy span { position: absolute; inset: calc(var(--u) * 18) 0 0; display: grid; place-items: center; font-weight: 900; font-size: calc(var(--u) * 21); }
+
+/* ---------- панель прототипа ---------- */
+.panel, .intro { width: min(100%, 560px); display: flex; flex-direction: column; gap: 12px; }
+.intro { gap: 4px; }
+body.rec .panel, body.rec .intro { display: none; }
+.intro h1 { margin: 0; font: 900 26px/1.1 var(--brand); letter-spacing: -.02em; }
+.intro p { margin: 0; color: var(--muted); max-width: 62ch; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg { display: inline-flex; flex-wrap: wrap; background: var(--chip); border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
+.seg button, .btn { font: 800 14px/1 var(--brand); border: 0; background: transparent; color: var(--ink); padding: 10px 14px; border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: #0396ff; color: #fff; }
+.btn { background: var(--chip); border: 1px solid var(--line); }
+.btn:focus-visible, .seg button:focus-visible, .dot:focus-visible { outline: 2px solid #0396ff; outline-offset: 2px; }
+.dot { width: 34px; height: 34px; border-radius: 50%; border: 3px solid transparent; cursor: pointer; padding: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+.dot[aria-pressed="true"] { border-color: var(--ink); }
+.list { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 4px; }
+.list b { color: var(--ink); }
+</style>
+
+<div class="intro">
+  <h1>Пик вайба</h1>
+  <p>Копия главного экрана из приложения: реальный движок орба, токены и шрифт. На экране силы проведи пальцем вверх до 95–100.</p>
+</div>
+
+<div class="phone" id="phone">
+  <div class="bg" id="bg"></div>
+  <div class="abs glow" id="glow"></div>
+  <div class="abs status" id="status"><span>9:41</span><svg viewBox="0 0 64 14" style="width:calc(var(--u)*62);height:auto" aria-hidden="true"><g fill="currentColor"><rect x="0" y="9" width="3.5" height="5" rx="1"/><rect x="5.5" y="6.5" width="3.5" height="7.5" rx="1"/><rect x="11" y="4" width="3.5" height="10" rx="1"/><rect x="16.5" y="1" width="3.5" height="13" rx="1"/><path d="M30 5.5a10 10 0 0 1 14 0l-1.6 1.6a7.7 7.7 0 0 0-10.8 0zM33 8.6a5.6 5.6 0 0 1 8 0L37 12.6z"/><rect x="48" y="1.5" width="14" height="11" rx="3" fill="none" stroke="currentColor" stroke-opacity=".5"/><rect x="49.8" y="3.3" width="10.4" height="7.4" rx="1.6"/></g></svg></div>
+  <div class="abs island"></div>
+  <div class="abs header">
+    <!-- BrandLogo.swift: кольцо 69 (innerRadius 0.7, белый 0.55) и стеклянная искра 40, центр смещён на (+20.5, +20.5) -->
+    <svg class="logo" id="logo" viewBox="0 0 69 69" aria-hidden="true">
+      <defs>
+        <linearGradient id="sparkLit" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".35"/>
+        </linearGradient>
+        <filter id="rimBlur"><feGaussianBlur stdDeviation=".6"/></filter>
+        <path id="sparkPath" d="M20.03 40C19.84 23.16 16.88 20.07 0 20.07C16.88 20.07 20.03 17.14 20.03 0C20.03 17.14 23.13 20.07 40 20.07C23.13 20.07 19.84 23.16 20.03 40Z"/>
+      </defs>
+      <circle cx="34.5" cy="34.5" r="29.33" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="10.35"/>
+      <g transform="translate(35 35)">
+        <use href="#sparkPath" fill="currentColor" fill-opacity=".42"/>
+        <use href="#sparkPath" fill="url(#sparkLit)" style="mix-blend-mode:soft-light"/>
+        <use href="#sparkPath" fill="none" stroke="currentColor" stroke-opacity=".8" stroke-width="1.2" filter="url(#rimBlur)"/>
+      </g>
+    </svg>
+    <span class="brand" id="brand">Withrandir</span>
+    <div class="wizard" id="wizard"><!--WIZARD--></div>
+  </div>
+
+  <div class="abs" id="waves" style="inset:0;pointer-events:none"></div>
+  <div class="abs ring" id="ring">
+    <div class="core" id="core"></div>
+    <div class="orbHalo" id="orbHalo"></div>
+    <canvas class="orb" id="orb"></canvas>
+  </div>
+  <svg class="abs spark" id="spark" viewBox="0 0 40 40" aria-hidden="true"><use href="#sparkPath" fill="#fff"/></svg>
+
+  <div class="abs value" id="value">50</div>
+  <div class="abs addSpell" id="addSpell">add spell</div>
+  <div class="abs circleTitle" id="circleTitle">Mir</div>
+  <div class="abs add" id="add"><i></i></div>
+
+  <div class="note" id="note"><canvas id="noteCv"></canvas><span class="label" id="noteText">talk</span></div>
+  <div class="toy" id="toy"><b style="left:8%;top:38%;width:38%;height:62%"></b><b style="left:34%;top:30%;width:40%;height:70%"></b><b style="left:58%;top:40%;width:36%;height:60%"></b><b style="left:18%;top:8%;width:36%;height:58%"></b><b style="left:46%;top:2%;width:38%;height:62%"></b><span id="toyText">talk</span></div>
+
+  <div class="plate button" id="plate"><div class="beam" id="beam"></div><span class="label" id="title">Charged</span></div>
+  <div class="abs home"></div>
+</div>
+
+<div class="panel">
+  <div class="row">
+    <div class="seg" role="group" aria-label="Экран">
+      <button id="sIdle" aria-pressed="false">Покой</button>
+      <button id="sPick" aria-pressed="true">Выбор силы</button>
+    </div>
+    <div class="seg" role="group" aria-label="Версия">
+      <button id="mNow" aria-pressed="false">Сейчас</button>
+      <button id="mPeak" aria-pressed="true">Новое</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="seg" role="group" aria-label="Спелл">
+      <button id="spNone" aria-pressed="false">Без спелла</button>
+      <button id="spReady" aria-pressed="true">Готовый</button>
+      <button id="spOwn" aria-pressed="false">Свой</button>
+    </div>
+    <button class="btn" id="demo">▶ Демо свайпа</button>
+  </div>
+  <div class="row" id="dots" role="group" aria-label="Состояние"></div>
+  <ul class="list">
+    <li><b>Пик (95–100):</b> кольцо делает вдох, две волны света, небо за кольцом светлеет, орб ярче, число и имя пружинят, на 100 — искра логотипа.</li>
+    <li><b>Белый:</b> жемчужный фон средней светлоты. Весь интерфейс остаётся белым, как у других цветов; имя на кнопке — тоном жемчуга.</li>
+    <li><b>Облачко спелла:</b> тот же материал, что у Action Button: белая плашка-сообщение, край светится фоном, внутрь бегут лучи цвета спелла. На всех экранах.</li>
+    <li><b>Свой спелл:</b> переливающийся скин — текст и лучи идут по всей палитре.</li>
+  </ul>
+</div>
+
+<script>/*ORBS*/</script>
+<script>
+'use strict';
+// ---------- данные из приложения (ColorState, StateNames, Spells.json, DesignTokens) ----------
+const STATES = {
+  white:  { hex: 0xFFFFFF, name: 'Plain',   orb: 'listening', spell: 'open quest' },
+  pink:   { hex: 0xED7A92, name: 'Lucky',   orb: 'shaping',   spell: 'meet up' },
+  red:    { hex: 0xD83B5C, name: 'Charged', orb: 'working',   spell: 'partying' },
+  orange: { hex: 0xFF6333, name: 'Synced',  orb: 'connecting', spell: 'talk' },
+  yellow: { hex: 0xF3AD2C, name: 'Glowing', orb: 'breathing', spell: 'working', radiance: true },
+  green:  { hex: 0x6FB52B, name: 'Flow',    orb: 'weaving',   spell: 'walking' },
+  blue:   { hex: 0x045DC3, name: 'Deep',    orb: 'solving',   spell: 'eat' },
+  purple: { hex: 0x553AC1, name: 'Opened',  orb: 'solving',   spell: 'exploring', base: 1.2 },
+};
+const OWN_SPELL = 'late night swim';
+const T = {
+  ringSize: 299, idleCore: 242, thickMin: (299 - 242) / 2, thickMax: 44, haloOpacity: .25, bloom: .55, ringTint: .35,
+  minChroma: .75, contrastLift: .22, orbHaloOpacity: .45, orbHaloOnSky: .12, orbHaloBlur: 34, edgeOpacity: .35,
+  defaultBaseSpeed: (0.8 + 2.2) / 2, travel: .42, peak: 95, dim: .45, paleL: .9, titleGrey: 0xD9D9D9,
+  shimmerMix: .45, shimmerPeriod: 14, wheel: ['purple', 'red', 'orange', 'pink', 'yellow', 'green', 'blue', 'white'],
+  radiance: { wavelength: .6, period: 5.5, floor: .35, amplitude: .65 },
+  sky: 0x0396FF, skyMid: 0x57B9FF,
+  pickRingTop: 174, idleRingTop: 149,
+};
+// Новое. Кандидаты в DesignTokens.Peak / Pearl / SpellNote.
+const PEAK = {
+  ringBreath: .045, waveGrow: 1.42, waveTime: 1.1, waveGap: .17, glow: .85, lift: .16, haloBoost: .3,
+  burst: .55, valueScale: .16, titleScale: .08, breathPeriod: 2.6,
+};
+
+// ---------- OKLab (Domain/OKLab.swift) ----------
+const lin = c => c <= .04045 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4);
+const gam = c => { const v = c <= .0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - .055; return Math.min(1, Math.max(0, v)); };
+function lab(hex) {
+  const r = lin((hex >> 16 & 255) / 255), g = lin((hex >> 8 & 255) / 255), b = lin((hex & 255) / 255);
+  const l_ = Math.cbrt(.4122214708 * r + .5363325363 * g + .0514459929 * b);
+  const m_ = Math.cbrt(.2119034982 * r + .6806995451 * g + .1073969566 * b);
+  const s_ = Math.cbrt(.0883024619 * r + .2817188376 * g + .6299787005 * b);
+  return { l: .2104542553 * l_ + .7936177850 * m_ - .0040720468 * s_, a: 1.9779984951 * l_ - 2.4285922050 * m_ + .4505937099 * s_, b: .0259040371 * l_ + .7827717662 * m_ - .8086757660 * s_ };
+}
+function rgb(c) {
+  const l_ = c.l + .3963377774 * c.a + .2158037573 * c.b, m_ = c.l - .1055613458 * c.a - .0638541728 * c.b, s_ = c.l - .0894841775 * c.a - 1.2914855480 * c.b;
+  const L = l_ ** 3, M = m_ ** 3, S = s_ ** 3;
+  return [gam(4.0767416621 * L - 3.3077115913 * M + .2309699292 * S), gam(-1.2684380046 * L + 2.6097574011 * M - .3413193965 * S), gam(-.0041960863 * L - .7034186147 * M + 1.7076147010 * S)].map(v => Math.round(v * 255));
+}
+const css = (c, a = 1) => { const [r, g, b] = rgb(c); return `rgba(${r},${g},${b},${a})`; };
+const sat = (c, f) => ({ l: c.l, a: c.a * f, b: c.b * f });
+const lift = (c, d) => ({ l: Math.min(1, Math.max(0, c.l + d)), a: c.a, b: c.b });
+const mix = (c, o, m) => ({ l: c.l + (o.l - c.l) * m, a: c.a + (o.a - c.a) * m, b: c.b + (o.b - c.b) * m });
+const WHITE = lab(0xFFFFFF);
+const toWhite = (c, m) => mix(c, WHITE, m);
+
+// Жемчуг — белое состояние. Средняя светлота, как у остальных цветов, чтобы белый интерфейс
+// читался на нём так же, как на любом другом состоянии.
+const PEARL = {
+  mixCalm: .9, mixPeak: .62,                   // пятна палитры, подмешанные к белому: 50 → 100
+  ring: .62,                                   // кольцо светлее обычного: оно стоит на светлом
+  ink: { l: .56, a: .012, b: -.045 },          // контент на жемчуге: холодный жемчужный, не чёрный
+  glow: toWhite(lab(0x8B6EFF), .55),           // свечение кольца и подушки: светлый сиреневый
+  spots: [['purple', .12, .14], ['orange', .9, .2], ['yellow', .85, .62], ['green', .2, .72], ['blue', .55, .95], ['pink', .5, .38]],
+  drift: .045, period: 18,
+};
+function pearlBackground(x, t, inner) {
+  const m = PEARL.mixCalm + (PEARL.mixPeak - PEARL.mixCalm) * x;
+  const layers = PEARL.spots.map(([k, px, py], i) => {
+    const a = t * 2 * Math.PI / PEARL.period + i * 1.3;
+    const cx = (px + PEARL.drift * Math.cos(a)) * 100, cy = (py + PEARL.drift * Math.sin(a)) * 100;
+    const c = toWhite(lab(STATES[k].hex), m);
+    return `radial-gradient(circle at ${cx.toFixed(1)}% ${cy.toFixed(1)}%, ${css(c)} 0, ${css(c, 0)} ${inner ? 70 : 55}%)`;
+  });
+  return layers.join(',') + ', #ffffff';
+}
+// Переливающийся скин своих спеллов: вся палитра, чуть приглушённая, чтобы читалась на белом.
+const OPAL = ['purple', 'pink', 'orange', 'yellow', 'green', 'blue', 'purple'].map(k => mix(lab(STATES[k].hex), { l: .6, a: 0, b: 0 }, .12));
+
+// ---------- пружины (SwiftUI response / dampingFraction) ----------
+class Spring {
+  constructor(v, response = .35, damping = .8) { this.x = v; this.target = v; this.v = 0; this.set(response, damping); }
+  set(response, damping) { this.k = (2 * Math.PI / response) ** 2; this.c = 4 * Math.PI * damping / response; return this; }
+  step(dt) { for (let t = 0; t < dt; t += 1 / 240) { const h = Math.min(1 / 240, dt - t); this.v += (-this.k * (this.x - this.target) - this.c * this.v) * h; this.x += this.v * h; } return this.x; }
+}
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const easeOutExpo = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+
+// ---------- состояние ----------
+const q = new URLSearchParams(location.search);
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const S = {
+  color: STATES[q.get('c')] ? q.get('c') : 'red',
+  mode: q.get('mode') === 'now' ? 'now' : 'peak',
+  screen: q.get('s') === 'idle' ? 'idle' : 'pick',
+  spell: ['none', 'ready', 'own'].includes(q.get('sp')) ? q.get('sp') : 'ready',
+  orb: q.get('orb') || null,
+  progress: 0, base: 0, intensity: 50, inPeak: false, peakAt: -9, sparkAt: -9, phase: 0,
+};
+if (q.get('rec')) document.body.classList.add('rec');
+
+const $ = id => document.getElementById(id);
+const phone = $('phone');
+function fit() {
+  const rec = document.body.classList.contains('rec');
+  const w = rec ? innerWidth : Math.min(402, innerWidth - 32, (innerHeight - 40) * 402 / 874);
+  phone.style.setProperty('--pw', Math.max(280, w) + 'px');
+}
+addEventListener('resize', fit); fit();
+const U = () => phone.clientWidth / 377;
+
+const thick = new Spring(T.thickMin, .25, .85);
+const peakAmt = new Spring(0, .5, .9);
+const ringKick = new Spring(0, .45, .42);
+const valuePop = new Spring(0, .38, .45);
+const titlePop = new Spring(0, .38, .5);
+const sparkS = new Spring(0, .5, .55);
+let burst = 0;
+
+function setIntensity(p) {
+  S.progress = clamp(p);
+  const before = S.intensity;
+  S.intensity = 50 + Math.round(S.progress * 50);
+  if (S.intensity === before) return;
+  const was = before >= T.peak, now = S.intensity >= T.peak;
+  if (now && !was) enterPeak();
+  if (!now && was) leavePeak();
+  if (S.intensity === 100 && before !== 100 && S.mode === 'peak') { S.sparkAt = clock; sparkS.x = 0; sparkS.target = 1; sparkS.v = 0; }
+}
+function enterPeak() {
+  S.inPeak = true;
+  if (S.mode !== 'peak' || S.screen !== 'pick') return;
+  S.peakAt = clock;
+  peakAmt.set(.5, .9).target = 1;
+  if (!REDUCED) { ringKick.v += 1.9; valuePop.v += 2.6; titlePop.v += 1.8; burst = 1; spawnWaves(); }
+  navigator.vibrate?.(12);
+}
+function leavePeak() { S.inPeak = false; peakAmt.set(.45, 1).target = 0; sparkS.target = 0; }
+
+// ---------- жест: свайп по всему экрану (MainView.screenDrag) ----------
+let drag = null;
+phone.addEventListener('pointerdown', e => { if (S.screen !== 'pick') return; stopDemo(); drag = { y: e.clientY }; phone.setPointerCapture(e.pointerId); });
+phone.addEventListener('pointermove', e => { if (drag) setIntensity(S.base - (e.clientY - drag.y) / (phone.clientHeight * T.travel)); });
+const end = () => { if (!drag) return; drag = null; if (S.progress < .02) setIntensity(0); S.base = S.progress; };
+phone.addEventListener('pointerup', end); phone.addEventListener('pointercancel', end);
+
+let waves = [];
+function spawnWaves() { waves.push({ t0: clock, k: 1 }, { t0: clock + PEAK.waveGap, k: .6 }); }
+
+// ---------- орб: ThinkingOrbsKit + Orb.swift ----------
+const orbCv = $('orb'), octx = orbCv.getContext('2d');
+const WHEEL = T.wheel.map(k => toWhite(lab(STATES[k].hex), T.shimmerMix));
+function wheelAt(angle, t, a) {
+  const turn = ((angle / (2 * Math.PI) + t / T.shimmerPeriod) % 1 + 1) % 1 * WHEEL.length;
+  const i = Math.floor(turn), f = turn - i;
+  return css(mix(WHEEL[i], WHEEL[(i + 1) % WHEEL.length], f), a);
+}
+function drawOrb(size, tint, x, glow, dt) {
+  const st = STATES[S.color];
+  const dpr = Math.min(3, devicePixelRatio || 1);
+  const px = Math.round(size * dpr);
+  if (orbCv.width !== px) orbCv.width = orbCv.height = px;
+  orbCv.style.width = orbCv.style.height = size + 'px';
+  const baseSpeed = (st.base || T.defaultBaseSpeed) * (.6 + .8 * x);
+  const r = Orbs.resolvePreset(S.orb || st.orb, 64);
+  const speed = baseSpeed * (1 + PEAK.burst * burst * (S.mode === 'peak' ? 1 : 0));
+  let t;
+  if (S.mode === 'now') t = (Date.now() / 1000 - 978307200) * r.speed * speed;   // как в приложении: скачок фазы
+  else { S.phase += dt * r.speed * speed; t = S.phase; }                          // новое: фаза копится
+  const frame = Orbs.MODE_FRAMES[r.mode](64, t, r.opts);
+  octx.setTransform(1, 0, 0, 1, 0, 0); octx.clearRect(0, 0, px, px);
+  const z = px / 64; octx.setTransform(z, 0, 0, z, 0, 0);
+  const spectrum = S.color === 'white';
+  const rt = (Date.now() / 1000) * baseSpeed;
+  for (const l of frame.lines) {
+    const a = (1 - clamp(l.white)) * (l.a ?? 1);
+    octx.strokeStyle = spectrum ? wheelAt(Math.atan2(l.y1 - 32, l.x1 - 32), rt, a) : css(tint, a * (1 + .25 * glow));
+    octx.lineWidth = l.w; octx.beginPath(); octx.moveTo(l.x1, l.y1); octx.lineTo(l.x2, l.y2); octx.stroke();
+  }
+  for (const d of frame.dots) {
+    const rad = Math.min(Math.hypot(d.x - 32, d.y - 32) / 32, 1);
+    let a;
+    if (st.radiance) {
+      const R = T.radiance, ph = rad / R.wavelength - rt / R.period;
+      a = (d.a ?? 1) * d.white * (R.floor + R.amplitude * (.5 + .5 * Math.sin(2 * Math.PI * ph))) * (T.edgeOpacity + (1 - T.edgeOpacity) * (1 - rad));
+    } else a = (1 - clamp(d.white)) * (d.a ?? 1) * (1 - (1 - T.edgeOpacity) * rad);
+    a = Math.min(1, a * (1 + .35 * glow));
+    if (a < .01) continue;
+    octx.fillStyle = spectrum ? wheelAt(Math.atan2(d.y - 32, d.x - 32), rt, a) : css(tint, a);
+    octx.beginPath(); octx.arc(d.x, d.y, d.r * (1 + .12 * glow), 0, Math.PI * 2); octx.fill();
+  }
+}
+
+// лучи по краю плашки (BeamGlow внутрь): цветные пятна бегут по кромке
+function beam(el, colors, a, t, strength) {
+  const n = colors.length, stops = [];
+  colors.forEach((c, i) => {
+    const s = i / n * 100, w = 100 / n;
+    stops.push(`${css(c, 0)} ${s.toFixed(1)}%`, `${css(c, strength)} ${(s + w * .35).toFixed(1)}%`, `${css(c, 0)} ${(s + w * .75).toFixed(1)}%`);
+  });
+  el.style.background = `conic-gradient(from ${(t * 360 / a).toFixed(1)}deg, ${stops.join(',')}, ${css(colors[0], 0)} 100%)`;
+}
+const opalText = (el, t) => {
+  el.style.color = 'transparent';
+  el.style.backgroundImage = `linear-gradient(90deg, ${OPAL.map(c => css(c)).join(',')})`;
+  el.style.backgroundSize = '300% 100%';
+  el.style.backgroundPosition = `${((t / 9) % 1 * 150).toFixed(1)}% 0`;
+  el.style.webkitBackgroundClip = el.style.backgroundClip = 'text';
+};
+const plainText = (el, color) => { el.style.backgroundImage = 'none'; el.style.color = color; };
+
+// ---------- кадр ----------
+let clock = 0, last = performance.now();
+function frame(now) {
+  const dt = Math.min(.05, (now - last) / 1000); last = now; clock += dt;
+  runDemo();
+  const u = U(), st = STATES[S.color], neu = S.mode === 'peak', idle = S.screen === 'idle';
+  const x = idle ? .5 : S.progress;
+  const own = lab(st.hex);
+  const aura = sat(own, T.minChroma + (1 - T.minChroma) * x);
+  const pearl = neu && S.color === 'white' && !idle;
+  const bgLab = idle ? lab(T.sky) : pearl ? PEARL.glow : aura;
+  const pale = !pearl && !idle && aura.l > T.paleL;
+  const content = s => pearl ? css(PEARL.ink, s) : pale ? `rgba(0,0,0,${s * .66})` : `rgba(255,255,255,${s})`;
+
+  thick.target = T.thickMin + (T.thickMax - T.thickMin) * x;
+  thick.step(dt); peakAmt.step(dt); ringKick.step(dt); valuePop.step(dt); titlePop.step(dt); sparkS.step(dt);
+  burst *= Math.exp(-dt / .35);
+  const pa = neu && !idle ? clamp(peakAmt.x, 0, 1.2) : 0;
+  const breath = pa > 0 && S.inPeak && !REDUCED ? .5 + .5 * Math.sin((clock - S.peakAt) * 2 * Math.PI / PEAK.breathPeriod - Math.PI / 2) : 0;
+
+  // фон
+  $('bg').style.background = idle
+    ? `linear-gradient(135deg, ${css(lab(T.sky))}, ${css(lab(T.skyMid))} 50%, ${css(lab(T.sky))})`
+    : pearl ? pearlBackground(x, clock) : css(aura);
+  $('status').style.color = content(1);
+  $('brand').style.color = content(1);
+  $('logo').style.opacity = pale ? .6 : 1;
+  $('logo').style.color = pearl ? css(PEARL.ink) : '#fff';
+  $('wizard').classList.toggle('ink', pearl); $('wizard').style.setProperty('--ink-c', css(PEARL.ink, .85));
+
+  // кольцо и орб
+  const ringTop = (idle ? T.idleRingTop : T.pickRingTop);
+  const ring = $('ring'), core = $('core');
+  ring.style.top = ringTop * u + 'px';
+  $('glow').style.top = (ringTop + T.ringSize / 2) * u + 'px';
+  $('glow').style.opacity = (PEAK.glow * pa * (.82 + .18 * breath)).toFixed(3);
+  $('glow').style.transform = `translate(-50%,-50%) scale(${(.9 + .1 * pa + .03 * breath).toFixed(4)})`;
+  const kick = pa > 0 || ringKick.x ? (neu && !idle ? ringKick.x : 0) : 0;
+  let coreSize;
+  if (idle) {
+    // покой: обруч светлым тоном вайба, сердцевина прозрачная — сквозь неё небо
+    ring.style.background = S.color === 'white' ? `rgba(255,255,255,${T.bloom})` : css(toWhite(own, T.ringTint), T.bloom);
+    ring.style.transform = 'translateX(-50%)'; ring.style.boxShadow = 'none';
+    coreSize = T.idleCore * u;
+    core.style.background = S.color === 'white'
+      ? `linear-gradient(160deg, ${css(toWhite(lab(0xFF6333), .8))}, ${css(toWhite(lab(0xF3AD2C), .82))} 35%, ${css(toWhite(lab(0x8B6EFF), .8))} 75%, ${css(toWhite(lab(0xED7A92), .85))})`
+      : css(lab(T.sky));
+  } else {
+    ring.style.background = `rgba(255,255,255,${((pearl ? PEARL.ring : T.haloOpacity) + .2 * pa + .06 * breath).toFixed(3)})`;
+    ring.style.transform = `translateX(-50%) scale(${(1 + PEAK.ringBreath * kick).toFixed(4)})`;
+    ring.style.boxShadow = pearl ? `0 0 ${(22 + 26 * pa) * u}px ${css(PEARL.glow, .55 + .3 * pa)}`
+      : pa > .01 ? `0 0 ${(26 + 14 * breath) * u}px ${(4 * u).toFixed(1)}px rgba(255,255,255,${(.45 * pa).toFixed(3)})` : 'none';
+    coreSize = (T.ringSize - 2 * (thick.x + 5 * kick)) * u;
+    core.style.background = pearl ? pearlBackground(x, clock, true) : css(aura);
+    core.style.boxShadow = pearl ? `inset 0 0 ${18 * u}px rgba(255,255,255,.9)` : 'none';
+  }
+  core.style.width = core.style.height = coreSize + 'px';
+  const oh = $('orbHalo');
+  oh.style.width = oh.style.height = coreSize + 'px';
+  const orbTint = idle ? lift(own, T.contrastLift) : lift(aura, T.contrastLift + PEAK.lift * pa);
+  oh.style.background = css(orbTint);
+  oh.style.opacity = idle ? (S.color === 'white' ? 0 : T.orbHaloOnSky) : (T.orbHaloOpacity + PEAK.haloBoost * pa).toFixed(3);
+  oh.style.filter = `blur(${T.orbHaloBlur * u}px)`;
+  drawOrb(coreSize, orbTint, x, pa, dt);
+
+  // волны
+  const wv = $('waves');
+  waves = waves.filter(w => clock - w.t0 < PEAK.waveTime);
+  while (wv.children.length < 2) { const d = document.createElement('div'); d.className = 'wave'; wv.appendChild(d); }
+  [...wv.children].forEach((el, i) => {
+    const w = waves[i];
+    if (!w || clock < w.t0) { el.style.opacity = 0; return; }
+    const p = clamp((clock - w.t0) / PEAK.waveTime);
+    const d = T.ringSize * u * (1 + (PEAK.waveGrow - 1) * easeOutExpo(p));
+    el.style.top = (ringTop + T.ringSize / 2) * u + 'px';
+    el.style.width = el.style.height = d + 'px';
+    el.style.borderWidth = (6 * (1 - p) + 1) * u + 'px';
+    el.style.opacity = (w.k * Math.pow(1 - p, 1.6) * .9).toFixed(3);
+    el.style.filter = `blur(${(1 + 3 * p) * u}px)`;
+  });
+
+  // искра на 100
+  const sp = $('spark'), sv = pa > 0 ? clamp(sparkS.x, 0, 1.3) : 0;
+  sp.style.left = `calc(50% + ${92 * u}px)`; sp.style.top = (ringTop + 2) * u + 'px';
+  sp.style.opacity = (Math.min(1, sv) * (S.intensity === 100 ? .95 : 0)).toFixed(3);
+  sp.style.transform = `scale(${sv.toFixed(3)}) rotate(${((clock - S.sparkAt) * 40).toFixed(1)}deg)`;
+  sp.style.filter = `drop-shadow(0 0 ${8 * u}px rgba(255,255,255,.9))`;
+
+  // подписи под кольцом
+  const val = $('value');
+  val.hidden = idle; $('addSpell').hidden = idle; $('circleTitle').hidden = !idle; $('add').hidden = !idle;
+  val.style.top = (T.pickRingTop + T.ringSize + 6) * u + 'px';
+  val.textContent = S.intensity;
+  val.style.color = content(T.dim + (1 - T.dim) * pa);
+  val.style.transform = `scale(${(1 + PEAK.valueScale * (pa > 0 ? valuePop.x : 0) + .06 * pa).toFixed(4)})`;
+  $('addSpell').style.color = content(T.dim);
+  $('circleTitle').style.top = (T.idleRingTop + T.ringSize + 6) * u + 'px';
+  $('circleTitle').style.color = 'rgba(255,255,255,.83)';
+  $('circleTitle').textContent = st.name === 'Synced' ? 'with' : st.name;
+  $('add').style.top = (T.idleRingTop + T.ringSize + 6 + 46) * u + 'px';
+
+  // Action Button
+  const plate = $('plate');
+  const glowR = 6 + 16 * pa + 6 * breath, glowA = .35 + .5 * pa;
+  plate.style.boxShadow = pearl
+    ? `inset 0 0 ${14 * u}px ${8 * u}px ${css(PEARL.glow, .35)}, 0 0 ${(18 + 10 * pa) * u}px ${css(PEARL.glow, .6 + .3 * pa)}`
+    : `inset 0 0 ${14 * u}px ${8 * u}px ${css(bgLab, .45)}, 0 0 ${glowR * u}px ${3 * pa * u}px rgba(255,255,255,${glowA.toFixed(3)})`;
+  const beamColors = S.color === 'white' ? T.wheel.slice(0, 7).map(k => lab(STATES[k].hex)) : [own, toWhite(own, .3)];
+  beam($('beam'), beamColors, 3.4, clock, .55 + .35 * x);
+  const title = $('title');
+  title.textContent = st.name;
+  if (S.color === 'white') { if (neu) opalText(title, 0); else plainText(title, css(lab(T.titleGrey))); }
+  else plainText(title, css(own));
+  title.style.transform = `scale(${(1 + PEAK.titleScale * (pa > 0 ? titlePop.x : 0)).toFixed(4)})`;
+
+  // облачко спелла
+  drawNote(u, ringTop, bgLab, neu);
+  requestAnimationFrame(frame);
+}
+
+// Облачко спелла. Новое — мультяшное облако из кругов (приём cel: три плоских тона с чёткой
+// границей, тень — те же клубы со сдвигом вниз, тёплый отсвет по кромке, без контура).
+// Форма — от текста (одно слово — одно и то же облако), размер — под текст. Старое — ToyCloud.
+const CLOUD = {
+  light: 0xFFFFFF, warm: 0xFFE9D6,
+  sky: { mid: 0xD7E9FF, shadow: 0xA9CBF5 },       // день, небо
+  midMix: .8, shadowMix: .58,                     // на цвете состояния: тон фона, подмешанный к белому
+  midShift: 1.32, shadowShift: 1.75, warmShift: .06, // сдвиги в радиусах клуба
+  padX: .42, textY: .44,                          // поля по бокам (доля высоты) и центр текста
+};
+function seeded(text) {
+  let h = 2166136261; for (const ch of text) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); }
+  return () => { h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h >>> 0) % 10000) / 10000; };
+}
+// Силуэт: ровное скруглённое дно, 3–5 клубов по верху, самая высокая макушка правее центра, круглые бока.
+function cloudShape(text, W, H) {
+  const rnd = seeded(text);
+  const base = { x: W * .03, y: H * .5, w: W * .94, h: H * .47 };
+  const n = Math.min(5, Math.max(3, Math.round(W / H * 1.25)));
+  const peak = (n - 1) / 2;   // по центру; у чётного n — два равных средних
+  const puffs = [];
+  for (let i = 0; i < n; i++) {
+    const along = (i + .5) / n;
+    const top = Math.abs(i - peak) < 1;
+    const r = top ? H * (n % 2 ? .42 : .38) : H * (.25 + .1 * (1 - Math.abs(along - .5) * 2) + .03 * rnd());
+    const x = W * (.16 + .68 * along);
+    const y = top ? H * (n % 2 ? .45 : .47) : H * .62 - r * .5;
+    puffs.push({ x, y, r });
+  }
+  const side = H * .27;
+  puffs.push({ x: W * .03 + side, y: H * .97 - side, r: side }, { x: W * .97 - side, y: H * .97 - side, r: side });
+  return { base, puffs };
+}
+function tracePuffs(ctx, sh, dy = k => 0) {
+  ctx.beginPath();
+  for (const p of sh.puffs) { ctx.moveTo(p.x + p.r, p.y + dy(p.r)); ctx.arc(p.x, p.y + dy(p.r), p.r, 0, Math.PI * 2); }
+  const b = sh.base, rr = b.h / 2;
+  ctx.roundRect(b.x, b.y + dy(sh.base.h / 2), b.w, b.h, rr);
+}
+function paintCloud(ctx, sh, tones, u) {
+  const rPeak = Math.max(...sh.puffs.map(p => p.r));
+  ctx.save();
+  // свечение вокруг и тёплый отсвет по верхней кромке
+  ctx.shadowColor = tones.glow; ctx.shadowBlur = 14 * u;
+  tracePuffs(ctx, sh); ctx.fillStyle = css(lab(CLOUD.warm)); ctx.fill();
+  ctx.shadowBlur = 0;
+  tracePuffs(ctx, sh); ctx.clip();
+  tracePuffs(ctx, sh, () => CLOUD.warmShift * rPeak); ctx.fillStyle = css(lab(CLOUD.light)); ctx.fill();
+  // полутень и тень — те же клубы ниже, плюс ровная полоса у дна
+  const band = (shift, from, fill) => {
+    tracePuffs(ctx, sh, r => shift * r);
+    ctx.rect(0, sh.base.y + sh.base.h * from, 9999, 9999);
+    ctx.fillStyle = fill; ctx.fill();
+  };
+  band(CLOUD.midShift, .74, tones.mid);
+  band(CLOUD.shadowShift, .9, tones.shadow);
+  ctx.restore();
+}
+function miniShape(s) {
+  return { base: { x: 0, y: s * .45, w: s * 1.3, h: s * .5 },
+    puffs: [{ x: s * .32, y: s * .62, r: s * .3 }, { x: s * .66, y: s * .42, r: s * .4 }, { x: s * 1.0, y: s * .62, r: s * .3 }] };
+}
+function cloudTones(ctx, W, bgLab, pearl, own, idle) {
+  if (own) {
+    const grad = (m) => { const g = ctx.createLinearGradient(0, 0, W, 0); OPAL.forEach((c, i) => g.addColorStop(i / (OPAL.length - 1), css(toWhite(c, m)))); return g; };
+    return { mid: grad(.76), shadow: grad(.56), glow: 'rgba(255,255,255,.6)' };
+  }
+  if (idle) return { mid: css(lab(CLOUD.sky.mid)), shadow: css(lab(CLOUD.sky.shadow)), glow: 'rgba(255,255,255,.55)' };
+  const tone = pearl ? PEARL.glow : bgLab;
+  return { mid: css(toWhite(tone, CLOUD.midMix)), shadow: css(toWhite(tone, CLOUD.shadowMix)), glow: pearl ? css(PEARL.glow, .7) : 'rgba(255,255,255,.55)' };
+}
+let noteKey = '';
+function drawNote(u, ringTop, bgLab, neu) {
+  const note = $('note'), toy = $('toy');
+  const has = S.spell !== 'none', isOwn = S.spell === 'own', idle = S.screen === 'idle';
+  const pearl = neu && S.color === 'white' && !idle;
+  const text = isOwn ? OWN_SPELL : STATES[S.color].spell;
+  const spellLab = lab(STATES[S.color].hex);
+  const float = 0;
+  note.hidden = !(has && neu); toy.hidden = !(has && !neu);
+  const cx = phone.clientWidth / 2, R = T.ringSize * u / 2, cy = (ringTop + T.ringSize / 2) * u;
+  if (has && !neu) {
+    toy.style.left = (cx + R * .5 - 70 * u) + 'px'; toy.style.top = (cy - R * .5 - 43 * u + float) + 'px';
+    $('toyText').textContent = text;
+    $('toyText').style.color = S.color === 'white' ? '#553AC1' : css(spellLab);
+    return;
+  }
+  if (!has) return;
+  const label = $('noteText');
+  label.textContent = text;
+  const tw = label.offsetWidth, th = label.offsetHeight;
+  const H = Math.max(92 * u, th + 66 * u), W = Math.max(H * 1.55, tw + H * CLOUD.padX * 2);
+  const M = 24 * u, tail = 58 * u;                     // поле под свечение и под хвост снизу слева
+  const cv = $('noteCv'), dpr = Math.min(3, devicePixelRatio || 1);
+  const cw = W + 2 * M + tail, ch = H + 2 * M + tail;
+  const key = [text, S.color, S.screen, isOwn, pearl, Math.round(W), Math.round(u * 100), Math.round(S.progress * 20)].join('|');
+  if (key !== noteKey) {
+    noteKey = key;
+    cv.width = Math.round(cw * dpr); cv.height = Math.round(ch * dpr);
+    cv.style.width = cw + 'px'; cv.style.height = ch + 'px';
+    const ctx = cv.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, cw, ch);
+    ctx.translate(M + tail, M);
+    const tones = cloudTones(ctx, W, bgLab, pearl, isOwn, idle);
+    paintCloud(ctx, cloudShape(text, W, H), tones, u);
+    // мысль: две маленькие тучки того же материала по диагонали к орбу
+    for (const [s, dx, dy] of [[30 * u, -tail * .55, H * .86], [17 * u, -tail * .95, H * .86 + 30 * u]]) {
+      ctx.save(); ctx.translate(dx, dy); paintCloud(ctx, miniShape(s), tones, u * .5); ctx.restore();
+    }
+  }
+  cv.style.left = -(M + tail) + 'px'; cv.style.top = -M + 'px';
+  note.style.width = W + 'px'; note.style.height = H + 'px';
+  label.style.left = (W - tw) / 2 + 'px';
+  label.style.top = (H * CLOUD.textY - th / 2 + H * .04) + 'px';
+  const left = Math.max(13 * u, Math.min(cx + R * .42 - W / 2, phone.clientWidth - 13 * u - W));
+  note.style.left = left + 'px';
+  note.style.top = (cy - R * .8 - H / 2 + float) + 'px';
+  if (isOwn) opalText(label, 0);
+  else plainText(label, S.color === 'white' ? css(PEARL.ink) : css(spellLab));
+}
+
+// ---------- демо свайпа ----------
+const DEMO = [[0, 0], [.8, 0], [2.6, .78], [3.8, 1], [6.4, 1], [7.3, .7], [8.2, .7], [9.0, 1], [11.6, 1]];
+let demoT = null;
+function smooth(a, b, f) { const s = f * f * (3 - 2 * f); return a + (b - a) * s; }
+function runDemo() {
+  if (demoT === null) return;
+  const t = clock - demoT;
+  let p = DEMO[DEMO.length - 1][1];
+  for (let i = 1; i < DEMO.length; i++) if (t <= DEMO[i][0]) { const [t0, a] = DEMO[i - 1], [t1, b] = DEMO[i]; p = smooth(a, b, (t - t0) / (t1 - t0)); break; }
+  setIntensity(p); S.base = S.progress;
+  if (t > DEMO[DEMO.length - 1][0]) { demoT = null; window.demoDone = true; }
+}
+function startDemo() { setScreen('pick'); resetAll(); demoT = clock; window.demoDone = false; }
+function stopDemo() { demoT = null; }
+function resetAll() {
+  S.progress = S.base = 0; S.intensity = 50; S.inPeak = false; waves = [];
+  peakAmt.x = peakAmt.target = 0; sparkS.x = sparkS.target = 0; burst = 0;
+  thick.x = thick.target = T.thickMin;
+}
+window.startDemo = startDemo;
+
+// ---------- панель ----------
+function press(ids, on) { ids.forEach(id => $(id).setAttribute('aria-pressed', id === on)); }
+function setMode(m) {
+  S.mode = m; press(['mNow', 'mPeak'], m === 'now' ? 'mNow' : 'mPeak');
+  if (m === 'now') { peakAmt.x = peakAmt.target = 0; waves = []; sparkS.x = sparkS.target = 0; }
+  else if (S.intensity >= T.peak) enterPeak();
+}
+function setScreen(s) { S.screen = s; press(['sIdle', 'sPick'], s === 'idle' ? 'sIdle' : 'sPick'); if (s === 'idle') leavePeak(); }
+function setSpell(s) { S.spell = s; press(['spNone', 'spReady', 'spOwn'], { none: 'spNone', ready: 'spReady', own: 'spOwn' }[s]); }
+$('mNow').onclick = () => setMode('now'); $('mPeak').onclick = () => setMode('peak');
+$('sIdle').onclick = () => setScreen('idle'); $('sPick').onclick = () => setScreen('pick');
+$('spNone').onclick = () => setSpell('none'); $('spReady').onclick = () => setSpell('ready'); $('spOwn').onclick = () => setSpell('own');
+$('demo').onclick = startDemo;
+for (const k of Object.keys(STATES)) {
+  const b = document.createElement('button');
+  b.className = 'dot'; b.style.background = '#' + STATES[k].hex.toString(16).padStart(6, '0');
+  b.setAttribute('aria-label', STATES[k].name); b.setAttribute('aria-pressed', k === S.color);
+  b.onclick = () => { S.color = k; document.querySelectorAll('.dot').forEach(d => d.setAttribute('aria-pressed', d === b)); };
+  $('dots').appendChild(b);
+}
+setMode(S.mode); setScreen(S.screen); setSpell(S.spell);
+requestAnimationFrame(frame);
+if (q.get('p')) { setIntensity(+q.get('p')); S.base = S.progress; }
+if (q.get('demo')) document.fonts.ready.then(() => setTimeout(startDemo, 300));
+</script>
