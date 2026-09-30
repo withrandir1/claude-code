@@ -1,0 +1,469 @@
+<title>Withrandir Peak</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap">
+<style>
+/* Макет: телефон 402 × 874 pt, внутри — копия главного экрана в режиме силы; под ним панель прототипа. */
+:root {
+  --page: #e9f3fd; --ink: #16324f; --muted: #5a7390; --chip: #ffffff; --line: rgba(22, 50, 79, .12);
+  --brand: "Nunito", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --page: #0d2238; --ink: #e6f1fc; --muted: #93aac2; --chip: #16314f; --line: rgba(230, 241, 252, .14); color-scheme: dark; } }
+:root[data-theme="dark"] { --page: #0d2238; --ink: #e6f1fc; --muted: #93aac2; --chip: #16314f; --line: rgba(230, 241, 252, .14); color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--page); color: var(--ink); font: 600 15px/1.4 var(--brand); padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+body.rec { padding: 0; background: #000; }
+
+/* ---------- телефон ---------- */
+.phone {
+  --u: calc(var(--pw) / 377);             /* 1 pt макета Figma */
+  position: relative; width: var(--pw); height: calc(var(--pw) * 874 / 402);
+  border-radius: calc(var(--pw) * 0.14); overflow: hidden; touch-action: none; user-select: none;
+  -webkit-user-select: none; box-shadow: 0 20px 60px rgba(3, 80, 160, .25); cursor: ns-resize;
+  font-family: var(--brand); color: #fff;
+}
+body.rec .phone { border-radius: 0; box-shadow: none; }
+.bg { position: absolute; inset: 0; }
+.glow { position: absolute; left: 50%; top: calc(var(--u) * 323.5); width: calc(var(--u) * 560); height: calc(var(--u) * 560);
+  transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(closest-side, rgba(255,255,255,.55), rgba(255,255,255,.18) 55%, rgba(255,255,255,0)); }
+.status { position: absolute; left: 0; right: 0; top: 0; height: calc(var(--u) * 50); display: flex; align-items: center;
+  justify-content: space-between; padding: calc(var(--u) * 6) calc(var(--u) * 32) 0 calc(var(--u) * 46);
+  font: 700 calc(var(--u) * 16) / 1 -apple-system, system-ui, sans-serif; }
+.island { position: absolute; left: 50%; top: calc(var(--u) * 11); width: calc(var(--u) * 116); height: calc(var(--u) * 34);
+  transform: translateX(-50%); background: #000; border-radius: 99px; }
+.header { position: absolute; left: calc(var(--u) * 13); right: calc(var(--u) * 13); top: calc(var(--u) * 56);
+  height: calc(var(--u) * 69); display: flex; align-items: center; gap: calc(var(--u) * 6); }
+.logo { width: calc(var(--u) * 69); height: calc(var(--u) * 69); flex: none; }
+.brand { font-weight: 900; font-size: calc(var(--u) * 40); letter-spacing: calc(var(--u) * -1.2); }
+.wizard { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: calc(var(--u) * 56); height: calc(var(--u) * 53); }
+.wizard svg { width: 100%; height: 100%; display: block; }
+
+.ring { position: absolute; left: 50%; top: calc(var(--u) * 174); width: calc(var(--u) * 299); height: calc(var(--u) * 299);
+  transform: translateX(-50%); border-radius: 50%; }
+.ring .core { position: absolute; left: 50%; top: 50%; border-radius: 50%; transform: translate(-50%, -50%); }
+.orbHalo { position: absolute; left: 50%; top: 50%; border-radius: 50%; transform: translate(-50%, -50%); }
+canvas.orb { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.waves { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.wave { position: absolute; left: 50%; top: calc(var(--u) * 323.5); border-radius: 50%; transform: translate(-50%, -50%);
+  border: solid rgba(255,255,255,.9); opacity: 0; }
+.spark { position: absolute; width: calc(var(--u) * 40); height: calc(var(--u) * 40); left: calc(50% + var(--u) * 92); top: calc(var(--u) * 176);
+  opacity: 0; pointer-events: none; }
+
+.value { position: absolute; left: 0; right: 0; top: calc(var(--u) * 479); text-align: center;
+  font-weight: 900; font-size: calc(var(--u) * 26); font-variant-numeric: tabular-nums; }
+.addSpell { position: absolute; left: 0; right: 0; top: calc(var(--u) * 553); text-align: center;
+  font-weight: 900; font-size: calc(var(--u) * 46); letter-spacing: calc(var(--u) * -1.2); }
+.plate { position: absolute; left: calc(var(--u) * 11); right: calc(var(--u) * 11); bottom: calc(var(--u) * 21);
+  height: calc(var(--u) * 146); border-radius: calc(var(--u) * 47); background: #fff;
+  display: flex; align-items: center; justify-content: center; }
+.title { font-weight: 900; font-size: calc(var(--u) * 48); letter-spacing: calc(var(--u) * -1.2); white-space: nowrap; }
+.home { position: absolute; left: 50%; bottom: calc(var(--u) * 7); width: calc(var(--u) * 134); height: calc(var(--u) * 5);
+  transform: translateX(-50%); border-radius: 9px; background: rgba(255,255,255,.7); }
+
+/* ---------- панель прототипа ---------- */
+.panel { width: min(100%, 560px); display: flex; flex-direction: column; gap: 12px; }
+body.rec .panel, body.rec .intro { display: none; }
+.intro { width: min(100%, 560px); display: flex; flex-direction: column; gap: 4px; }
+.intro h1 { margin: 0; font: 900 26px/1.1 var(--brand); letter-spacing: -.02em; }
+.intro p { margin: 0; color: var(--muted); max-width: 62ch; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg { display: inline-flex; background: var(--chip); border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
+.seg button, .btn { font: 800 14px/1 var(--brand); border: 0; background: transparent; color: var(--ink);
+  padding: 10px 14px; border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: #0396ff; color: #fff; }
+.btn { background: var(--chip); border: 1px solid var(--line); }
+.btn:focus-visible, .seg button:focus-visible, .dot:focus-visible { outline: 2px solid #0396ff; outline-offset: 2px; }
+.dot { width: 34px; height: 34px; border-radius: 50%; border: 3px solid transparent; cursor: pointer; padding: 0;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+.dot[aria-pressed="true"] { border-color: var(--ink); }
+.hint { color: var(--muted); font-size: 13px; }
+.list { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 4px; }
+.list b { color: var(--ink); }
+</style>
+
+<div class="intro">
+  <h1>Пик вайба</h1>
+  <p>Копия экрана силы из приложения: реальный движок орба, токены и шрифт. Проведи пальцем по телефону вверх до 95–100.</p>
+</div>
+
+<div class="phone" id="phone">
+  <div class="bg" id="bg"></div>
+  <div class="glow" id="glow"></div>
+  <div class="status"><span>9:41</span><svg width="calc(1px)" viewBox="0 0 64 14" style="width:calc(var(--u)*62);height:auto" aria-hidden="true"><g fill="#fff"><rect x="0" y="9" width="3.5" height="5" rx="1"/><rect x="5.5" y="6.5" width="3.5" height="7.5" rx="1"/><rect x="11" y="4" width="3.5" height="10" rx="1"/><rect x="16.5" y="1" width="3.5" height="13" rx="1"/><path d="M30 5.5a10 10 0 0 1 14 0l-1.6 1.6a7.7 7.7 0 0 0-10.8 0zM33 8.6a5.6 5.6 0 0 1 8 0L37 12.6z"/><rect x="48" y="1.5" width="14" height="11" rx="3" fill="none" stroke="#fff" stroke-opacity=".5"/><rect x="49.8" y="3.3" width="10.4" height="7.4" rx="1.6"/></g></svg></div>
+  <div class="island"></div>
+  <div class="header">
+    <svg class="logo" id="logo" viewBox="0 0 69 69" aria-hidden="true">
+      <circle cx="34.5" cy="34.5" r="29.3" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="10.4"/>
+      <path d="M50.5 34.5 C51.6 43 52.5 44 61 45.5 C52.5 47 51.6 48 50.5 56.5 C49.4 48 48.5 47 40 45.5 C48.5 44 49.4 43 50.5 34.5Z" fill="#fff" opacity=".95"/>
+    </svg>
+    <span class="brand" id="brand">Withrandir</span>
+    <div class="wizard"><svg viewBox="0 0 69 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="33.0959" cy="20.2587" r="4.81396" fill="white"/>
+<path d="M30.6104 49.9002C30.9978 52.8008 35.1936 52.8006 35.5809 49.9002L38.7111 26.4581C38.9118 24.9548 37.7429 23.6188 36.2264 23.6188H29.965C28.4487 23.619 27.2795 24.955 27.4803 26.4581L30.6104 49.9002Z" fill="white" stroke="white" stroke-width="5"/>
+<path d="M27.1578 26.0748C29.0982 26.9578 29.1211 29.7058 27.1957 30.621L10.8051 38.4092C9.1497 39.1957 7.23772 37.9984 7.22217 36.1658L7.09452 20.8641C7.0794 19.0314 8.97119 17.8024 10.6395 18.5612L27.1578 26.0748Z" fill="white" stroke="white" stroke-width="5"/>
+<path d="M37.9348 26.0748C35.9944 26.9578 35.9715 29.7058 37.8969 30.621L54.2875 38.4092C55.9429 39.1957 57.8549 37.9984 57.8704 36.1658L57.9981 20.8641C58.0132 19.0314 56.1214 17.8024 54.4531 18.5612L37.9348 26.0748Z" fill="white" stroke="white" stroke-width="5"/>
+<path d="M28.0822 30.198C30.1289 26.1848 35.8628 26.1847 37.9095 30.198L47.828 49.6451C49.6996 53.3151 47.0339 57.6673 42.9143 57.6675H23.0774C18.9578 57.6673 16.2921 53.3151 18.1637 49.6451L28.0822 30.198Z" fill="white" stroke="white" stroke-width="5"/>
+<path d="M32.5894 36.2713C32.7895 36.5487 33.2021 36.5487 33.4023 36.2713L42.7204 23.3608C42.9597 23.0292 42.7227 22.5658 42.3139 22.5655H23.6778C23.269 22.5658 23.032 23.0292 23.2713 23.3608L32.5894 36.2713Z" fill="white" stroke="white" stroke-width="5"/>
+<path d="M34.4942 15.0936H31.4972L32.9957 9.57076L34.4942 15.0936Z" fill="#D9D9D9" fill-opacity="0.2" stroke="white" stroke-width="5"/>
+<rect x="63.482" y="10.9297" width="1.40815" height="49.7483" rx="0.699996" fill="#D9D9D9" fill-opacity="0.2" stroke="white" stroke-width="1.39999"/>
+<rect x="25.171" y="16.1448" width="15.6494" height="1.40815" rx="0.699996" fill="#D9D9D9" fill-opacity="0.2" stroke="white" stroke-width="1.39999"/>
+<path d="M64.0938 9.82849C64.0474 5.6907 63.3179 4.93077 59.1715 4.93077C63.3179 4.93077 64.0938 4.21112 64.0938 0C64.0938 4.21112 64.8536 4.93077 69 4.93077C64.8536 4.93077 64.0474 5.6907 64.0938 9.82849Z" fill="white" fill-opacity="0.7" stroke="white" stroke-opacity="0.8" stroke-width="0.277214"/>
+<path d="M38.0903 64.487C39.8739 64.487 41.3766 62.8406 40.1154 61.5794C39.3443 60.8083 38.2984 60.375 37.2078 60.375C36.1173 60.375 35.0714 60.8083 34.3003 61.5794C33.0391 62.8406 34.5418 64.487 36.3254 64.487H37.2078H38.0903Z" fill="white"/>
+<path d="M29.8665 64.487C31.6501 64.487 33.1527 62.8406 31.8916 61.5794C31.1204 60.8083 30.0746 60.375 28.984 60.375C27.8935 60.375 26.8476 60.8083 26.0764 61.5794C24.8153 62.8406 26.318 64.487 28.1015 64.487H28.984H29.8665Z" fill="white"/>
+<rect y="24.0698" width="3.81105" height="9.42733" rx="1.89999" fill="white"/>
+<circle cx="63.9858" cy="29.4856" r="2.5099" fill="white" fill-opacity="0.2" stroke="white" stroke-width="1.79997"/>
+</svg>
+</div>
+  </div>
+
+  <div class="waves" id="waves"></div>
+  <div class="ring" id="ring">
+    <div class="core" id="core"></div>
+    <div class="orbHalo" id="orbHalo"></div>
+    <canvas class="orb" id="orb"></canvas>
+  </div>
+  <svg class="spark" id="spark" viewBox="0 0 40 40" aria-hidden="true">
+    <path d="M20 0 C21.3 15 25 18.7 40 20 C25 21.3 21.3 25 20 40 C18.7 25 15 21.3 0 20 C15 18.7 18.7 15 20 0Z" fill="#fff"/>
+  </svg>
+  <div class="value" id="value">50</div>
+  <div class="addSpell" id="addSpell">add spell</div>
+  <div class="plate" id="plate"><span class="title" id="title">Charged</span></div>
+  <div class="home"></div>
+</div>
+
+<div class="panel">
+  <div class="row">
+    <div class="seg" role="group" aria-label="Режим">
+      <button id="mNow" aria-pressed="false">Сейчас в приложении</button>
+      <button id="mPeak" aria-pressed="true">Новый пик</button>
+    </div>
+    <button class="btn" id="demo">▶ Демо свайпа</button>
+  </div>
+  <div class="row" id="dots" role="group" aria-label="Состояние"></div>
+  <ul class="list">
+    <li><b>Вход в пик (95):</b> кольцо делает вдох с пружиной, от него уходят две волны света, небо за кольцом светлеет.</li>
+    <li><b>Орб:</b> точки загораются ярче и коротко ускоряются. Скорость меняется без скачков фазы.</li>
+    <li><b>Число и кнопка:</b> сила становится белой и подпрыгивает, имя на кнопке пружинит, подушка светится.</li>
+    <li><b>100:</b> вспыхивает звёздочка из логотипа. Ниже 95 всё мягко гаснет, без волн.</li>
+  </ul>
+  <p class="hint">Только свет, без чёрного и тёмных подмесов. Все движения — пружины. «Уменьшить движение» оставляет лишь смену яркости.</p>
+</div>
+
+<script>(()=>{function H(n,o,t){return n+(o-n)*t}function ot(n){return n-Math.floor(n)}function Q(n,o){let t=Math.floor(n),e=Math.floor(o),c=n-t,s=o-e;c=c*c*(3-2*c),s=s*s*(3-2*s);let a=O(t,e),M=O(t+1,e),h=O(t,e+1),g=O(t+1,e+1);return a+(M-a)*c+(h-a)*s+(a-M-h+g)*c*s}function O(n,o){let t=Math.sin(n*12.9898+o*78.233)*43758.5453;return t-Math.floor(t)}function X(n,o){let t=Math.PI*(3-Math.sqrt(5)),e=1-2*(n+.5)/o,c=Math.sqrt(1-e*e),s=n*t;return[c*Math.cos(s),e,c*Math.sin(s)]}function ut(n,o){return Math.atan2(Math.sin(n-o),Math.cos(n-o))}function _(n,o,t,e,c){let s=Math.sin(o),a=Math.cos(o),M=Math.sin(n),h=Math.cos(n);return(g,P,u)=>{let r=g*h+u*M,l=-g*M+u*h,w=P*a-l*s,D=P*s+l*a;return[t+r*c,e-w*c,D]}}function ct(n,o,t,e){if(!e){let s=Math.round((t?1-n:n)*255);return`rgba(${s},${s},${s},${o})`}let c=s=>Math.round(t?s*(1-n):s+(255-s)*n);return`rgba(${c(e.r)},${c(e.g)},${c(e.b)},${o})`}function at(n,o,t,e=.3,c){for(let s of o){let a=s.a??1,M=Math.min(1,Math.max(0,s.white));n.fillStyle=ct(M,a,t,c),n.beginPath(),n.arc(s.x,s.y,s.r,0,Math.PI*2),n.fill()}}function et(n,o,t,e){for(let c of o){let s=c.a??1,a=Math.min(1,Math.max(0,c.white));n.strokeStyle=ct(a,s,t,e),n.lineWidth=c.w,n.beginPath(),n.moveTo(c.x1,c.y1),n.lineTo(c.x2,c.y2),n.stroke()}}function B(n,o,t=.3){let e=[];for(let c of n)(c.a??1)<.02||(c.r=Math.max(t,c.r),e.push(c));return e.sort((c,s)=>c.z-s.z),{dots:e,lines:o.filter(c=>(c.a??1)>=.02)}}function rt(n,o,t,e){o.lines.length&&et(n,o.lines,t,e),at(n,o.dots,t,.3,e)}function T(n,o){return(n/300)**o}var dt=[["latRings","lonDensity"],["rings","lonDensity"],["lanes","segs"]],ft=["orbitN","ghostN","nodeN","strandN","signals"],bt=["iconD"],xt=["rBase","rDepth","rActive","rDot","ghostR","partR","partRDepth","nodeR","nodeRDepth"];function mt(n,o){let t={...n},e=new Set,c=Math.sqrt(o);for(let[s,a]of dt){let M=t[s],h=t[a];M!=null&&h!=null&&!e.has(s)&&!e.has(a)&&(t[s]=Math.max(2,Math.round(M*c)),t[a]=Math.max(2,Math.round(h*c)),e.add(s),e.add(a))}for(let s of ft){let a=t[s];a!=null&&a!==0&&!e.has(s)&&(t[s]=Math.max(1,Math.round(a*o)))}for(let s of bt){let a=t[s];a!=null&&(t[s]=Math.max(.02,a*o))}return t}function gt(n,o){let t={...n};for(let e of xt){let c=t[e];c!=null&&(t[e]=c*o)}return t.rSizeMul=(t.rSizeMul??1)*o,t}var yt={globe:{latRings:17,lonDensity:44,rBase:.6,rDepth:1.7,rBoost:1,inkFar:.62,inkSpan:.54,rsPow:.6,rMin:.3},orbits:{orbitN:12,ghostN:40,ghostR:.9,ghostA:.5,particles:3,partR:1.2,partRDepth:1.6,rsPow:.6,rMin:.3},rubik:{latRings:15,lonDensity:40,moveCount:14,rBase:.6,rDepth:1.7,rActive:.3,inkFar:.62,inkSpan:.54,rsPow:.6,rMin:.3},wave:{rings:15,lonDensity:40,rBase:.6,rDepth:1.7,rsPow:.6,rMin:.3},web:{nodeN:30,thr:.72,signals:5,nodeR:1.4,nodeRDepth:1.8,lineW:.8,rsPow:.6,rMin:.3},braid:{strandN:52,turns:3,ghostN:150,rBase:1.2,rDepth:1.8,rsPow:.6,rMin:.3},ribbon:{lanes:5,segs:88,ghostN:150,rBase:1.1,rDepth:1.7,rsPow:.6,rMin:.3},ring:{lanes:5,segs:88,ghostN:0,faceOn:1,rBase:1.1,rDepth:1.7,rsPow:.6,rMin:.3},morph:{rDot:.021,iconD:1,rMin:.25}},wt=(n,o,t)=>{let e=n/2,c=n/2,s=n/2*.76,a=_(o*.4,.3,e,c,1),M=T(n,t.rsPow??.6),h=[],g=t.ghostN??150;for(let r=0;r<g;r++){let l=X(r,g),[w,D,i]=a(l[0]*s,l[1]*s,l[2]*s),p=(i/s+1)/2;h.push({x:w,y:D,z:i,r:.8*M,white:.78,a:.1+.22*p})}let P=t.strandN??52,u=t.turns??3;for(let r=0;r<3;r++){let l=r/3*2*Math.PI;for(let w=0;w<P;w++){let D=(ot(w/P+o*.045)*2-1)*.96,i=Math.sqrt(Math.max(0,1-D*D)),p=Math.min(1,(1-Math.abs(D))/.1),b=D*Math.PI*u+l,d=1+.075*Math.sin(D*Math.PI*u*2+l*2+o*.8),y=i*s*d,[x,R,f]=a(Math.cos(b)*y,D*s*d,Math.sin(b)*y),m=(f/s+1)/2;h.push({x,y:R,z:f,r:((t.rBase??1.2)+(t.rDepth??1.8)*m)*M,white:.55-.45*m,a:p*(.45+.55*m)})}}return B(h,[],t.rMin)};function Dt(n,o,t,e){let c=2*o*t+e,s=n%c,a=new Array(o).fill(0),M=-1;if(s<2*o*t){let h=Math.floor(s/t),g=(s-h*t)/t,u=1-(1-Math.min(1,g/.7))**3;if(h<o){for(let r=0;r<h;r++)a[r]=1;a[h]=u,M=h}else{let r=2*o-1-h;for(let l=0;l<r;l++)a[l]=1;a[r]=1-u,M=r}}return{amount:a,active:M}}function Pt(n,o,t){let[e,c,s]=n,a=!1;for(let M=0;M<o.length;M++){if(t.amount[M]<=0)continue;let h=o[M],g=h.axis===0?e:h.axis===1?c:s;if(g<h.lo||g>=h.hi)continue;M===t.active&&(a=!0);let P=h.ang*t.amount[M],u=Math.cos(P),r=Math.sin(P);if(h.axis===0){let l=c*u-s*r;s=c*r+s*u,c=l}else if(h.axis===1){let l=e*u+s*r;s=-e*r+s*u,e=l}else{let l=e*u-c*r;c=e*r+c*u,e=l}}return[e,c,s,a]}function Rt(n){let o=[];for(let t=0;t<n;t++){let e=Math.min(2,Math.floor(O(t,2.3)*3)),c=-1+.5*Math.min(3,Math.floor(O(t,5.9)*4)),s=O(t,7.7)<.5?1:-1;o.push({axis:e,lo:c,hi:c+.5,ang:s*Math.PI/2})}return o}var vt=(n,o,t)=>{let c=n/2,s=n/2,a=n/2*.82,M=.4+.06*Math.sin(o*.35),h=_(o*.5,M,c,s,a),g=o*(.5+(1.7-.5)*(t.scanMul??1)),P=T(n,t.rsPow??.6),u=t.dimBase??1,r=[],l=t.latRings??17,w=t.lonDensity??44;for(let D=0;D<=l;D++){let i=-Math.PI/2+D/l*Math.PI,p=Math.cos(i),b=Math.sin(i),d=Math.max(1,Math.round(Math.abs(p)*w));for(let y=0;y<d;y++){let x=y/d*2*Math.PI,[R,f,m]=h(p*Math.cos(x),b,p*Math.sin(x)),v=(m+1)/2,z=ut(x+o*.5,g),k=Math.exp(-(z*z)/.18)*Math.max(0,m);r.push({x:R,y:f,z:m,r:((t.rBase??.6)+(t.rDepth??1.7)*v+(t.rBoost??1)*k)*P,white:(t.inkFar??.62)-(t.inkSpan??.54)*v,a:u+(1-u)*Math.min(1,k)})}}return B(r,[],t.rMin)},zt=(n,o,t)=>{let e=n/2,c=n/2,s=n/2*.82,a=_(o*.55,.35+.1*Math.sin(o*.9),e,c,s),M=T(n,t.rsPow??.6),h=t.moveCount??14,g=Rt(h),P=Dt(o,h,.42,1.2),u=[],r=t.latRings??15,l=t.lonDensity??40;for(let w=0;w<=r;w++){let D=-Math.PI/2+w/r*Math.PI,i=Math.cos(D),p=Math.sin(D),b=Math.max(1,Math.round(Math.abs(i)*l));for(let d=0;d<b;d++){let y=d/b*2*Math.PI,[x,R,f,m]=Pt([i*Math.cos(y),p,i*Math.sin(y)],g,P),[v,z,k]=a(x,R,f),S=(k+1)/2;u.push({x:v,y:z,z:k,r:((t.rBase??.6)+(t.rDepth??1.7)*S+(m?t.rActive??.3:0))*M,white:(t.inkFar??.62)-(t.inkSpan??.54)*S-(m?.14:0)})}}return B(u,[],t.rMin)},St=(n,o,t)=>{let e=n/2,c=n/2,s=n/2*.874,a=_(o*.18,.38,e,c,1),M=T(n,t.rsPow??.6),h=[],g=t.rings??15,P=t.lonDensity??40;for(let u=0;u<=g;u++){let r=-Math.PI/2+u/g*Math.PI,l=Math.cos(r),w=Math.sin(r),D=.62*Math.sin(o*2.1-u*.52)+.38*Math.sin(o*1.27+u*.83),i=s*(.88+.105*D),p=Math.max(1,Math.round(Math.abs(l)*P));for(let b=0;b<p;b++){let d=b/p*2*Math.PI,[y,x,R]=a(l*Math.cos(d)*i,w*i,l*Math.sin(d)*i),f=(R/s+1)/2,m=Math.max(0,D);h.push({x:y,y:x,z:R,r:((t.rBase??.6)+(t.rDepth??1.7)*f)*(1+.4*m)*M,white:.66-.56*f-.1*m})}}return B(h,[],t.rMin)};function kt(n){return n*n*(3-2*n)}function it(n){let o=n.length,t=[],e=0;for(let c=0;c<o;c++){let s=n[c],a=n[(c+1)%o],M=Math.hypot(a[0]-s[0],a[1]-s[1]);t.push(M),e+=M}return c=>{let s=c*e,a=0;for(;s>t[a]&&a<o-1;)s-=t[a],a++;let M=n[a],h=n[(a+1)%o],g=t[a]?Math.min(1,s/t[a]):0;return[M[0]+(h[0]-M[0])*g,M[1]+(h[1]-M[1])*g]}}var Nt=n=>{let o=-Math.PI/2+n*2*Math.PI;return[Math.cos(o)*.24,Math.sin(o)*.24]},It=it([[0,-.26],[.24,.16],[-.24,.16]]),Et=it([[0,-.2],[.2,-.2],[.2,.2],[-.2,.2],[-.2,-.2]]),V=[Nt,It,Et];function Ot(n){return Math.max(6,Math.round(34*n))}var J=1.4,ht=.9,j=J+ht,At=(n,o,t)=>{let e=V.length,c=o%(j*e),s=t.shape!=null&&t.shape>=0&&t.shape<e?Math.floor(t.shape):-1,a=s>=0?s:Math.floor(c/j),M=s>=0?o%j:c-a*j,h=s>=0?0:M>J?kt((M-J)/ht):0,g=t.spread??1,P=V[a],u=s>=0?P:V[(a+1)%e],r=160,l=[];for(let f=0;f<r;f++){let m=f/r,v=P(m),z=u(m);l.push([(v[0]+(z[0]-v[0])*h)*g,(v[1]+(z[1]-v[1])*h)*g])}let w=[],D=0;for(let f=0;f<r;f++){let m=l[f],v=l[(f+1)%r],z=Math.hypot(v[0]-m[0],v[1]-m[1]);w.push(z),D+=z}let i=Ot(t.iconD??1),p=(t.rDot??.021)*1.35*g,b=1+.02*Math.sin(M*3.1),d=[],y=n/2,x=0,R=0;for(let f=0;f<i;f++){let m=f/i*D;for(;R+w[x]<m&&x<r-1;)R+=w[x],x++;let v=l[x],z=l[(x+1)%r],k=w[x]?Math.min(1,(m-R)/w[x]):0,S=(v[0]+(z[0]-v[0])*k)*b,A=(v[1]+(z[1]-v[1])*k)*b;d.push({x:y+S*n,y:y+A*n,z:0,r:Math.max(.35,p*n),white:.1})}return B(d,[],t.rMin)},Bt=(n,o,t)=>{let e=n/2,c=n/2,s=n/2*.82,a=_(o*.12,.3,e,c,1),M=T(n,t.rsPow??.6),h=[],g=t.orbitN??12,P=t.ghostN??40,u=t.particles??3;for(let r=0;r<g;r++){let l=O(r,1.7),w=O(r,5.2),D=O(r,8.9),i=s*(.45+.52*l),p=l*2*Math.PI,b=Math.acos(2*w-1),d=Math.sin(b)*Math.cos(p),y=Math.cos(b),x=Math.sin(b)*Math.sin(p),R=-y,f=d,m=0,v=Math.max(1e-6,Math.sqrt(R*R+f*f));R/=v,f/=v;let z=y*m-x*f,k=x*R-d*m,S=d*f-y*R,A=(.25+.55*D)*(D>.5?1:-1);for(let E=0;E<P;E++){let N=E/P*2*Math.PI,[I,C,F]=a((R*Math.cos(N)+z*Math.sin(N))*i,(f*Math.cos(N)+k*Math.sin(N))*i,(m*Math.cos(N)+S*Math.sin(N))*i),L=(F/i+1)/2;h.push({x:I,y:C,z:F,r:(t.ghostR??.9)*M,white:.72,a:(t.ghostA??.5)*(.4+.6*L)})}for(let E=0;E<u;E++){let N=o*A+E/u*2*Math.PI+w*6,[I,C,F]=a((R*Math.cos(N)+z*Math.sin(N))*i,(f*Math.cos(N)+k*Math.sin(N))*i,(m*Math.cos(N)+S*Math.sin(N))*i),L=(F/i+1)/2;h.push({x:I,y:C,z:F,r:((t.partR??1.2)+(t.partRDepth??1.6)*L)*M,white:.3-.22*L})}}return B(h,[],t.rMin)},nt=(n,o,t)=>{let e=n/2,c=n/2,s=n/2*.78,a=t.spin??1,M=.3,h=_(o*.1*a,M,e,c,1),g=T(n,t.rsPow??.6),P=[],u=t.ghostN??150;for(let S=0;S<u;S++){let A=X(S,u),[E,N,I]=h(A[0]*s,A[1]*s,A[2]*s),C=(I/s+1)/2;P.push({x:E,y:N,z:I,r:.8*g,white:.78,a:.1+.22*C})}let r=o*.24*a,l=t.faceOn?-M:.55+.3*Math.sin(o*.18)*a,w=Math.cos(r),D=0,i=Math.sin(r),p=-i*Math.sin(l),b=Math.cos(l),d=w*Math.sin(l),y=D*d-i*b,x=i*p-w*d,R=w*b-D*p,f=.23*(t.wobMul??1),m=t.faceOn?s/(1+.85*f):s,v=t.lanes??5,z=t.segs??88,k=Math.max(1,Math.round(v*(t.bandMul??1)));for(let S=0;S<k;S++){let A=(S-(k-1)/2)*.075,E=Math.abs(S-(k-1)/2)/Math.max(1,(k-1)/2);for(let N=0;N<z;N++){let I=N/z*2*Math.PI,C=(.16*Math.sin(I*3-o*1.7+S*.22)+.07*Math.sin(I*5+o*1.1))*(t.wobMul??1),F=t.faceOn?1+C:1,L=t.faceOn?A:A+C,q=w*Math.cos(I)+p*Math.sin(I)+y*L,W=D*Math.cos(I)+b*Math.sin(I)+x*L,Y=i*Math.cos(I)+d*Math.sin(I)+R*L,K=Math.sqrt(q*q+W*W+Y*Y),U=m*F,[lt,pt,tt]=h(q/K*U,W/K*U,Y/K*U),G=(tt/s+1)/2;P.push({x:lt,y:pt,z:tt,r:((t.rBase??1.1)+(t.rDepth??1.7)*G)*(1-.25*E)*g,white:.52-.44*G+.18*E,a:.4+.6*G})}}return B(P,[],t.rMin)},Ct=(n,o,t)=>{let e=n/2,c=n/2,s=n/2*.8*(t.spread??1),a=_(o*.12,.32,e,c,s),M=T(n,t.rsPow??.6),h=t.nodeN??30,g=t.thr??.72,P=t.nodeR??1.4,u=t.nodeRDepth??1.8,r=[];for(let i=0;i<h;i++){let p=X(i,h),b=p[0]+.3*(Q(i*.31+9,o*.24)-.5)*2,d=p[1]+.3*(Q(i*.53+27,o*.21)-.5)*2,y=p[2]+.3*(Q(i*.77+55,o*.27)-.5)*2,x=Math.sqrt(b*b+d*d+y*y);r.push([b/x,d/x,y/x])}let l=[],w=[];for(let i=0;i<h;i++)for(let p=i+1;p<h;p++){let b=r[i][0]-r[p][0],d=r[i][1]-r[p][1],y=r[i][2]-r[p][2],x=Math.sqrt(b*b+d*d+y*y);if(x>=g)continue;let[R,f,m]=a(r[i][0],r[i][1],r[i][2]),[v,z,k]=a(r[p][0],r[p][1],r[p][2]),S=((m+k)/2+1)/2;l.push({x1:R,y1:f,x2:v,y2:z,white:.42,a:(1-x/g)*(.3+.55*S),w:Math.max(.6,(t.lineW??.8)*M)})}for(let i=0;i<h;i++){let[p,b,d]=a(r[i][0],r[i][1],r[i][2]),y=(d+1)/2,x=1+.25*Math.sin(o*1.4+i*2.7);w.push({x:p,y:b,z:d,r:(P+u*y)*x*M,white:.55-.45*y})}let D=t.signals??5;for(let i=0;i<D;i++){let p=Math.floor(o*.55+i*7.31),b=Math.floor(O(p,i*3.1+1.7)*h),d=Math.floor(O(p,i*5.7+4.2)*h);if(b===d)continue;let y=ot(o*.55+i*7.31),x=H(r[b][0],r[d][0],y),R=H(r[b][1],r[d][1],y),f=H(r[b][2],r[d][2],y),m=Math.max(1e-6,Math.sqrt(x*x+R*R+f*f)),[v,z,k]=a(x/m,R/m,f/m),S=(k+1)/2;w.push({x:v,y:z,z:k,r:(P*1.5+u*S)*M,white:.05,a:.5+.5*S})}return B(w,l,t.rMin)},$={orbits:Bt,globe:vt,rubik:zt,wave:St,web:Ct,braid:wt,ribbon:nt,ring:nt,morph:At},Lt=Object.fromEntries(Object.entries($).map(([n,o])=>[n,(t,e,c,s,a)=>rt(t,o(e,c,a),s)])),Mt={working:"orbits",searching:"globe",solving:"rubik",listening:"wave",connecting:"web",weaving:"braid",composing:"ribbon",breathing:"ring",shaping:"morph"},_t={orbits:{64:{speed:1.885,count:1,size:1},32:{speed:2.9072,count:.4251,size:1.6849},20:{speed:3.9,count:.238,size:2.4}},globe:{64:{speed:2.015,count:.42,size:1.15,extra:{scanMul:4.08,dimBase:.45}},32:{speed:2.3803,count:.1839,size:1.4769,extra:{scanMul:4.2301,dimBase:.45}},20:{speed:2.665,count:.105,size:1.75,extra:{scanMul:4.335,dimBase:.45}}},rubik:{64:{speed:1.82,count:.35,size:1.05},32:{speed:1.8964,count:.1537,size:1.4951},20:{speed:1.95,count:.088,size:1.9}},wave:{64:{speed:4.388,count:.341,size:1},32:{speed:4.1512,count:.169,size:1.3232},20:{speed:3.998,count:.105,size:1.6}},web:{64:{speed:3.315,count:1.35,size:.95},32:{speed:5.0104,count:.4942,size:1.2571},20:{speed:6.63,count:.25,size:1.52}},braid:{64:{speed:1.625,count:.5,size:1},32:{speed:2.2234,count:.2056,size:1.2011},20:{speed:2.75,count:.1125,size:1.36}},ribbon:{64:{speed:2.34,count:.25,size:.85,extra:{spin:0,bandMul:3.9,wobMul:1}},32:{speed:2.7776,count:.0969,size:.9766,extra:{spin:0,bandMul:4.49,wobMul:1}},20:{speed:3.12,count:.051,size:1.073,extra:{spin:0,bandMul:4.94,wobMul:1}}},ring:{64:{speed:3.24,count:.25,size:.956,extra:{spin:0,bandMul:3.627,wobMul:.368}},32:{speed:3.5517,count:.0678,size:1.31,extra:{spin:0,bandMul:3.8265,wobMul:.4751}},20:{speed:3.78,count:.028,size:1.622,extra:{spin:0,bandMul:3.968,wobMul:.565}}},morph:{64:{speed:2.405,count:.702,size:.395,extra:{spread:1.45}},32:{speed:2.2057,count:.5937,size:.6916,extra:{spread:1.45}},20:{speed:2.08,count:.53,size:1.011,extra:{spread:1.45}}}},st=new Map;function Z(n,o){let t=`${n}-${o}`,e=st.get(t);if(e)return e;let c=Mt[n],s=_t[c][o],a={...yt[c]};s.count!==1&&(a=mt(a,s.count)),s.size!==1&&(a=gt(a,s.size)),s.extra&&(a={...a,...s.extra});let M={mode:c,speed:s.speed,opts:a};return st.set(t,M),M}window.Orbs={MODE_FRAMES:$,resolvePreset:Z};})();
+</script>
+<script>
+'use strict';
+// ---------- данные из приложения (ColorState, StateNames, DesignTokens) ----------
+const STATES = {
+  white:  { hex: 0xFFFFFF, name: 'Plain',   orb: 'listening' },
+  pink:   { hex: 0xED7A92, name: 'Lucky',   orb: 'shaping' },
+  red:    { hex: 0xD83B5C, name: 'Charged', orb: 'working' },
+  orange: { hex: 0xFF6333, name: 'Synced',  orb: 'connecting' },
+  yellow: { hex: 0xF3AD2C, name: 'Glowing', orb: 'breathing', radiance: true },
+  green:  { hex: 0x6FB52B, name: 'Flow',    orb: 'weaving' },
+  blue:   { hex: 0x045DC3, name: 'Deep',    orb: 'solving' },
+  purple: { hex: 0x553AC1, name: 'Opened',  orb: 'solving', base: 1.2 },
+};
+const T = {
+  ringSize: 299, thickMin: (299 - 242) / 2, thickMax: 44, haloOpacity: .25,
+  minChroma: .75, contrastLift: .22, orbHaloOpacity: .45, orbHaloBlur: 34, edgeOpacity: .35,
+  defaultBaseSpeed: (0.8 + 2.2) / 2, travel: .42, peak: 95, dim: .45, paleL: .9,
+  shimmerMix: .45, shimmerPeriod: 14, wheel: ['purple', 'red', 'orange', 'pink', 'yellow', 'green', 'blue', 'white'],
+  radiance: { wavelength: .6, period: 5.5, floor: .35, amplitude: .65 },
+};
+// Новый пик: всё, что добавляется поверх приложения. Кандидаты в DesignTokens.Peak.
+const PEAK = {
+  ringBreath: .045,        // вдох кольца при входе в пик (доля размера)
+  waveGrow: 1.42,          // до какого радиуса уходит волна (доля кольца)
+  waveTime: 1.1,           // секунд на волну
+  waveGap: .17,            // вторая волна — через столько секунд (≈ φ⁻¹ × 0.28)
+  glow: .85,               // сила света неба за кольцом
+  lift: .16,               // добавка светлоты точкам орба (к contrastLift)
+  haloBoost: .3,           // добавка к ореолу орба
+  burst: .55,              // короткий разгон орба (доля скорости), гаснет за 0.8 с
+  valueScale: .16,         // прыжок числа
+  titleScale: .08,         // прыжок имени на кнопке
+  breathPeriod: 2.6,       // дыхание света, пока держишь пик
+};
+
+// ---------- OKLab (как Domain/OKLab.swift) ----------
+const lin = c => c <= .04045 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4);
+const gam = c => { const v = c <= .0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - .055; return Math.min(1, Math.max(0, v)); };
+function lab(hex) {
+  const r = lin((hex >> 16 & 255) / 255), g = lin((hex >> 8 & 255) / 255), b = lin((hex & 255) / 255);
+  const l_ = Math.cbrt(.4122214708 * r + .5363325363 * g + .0514459929 * b);
+  const m_ = Math.cbrt(.2119034982 * r + .6806995451 * g + .1073969566 * b);
+  const s_ = Math.cbrt(.0883024619 * r + .2817188376 * g + .6299787005 * b);
+  return { l: .2104542553 * l_ + .7936177850 * m_ - .0040720468 * s_, a: 1.9779984951 * l_ - 2.4285922050 * m_ + .4505937099 * s_, b: .0259040371 * l_ + .7827717662 * m_ - .8086757660 * s_ };
+}
+function rgb(c) {
+  const l_ = c.l + .3963377774 * c.a + .2158037573 * c.b, m_ = c.l - .1055613458 * c.a - .0638541728 * c.b, s_ = c.l - .0894841775 * c.a - 1.2914855480 * c.b;
+  const L = l_ ** 3, M = m_ ** 3, S = s_ ** 3;
+  return [gam(4.0767416621 * L - 3.3077115913 * M + .2309699292 * S), gam(-1.2684380046 * L + 2.6097574011 * M - .3413193965 * S), gam(-.0041960863 * L - .7034186147 * M + 1.7076147010 * S)].map(v => Math.round(v * 255));
+}
+const css = (c, a = 1) => { const [r, g, b] = rgb(c); return `rgba(${r},${g},${b},${a})`; };
+const sat = (c, f) => ({ l: c.l, a: c.a * f, b: c.b * f });
+const lift = (c, d) => ({ l: Math.min(1, Math.max(0, c.l + d)), a: c.a, b: c.b });
+const toWhite = (c, m) => ({ l: c.l + (1 - c.l) * m, a: c.a * (1 - m), b: c.b * (1 - m) });
+
+// ---------- пружины (SwiftUI response / dampingFraction) ----------
+class Spring {
+  constructor(v, response = .35, damping = .8) { this.x = v; this.target = v; this.v = 0; this.set(response, damping); }
+  set(response, damping) { this.k = (2 * Math.PI / response) ** 2; this.c = 4 * Math.PI * damping / response; return this; }
+  step(dt) { for (let t = 0; t < dt; t += 1 / 240) { const h = Math.min(1 / 240, dt - t); this.v += (-this.k * (this.x - this.target) - this.c * this.v) * h; this.x += this.v * h; } return this.x; }
+}
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const easeOutExpo = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+
+// ---------- состояние ----------
+const q = new URLSearchParams(location.search);
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const S = {
+  color: STATES[q.get('c')] ? q.get('c') : 'red',
+  mode: q.get('mode') === 'now' ? 'now' : 'peak',
+  progress: 0, base: 0, intensity: 50, inPeak: false, peakAt: -9, sparkAt: -9, phase: 0,
+};
+if (q.get('rec')) document.body.classList.add('rec');
+
+const $ = id => document.getElementById(id);
+const phone = $('phone');
+function fit() {
+  const rec = document.body.classList.contains('rec');
+  const w = rec ? innerWidth : Math.min(402, innerWidth - 32, (innerHeight - 40) * 402 / 874);
+  phone.style.setProperty('--pw', Math.max(280, w) + 'px');
+}
+addEventListener('resize', fit); fit();
+const U = () => phone.clientWidth / 377;
+
+const thick = new Spring(T.thickMin, .25, .85);   // Ring.thicknessChange
+const peakAmt = new Spring(0, .5, .9);            // 0 → 1 внутри пика
+const ringKick = new Spring(0, .45, .42);         // вдох кольца (перелёт)
+const valuePop = new Spring(0, .38, .45);
+const titlePop = new Spring(0, .38, .5);
+const sparkS = new Spring(0, .5, .55);
+let burst = 0;
+
+function setIntensity(p) {
+  S.progress = clamp(p);
+  const before = S.intensity;
+  S.intensity = 50 + Math.round(S.progress * 50);
+  if (S.intensity === before) return;
+  const was = before >= T.peak, now = S.intensity >= T.peak;
+  if (now && !was) enterPeak();
+  if (!now && was) leavePeak();
+  if (S.intensity === 100 && before !== 100 && S.mode === 'peak') { S.sparkAt = clock; sparkS.x = 0; sparkS.target = 1; sparkS.v = 0; }
+}
+function enterPeak() {
+  S.inPeak = true;
+  if (S.mode !== 'peak') return;
+  S.peakAt = clock;
+  peakAmt.set(.5, .9).target = 1;
+  if (!REDUCED) { ringKick.v += 1.9; valuePop.v += 2.6; titlePop.v += 1.8; burst = 1; spawnWaves(); }
+  navigator.vibrate?.(12);
+}
+function leavePeak() {
+  S.inPeak = false;
+  peakAmt.set(.45, 1).target = 0;
+  sparkS.target = 0;
+}
+
+// ---------- жест: свайп по всему экрану (MainView.screenDrag) ----------
+let drag = null;
+phone.addEventListener('pointerdown', e => { stopDemo(); drag = { y: e.clientY }; phone.setPointerCapture(e.pointerId); });
+phone.addEventListener('pointermove', e => {
+  if (!drag) return;
+  setIntensity(S.base - (e.clientY - drag.y) / (phone.clientHeight * T.travel));
+});
+const end = () => { if (!drag) return; drag = null; if (S.progress < .02) setIntensity(0); S.base = S.progress; };
+phone.addEventListener('pointerup', end); phone.addEventListener('pointercancel', end);
+
+// ---------- волны ----------
+let waves = [];
+function spawnWaves() {
+  waves.push({ t0: clock, k: 1 }, { t0: clock + PEAK.waveGap, k: .6 });
+}
+
+// ---------- орб: ThinkingOrbsKit + Orb.swift ----------
+const orbCv = $('orb'), octx = orbCv.getContext('2d');
+function drawOrb(size, color, dt) {
+  const st = STATES[S.color];
+  const dpr = Math.min(3, devicePixelRatio || 1);
+  const px = Math.round(size * dpr);
+  if (orbCv.width !== px) { orbCv.width = orbCv.height = px; }
+  orbCv.style.width = orbCv.style.height = size + 'px';
+  const x = S.progress;
+  const baseSpeed = (st.base || T.defaultBaseSpeed) * (.6 + .8 * x);    // Aura.Orbs.speed(of:x:)
+  const r = Orbs.resolvePreset(st.orb, 64);
+  let speed = baseSpeed * (1 + PEAK.burst * burst * (S.mode === 'peak' ? 1 : 0));
+  // Сейчас в приложении: t = время × скорость, поэтому смена скорости рывком сдвигает фазу.
+  // Новый пик: фаза копится, скорость меняется плавно.
+  let t;
+  if (S.mode === 'now') t = (Date.now() / 1000 - 978307200) * r.speed * speed;
+  else { S.phase += dt * r.speed * speed; t = S.phase; }
+  const frame = Orbs.MODE_FRAMES[r.mode](64, t, r.opts);
+  octx.setTransform(1, 0, 0, 1, 0, 0);
+  octx.clearRect(0, 0, px, px);
+  const z = px / 64;
+  octx.setTransform(z, 0, 0, z, 0, 0);
+  const pa = S.mode === 'peak' ? peakAmt.x : 0;
+  const tint = lift(color, T.contrastLift + PEAK.lift * pa);
+  const spectrum = S.color === 'white';
+  const rt = (Date.now() / 1000) * baseSpeed;
+  for (const l of frame.lines) {
+    const a = (1 - clamp(l.white)) * (l.a ?? 1);
+    octx.strokeStyle = spectrum ? wheelAt(Math.atan2(l.y1 - 32, l.x1 - 32), rt, a) : css(tint, a * (1 + .25 * pa));
+    octx.lineWidth = l.w; octx.beginPath(); octx.moveTo(l.x1, l.y1); octx.lineTo(l.x2, l.y2); octx.stroke();
+  }
+  for (const d of frame.dots) {
+    const rad = Math.min(Math.hypot(d.x - 32, d.y - 32) / 32, 1);
+    let a;
+    if (st.radiance) {
+      const R = T.radiance, ph = rad / R.wavelength - rt / R.period;
+      const wave = R.floor + R.amplitude * (.5 + .5 * Math.sin(2 * Math.PI * ph));
+      a = (d.a ?? 1) * d.white * wave * (T.edgeOpacity + (1 - T.edgeOpacity) * (1 - rad));
+    } else {
+      a = (1 - clamp(d.white)) * (d.a ?? 1) * (1 - (1 - T.edgeOpacity) * rad);
+    }
+    a = Math.min(1, a * (1 + .35 * pa));
+    if (a < .01) continue;
+    octx.fillStyle = spectrum ? wheelAt(Math.atan2(d.y - 32, d.x - 32), rt, a) : css(tint, a);
+    octx.beginPath(); octx.arc(d.x, d.y, d.r * (1 + .12 * pa), 0, Math.PI * 2); octx.fill();
+  }
+}
+const WHEEL = T.wheel.map(k => toWhite(lab(STATES[k].hex), T.shimmerMix));
+function wheelAt(angle, t, a) {
+  const turn = ((angle / (2 * Math.PI) + t / T.shimmerPeriod) % 1 + 1) % 1 * WHEEL.length;
+  const i = Math.floor(turn), f = turn - i, A = WHEEL[i], B = WHEEL[(i + 1) % WHEEL.length];
+  return css({ l: A.l + (B.l - A.l) * f, a: A.a + (B.a - A.a) * f, b: A.b + (B.b - A.b) * f }, a);
+}
+
+// ---------- кадр ----------
+let clock = 0, last = performance.now();
+function frame(now) {
+  const dt = Math.min(.05, (now - last) / 1000); last = now; clock += dt;
+  runDemo();
+  const u = U(), st = STATES[S.color], x = S.progress, peak = S.mode === 'peak';
+  const base = lab(st.hex);
+  const aura = sat(base, T.minChroma + (1 - T.minChroma) * x);             // Aura.saturated
+  const pale = aura.l > T.paleL;
+  const content = s => pale ? `rgba(0,0,0,${s * .66})` : `rgba(255,255,255,${s})`;
+
+  thick.target = T.thickMin + (T.thickMax - T.thickMin) * x;
+  thick.step(dt); peakAmt.step(dt); ringKick.step(dt); valuePop.step(dt); titlePop.step(dt); sparkS.step(dt);
+  burst *= Math.exp(-dt / .35);
+  const pa = peak ? clamp(peakAmt.x, 0, 1.2) : 0;
+  const breath = peak && S.inPeak && !REDUCED ? .5 + .5 * Math.sin((clock - S.peakAt) * 2 * Math.PI / PEAK.breathPeriod - Math.PI / 2) : 0;
+
+  // фон: плоский цвет ауры (MainView.background), в пике — свет за кольцом
+  $('bg').style.background = css(aura);
+  $('glow').style.opacity = (PEAK.glow * pa * (.82 + .18 * breath)).toFixed(3);
+  $('glow').style.transform = `translate(-50%,-50%) scale(${(.9 + .1 * pa + .03 * breath).toFixed(4)})`;
+  $('brand').style.color = content(1);
+  $('logo').style.opacity = pale ? .6 : 1;
+
+  // кольцо
+  const ring = $('ring');
+  const kick = peak ? ringKick.x : 0;
+  ring.style.background = `rgba(255,255,255,${(T.haloOpacity + (peak ? .2 * pa + .06 * breath : 0)).toFixed(3)})`;
+  ring.style.transform = `translateX(-50%) scale(${(1 + PEAK.ringBreath * kick).toFixed(4)})`;
+  ring.style.boxShadow = peak && pa > .01 ? `0 0 ${(26 + 14 * breath) * u}px ${(4 * u).toFixed(1)}px rgba(255,255,255,${(.45 * pa).toFixed(3)})` : 'none';
+  const coreSize = (T.ringSize - 2 * (thick.x + (peak ? 5 * kick : 0))) * u;
+  const core = $('core');
+  core.style.width = core.style.height = coreSize + 'px';
+  core.style.background = css(aura);
+  const orbColor = lift(aura, 0);
+  const oh = $('orbHalo');
+  oh.style.width = oh.style.height = coreSize + 'px';
+  oh.style.background = css(lift(aura, T.contrastLift + PEAK.lift * pa));
+  oh.style.opacity = (T.orbHaloOpacity + PEAK.haloBoost * pa).toFixed(3);
+  oh.style.filter = `blur(${T.orbHaloBlur * u}px)`;
+  drawOrb(coreSize, orbColor, dt);
+
+  // волны света
+  const wv = $('waves');
+  waves = waves.filter(w => clock - w.t0 < PEAK.waveTime);
+  while (wv.children.length < waves.length) { const d = document.createElement('div'); d.className = 'wave'; wv.appendChild(d); }
+  [...wv.children].forEach((el, i) => {
+    const w = waves[i];
+    if (!w) { el.style.opacity = 0; return; }
+    const p = clamp((clock - w.t0) / PEAK.waveTime);
+    if (clock < w.t0) { el.style.opacity = 0; return; }
+    const d = T.ringSize * u * (1 + (PEAK.waveGrow - 1) * easeOutExpo(p));
+    el.style.width = el.style.height = d + 'px';
+    el.style.borderWidth = (6 * (1 - p) + 1) * u + 'px';
+    el.style.opacity = (w.k * Math.pow(1 - p, 1.6) * .9).toFixed(3);
+    el.style.filter = `blur(${(1 + 3 * p) * u}px)`;
+  });
+
+  // звёздочка на 100
+  const sp = $('spark');
+  const sv = peak ? clamp(sparkS.x, 0, 1.3) : 0;
+  const sAge = clock - S.sparkAt;
+  sp.style.opacity = (Math.min(1, sv) * (S.intensity === 100 ? .95 : 0)).toFixed(3);
+  sp.style.transform = `scale(${sv.toFixed(3)}) rotate(${(sAge * 40).toFixed(1)}deg)`;
+  sp.style.filter = `drop-shadow(0 0 ${8 * u}px rgba(255,255,255,.9))`;
+
+  // сила под кольцом
+  const val = $('value');
+  val.textContent = S.intensity;
+  val.style.color = content(T.dim + (1 - T.dim) * pa);
+  val.style.transform = `scale(${(1 + PEAK.valueScale * (peak ? valuePop.x : 0) + .06 * pa).toFixed(4)})`;
+  $('addSpell').style.color = content(T.dim);
+
+  // Action Button: подушка (Shared/Pillow.swift) + имя цветом состояния
+  const plate = $('plate');
+  const glowR = 6 + (peak ? 16 * pa + 6 * breath : 0), glowA = .35 + (peak ? .5 * pa : 0);
+  plate.style.boxShadow = `inset 0 0 ${14 * u}px ${8 * u}px ${css(aura, .45)}, 0 0 ${glowR * u}px ${(peak ? 3 * pa : 0) * u}px rgba(255,255,255,${glowA.toFixed(3)})`;
+  const title = $('title');
+  title.textContent = st.name;
+  title.style.color = pale ? 'rgba(0,0,0,.66)' : css(lab(st.hex));
+  title.style.transform = `scale(${(1 + PEAK.titleScale * (peak ? titlePop.x : 0)).toFixed(4)})`;
+  title.style.textShadow = peak && pa > .01 ? `0 0 ${14 * u * pa}px ${css(toWhite(lab(st.hex), .3), .45 * pa)}` : 'none';
+
+  requestAnimationFrame(frame);
+}
+
+// ---------- демо свайпа (и запись видео) ----------
+// Прогресс по времени: пауза → медленный подъём → вход в пик → держим → вниз → снова пик.
+const DEMO = [[0, 0], [.8, 0], [2.6, .78], [3.8, 1], [6.4, 1], [7.3, .7], [8.2, .7], [9.0, 1], [11.6, 1]];
+let demoT = null;
+function smooth(a, b, f) { const s = f * f * (3 - 2 * f); return a + (b - a) * s; }
+function runDemo() {
+  if (demoT === null) return;
+  const t = clock - demoT;
+  let p = DEMO[DEMO.length - 1][1];
+  for (let i = 1; i < DEMO.length; i++) if (t <= DEMO[i][0]) { const [t0, a] = DEMO[i - 1], [t1, b] = DEMO[i]; p = smooth(a, b, (t - t0) / (t1 - t0)); break; }
+  setIntensity(p); S.base = S.progress;
+  if (t > DEMO[DEMO.length - 1][0]) { demoT = null; window.demoDone = true; }
+}
+function startDemo() { resetAll(); demoT = clock; window.demoDone = false; }
+function stopDemo() { demoT = null; }
+function resetAll() {
+  S.progress = S.base = 0; S.intensity = 50; S.inPeak = false; waves = [];
+  peakAmt.x = peakAmt.target = 0; sparkS.x = sparkS.target = 0; burst = 0;
+  thick.x = thick.target = T.thickMin;
+}
+window.startDemo = startDemo;
+
+// ---------- панель ----------
+function setMode(m) {
+  S.mode = m;
+  $('mNow').setAttribute('aria-pressed', m === 'now'); $('mPeak').setAttribute('aria-pressed', m === 'peak');
+  if (m === 'now') { peakAmt.x = peakAmt.target = 0; waves = []; sparkS.x = sparkS.target = 0; }
+  else if (S.intensity >= T.peak) enterPeak();
+}
+$('mNow').onclick = () => setMode('now');
+$('mPeak').onclick = () => setMode('peak');
+$('demo').onclick = startDemo;
+for (const k of Object.keys(STATES)) {
+  const b = document.createElement('button');
+  b.className = 'dot'; b.style.background = '#' + STATES[k].hex.toString(16).padStart(6, '0');
+  b.setAttribute('aria-label', STATES[k].name); b.setAttribute('aria-pressed', k === S.color);
+  b.onclick = () => { S.color = k; document.querySelectorAll('.dot').forEach(d => d.setAttribute('aria-pressed', d === b)); };
+  $('dots').appendChild(b);
+}
+setMode(S.mode);
+requestAnimationFrame(frame);
+if (q.get('demo')) document.fonts.ready.then(() => setTimeout(startDemo, 300));
+</script>
