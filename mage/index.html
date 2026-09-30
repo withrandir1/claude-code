@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap">
 <style>
-/* Layout: одна сцена в небе приложения (#0396FF), под ней пульт. Светлый мир без чёрного — как в Withrandir. */
+/* Layout: сцена в небе приложения, под ней шапка в реальном размере и пульт. Светлый мир без чёрного. */
 :root {
   --sky: #0396ff;
   --sky-hi: #57b9ff;
@@ -21,28 +21,22 @@ body { font-family: var(--font); font-size: 16px; line-height: 1.45; }
 h1 { font-weight: 900; font-size: 28px; margin: 0; line-height: 1.1; }
 .sub { margin: 4px 0 0; color: var(--ink-soft); font-weight: 600; }
 
-.stage {
-  position: relative; border-radius: 32px; overflow: hidden;
-  background: radial-gradient(70% 55% at 50% 45%, var(--sky-hi), var(--sky) 75%);
+.stage { position: relative; border-radius: 32px; overflow: hidden; background: radial-gradient(70% 60% at 50% 42%, var(--sky-hi), var(--sky) 78%); }
+.stage > svg { display: block; width: 100%; height: auto; cursor: pointer; touch-action: manipulation; }
+.tag { position: absolute; left: 12px; top: 12px; font-weight: 800; font-size: 13px; color: #fff; background: #ffffff33; padding: 5px 12px; border-radius: 999px; }
+
+.header {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: linear-gradient(180deg, var(--sky), var(--sky-hi)); border-radius: 24px; padding: 14px 18px;
+  color: #fff; font-weight: 900; font-size: 22px;
 }
-.stage svg { display: block; width: 100%; height: auto; cursor: pointer; touch-action: manipulation; }
-.tag {
-  position: absolute; left: 12px; top: 12px;
-  font-weight: 800; font-size: 13px; color: #fff; background: #ffffff33;
-  padding: 5px 12px; border-radius: 999px; white-space: nowrap;
-}
-.base {
-  position: absolute; top: 12px; right: 12px; display: grid; justify-items: center; gap: 2px;
-  background: #ffffff26; border-radius: 16px; padding: 8px 10px 6px;
-  color: #fff; font-size: 11px; font-weight: 800;
-}
-.base svg { width: 38px; height: auto; cursor: default; }
+.header svg { width: 56px; height: 53px; flex: none; }
+.caption { font-size: 13px; color: var(--ink-soft); margin: 6px 0 0; font-weight: 600; }
 
 .row { display: flex; flex-wrap: wrap; gap: 8px; }
 button.chip {
   font: 800 15px/1 var(--font); color: var(--ink); background: var(--card);
-  border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 16px;
-  padding: 11px 14px; cursor: pointer;
+  border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 16px; padding: 11px 14px; cursor: pointer;
 }
 button.chip:active { transform: translateY(2px); border-bottom-width: 2px; }
 button.chip[aria-pressed="true"] { background: var(--sky); border-color: #0277d1; color: #fff; }
@@ -51,85 +45,115 @@ button:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
 .swatch { aspect-ratio: 1; max-width: 100%; border-radius: 50%; padding: 0; cursor: pointer; border: 3px solid var(--card); box-shadow: 0 0 0 2px var(--line); }
 .swatch[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--sky); }
 .label { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
+
+/* Два прочтения одной геометрии: «как в лого» — плоский белый; «объём» — серебро, тени, контур. */
+body.flat .p { fill: #fff !important; stroke: #fff !important; }
+body.flat .fxonly { display: none; }
+body.flat #all, body.flat .ao { filter: none !important; }
 </style>
 
 <div class="wrap">
   <header>
     <h1>Маг Withrandir</h1>
-    <p class="sub">Знак из шапки, симметричный, со спины. Нажми на мага.</p>
+    <p class="sub">Геометрия знака из шапки один в один. Серебристый странник: объём есть, но внимание он не забирает.</p>
   </header>
 
   <div class="stage">
-    <svg id="svg" viewBox="0 -70 400 470" role="img" aria-label="Маг со спины: остроконечная шляпа, крылья-рукава, мантия">
-      <ellipse id="shadow" cx="200" cy="388" rx="96" ry="12" fill="#fff" opacity=".28"/>
-      <g id="rig">
-        <g id="feet">
-          <ellipse id="footL" cx="174" cy="378" rx="26" ry="14" class="detail"/>
-          <ellipse id="footR" cx="226" cy="378" rx="26" ry="14" class="detail"/>
-        </g>
-        <g id="wingL" class="part">
-          <g class="flap">
-            <path d="M182,196 Q186,222 170,230 L112,258 Q84,270 80,240 L80,176 Q80,146 108,158 L166,182 Q180,188 182,196Z" class="main"/>
-            <path d="M92,184 Q92,168 106,174 L128,184 L128,236 L106,246 Q92,252 92,236Z" class="light"/>
+    <svg id="stageSvg" viewBox="-17 -20 103 94" role="img" aria-label="Маг-странник: шляпа, рукава, мантия, посох со звездой">
+      <defs>
+        <linearGradient id="gSilver" x1=".2" y1="0" x2=".7" y2="1">
+          <stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#eef2f8"/><stop offset="1" stop-color="#c7d2e2"/>
+        </linearGradient>
+        <linearGradient id="gRobe" x1=".3" y1="0" x2=".55" y2="1">
+          <stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#e9eef5"/><stop offset=".86" stop-color="#bfcadb"/><stop offset="1" stop-color="#cfe3f8"/>
+        </linearGradient>
+        <linearGradient id="gWingL" x1="1" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f4f7fb"/><stop offset=".6" stop-color="#dbe3ee"/><stop offset="1" stop-color="#bac7d9"/>
+        </linearGradient>
+        <linearGradient id="gWingR" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#e6ecf4"/><stop offset="1" stop-color="#c3cfdf"/>
+        </linearGradient>
+        <linearGradient id="gStaff" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#c9c3b8"/>
+        </linearGradient>
+        <radialGradient id="gGlow"><stop offset="0" id="glowA" stop-color="#bfe6ff" stop-opacity=".95"/><stop offset="1" id="glowB" stop-color="#bfe6ff" stop-opacity="0"/></radialGradient>
+        <radialGradient id="gSpec"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+        <!-- Контур только по силуэту: отделяет белого мага от неба, внутренних обводок нет. -->
+        <filter id="fOutline" x="-20%" y="-20%" width="140%" height="140%">
+          <feMorphology in="SourceAlpha" operator="dilate" radius=".55" result="d"/>
+          <feFlood flood-color="#5f7a9e" flood-opacity=".55"/>
+          <feComposite in2="d" operator="in" result="o"/>
+          <feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <!-- Контактная тень: деталь ложится на то, что под ней. -->
+        <filter id="fAO" x="-30%" y="-30%" width="160%" height="170%">
+          <feDropShadow dx="0" dy=".7" stdDeviation=".7" flood-color="#6a82a6" flood-opacity=".45"/>
+        </filter>
+      </defs>
+
+      <ellipse id="shadow" cx="33" cy="65" rx="17" ry="2.2" fill="#fff" opacity=".3"/>
+      <g id="all" filter="url(#fOutline)">
+        <g id="rig">
+          <circle class="p" cx="33.0959" cy="20.2587" r="4.81396" fill="url(#gSilver)"/>
+          <path class="p" d="M30.6104 49.9002C30.9978 52.8008 35.1936 52.8006 35.5809 49.9002L38.7111 26.4581C38.9118 24.9548 37.7429 23.6188 36.2264 23.6188H29.965C28.4487 23.619 27.2795 24.955 27.4803 26.4581L30.6104 49.9002Z" fill="url(#gSilver)" stroke="url(#gSilver)" stroke-width="5"/>
+          <g id="wingL">
+            <path class="p" d="M27.1578 26.0748C29.0982 26.9578 29.1211 29.7058 27.1957 30.621L10.8051 38.4092C9.1497 39.1957 7.23772 37.9984 7.22217 36.1658L7.09452 20.8641C7.0794 19.0314 8.97119 17.8024 10.6395 18.5612L27.1578 26.0748Z" fill="url(#gWingL)" stroke="url(#gWingL)" stroke-width="5"/>
+            <rect class="p ao" y="24.0698" width="3.81105" height="9.42733" rx="1.9" fill="url(#gSilver)" filter="url(#fAO)"/>
           </g>
-        </g>
-        <g id="wingR" class="part">
-          <g transform="translate(400 0) scale(-1 1)">
-            <g class="flap">
-              <path d="M182,196 Q186,222 170,230 L112,258 Q84,270 80,240 L80,176 Q80,146 108,158 L166,182 Q180,188 182,196Z" class="main"/>
-              <path d="M92,184 Q92,168 106,174 L128,184 L128,236 L106,246 Q92,252 92,236Z" class="light"/>
-            </g>
+          <g id="wingR">
+            <path class="p" d="M37.9348 26.0748C35.9944 26.9578 35.9715 29.7058 37.8969 30.621L54.2875 38.4092C55.9429 39.1957 57.8549 37.9984 57.8704 36.1658L57.9981 20.8641C58.0132 19.0314 56.1214 17.8024 54.4531 18.5612L37.9348 26.0748Z" fill="url(#gWingR)" stroke="url(#gWingR)" stroke-width="5"/>
           </g>
-        </g>
-        <g id="robe" class="part">
-          <path d="M170,190 Q200,170 230,190 Q262,240 292,318 Q308,372 262,374 L138,374 Q92,372 108,318 Q138,240 170,190Z" class="main"/>
-          <path d="M190,215 L210,215 L220,360 Q200,366 180,360Z" class="light" opacity=".55"/>
-        </g>
-        <g id="collar" class="part">
-          <path d="M156,172 Q154,162 166,162 L234,162 Q246,162 244,172 L210,226 Q200,240 190,226Z" class="light"/>
-        </g>
-        <g id="head" class="part">
-          <path d="M154,146 Q154,186 166,196 Q178,188 188,198 Q200,190 212,198 Q222,188 234,196 Q246,186 246,146Z" class="detail"/>
-        </g>
-        <g id="brim" class="part">
-          <rect x="108" y="128" width="184" height="24" rx="12" class="detail"/>
-        </g>
-        <g id="cone" class="part">
-          <path d="M148,136 Q168,92 180,62 L220,62 Q232,92 252,136Z" class="main"/>
-          <path d="M194,66 L206,66 L213,112 L187,112Z" class="light"/>
-          <rect x="157" y="112" width="86" height="15" rx="7.5" class="detail"/>
-        </g>
-        <g id="tipPart" class="part">
-          <g id="tip">
-            <path d="M180,66 Q192,30 196,18 Q200,8 204,18 Q208,30 220,66Z" class="main"/>
+          <g id="robe">
+            <path class="p ao" d="M28.0822 30.198C30.1289 26.1848 35.8628 26.1847 37.9095 30.198L47.828 49.6451C49.6996 53.3151 47.0339 57.6673 42.9143 57.6675H23.0774C18.9578 57.6673 16.2921 53.3151 18.1637 49.6451L28.0822 30.198Z" fill="url(#gRobe)" stroke="url(#gRobe)" stroke-width="5" filter="url(#fAO)"/>
+            <ellipse class="fxonly" cx="27" cy="38" rx="2.2" ry="5" fill="url(#gSpec)" opacity=".7" transform="rotate(24 27 38)"/>
+          </g>
+          <path class="p ao" d="M32.5894 36.2713C32.7895 36.5487 33.2021 36.5487 33.4023 36.2713L42.7204 23.3608C42.9597 23.0292 42.7227 22.5658 42.3139 22.5655H23.6778C23.269 22.5658 23.032 23.0292 23.2713 23.3608L32.5894 36.2713Z" fill="url(#gSilver)" stroke="url(#gSilver)" stroke-width="5" filter="url(#fAO)"/>
+          <g id="hat">
+            <path class="p" d="M34.4942 15.0936H31.4972L32.9957 9.57076L34.4942 15.0936Z" fill="url(#gSilver)" stroke="url(#gSilver)" stroke-width="5"/>
+            <rect class="p ao" x="25.171" y="16.1448" width="15.6494" height="1.40815" rx="0.7" fill="#fff" stroke="#fff" stroke-width="1.4" filter="url(#fAO)"/>
+            <ellipse class="fxonly" cx="31.6" cy="10.6" rx=".9" ry="1.8" fill="url(#gSpec)"/>
+          </g>
+          <g id="feet">
+            <path id="footR" class="p" d="M38.0903 64.487C39.8739 64.487 41.3766 62.8406 40.1154 61.5794C39.3443 60.8083 38.2984 60.375 37.2078 60.375C36.1173 60.375 35.0714 60.8083 34.3003 61.5794C33.0391 62.8406 34.5418 64.487 36.3254 64.487H38.0903Z" fill="url(#gSilver)"/>
+            <path id="footL" class="p" d="M29.8665 64.487C31.6501 64.487 33.1527 62.8406 31.8916 61.5794C31.1204 60.8083 30.0746 60.375 28.984 60.375C27.8935 60.375 26.8476 60.8083 26.0764 61.5794C24.8153 62.8406 26.318 64.487 28.1015 64.487H29.8665Z" fill="url(#gSilver)"/>
+          </g>
+          <g id="staff">
+            <rect class="p" x="63.482" y="10.9297" width="1.40815" height="49.7483" rx="0.7" fill="url(#gStaff)" stroke="url(#gStaff)" stroke-width="1.4"/>
+            <circle class="p ao" cx="63.9858" cy="29.4856" r="2.5099" fill="url(#gSilver)" stroke="url(#gSilver)" stroke-width="1.8" filter="url(#fAO)"/>
             <g id="star">
-              <circle id="glow" cx="200" cy="4" r="28" class="glowfill"/>
-              <path d="M200,-14 Q201.8,2.2 218,4 Q201.8,5.8 200,22 Q198.2,5.8 182,4 Q198.2,2.2 200,-14Z" fill="#fff"/>
+              <circle id="glow" class="fxonly" cx="64.09" cy="4.93" r="7" fill="url(#gGlow)"/>
+              <path class="p" d="M64.0938 9.82849C64.0474 5.6907 63.3179 4.93077 59.1715 4.93077C63.3179 4.93077 64.0938 4.21112 64.0938 0C64.0938 4.21112 64.8536 4.93077 69 4.93077C64.8536 4.93077 64.0474 5.6907 64.0938 9.82849Z" fill="#fff"/>
             </g>
           </g>
         </g>
       </g>
       <g id="fx"></g>
     </svg>
-    <div class="base" aria-hidden="true">
-      <svg viewBox="0 0 69 65"><circle cx="33.0959" cy="20.2587" r="4.81396" fill="white"/><path d="M30.6104 49.9002C30.9978 52.8008 35.1936 52.8006 35.5809 49.9002L38.7111 26.4581C38.9118 24.9548 37.7429 23.6188 36.2264 23.6188H29.965C28.4487 23.619 27.2795 24.955 27.4803 26.4581L30.6104 49.9002Z" fill="white" stroke="white" stroke-width="5"/><path d="M27.1578 26.0748C29.0982 26.9578 29.1211 29.7058 27.1957 30.621L10.8051 38.4092C9.1497 39.1957 7.23772 37.9984 7.22217 36.1658L7.09452 20.8641C7.0794 19.0314 8.97119 17.8024 10.6395 18.5612L27.1578 26.0748Z" fill="white" stroke="white" stroke-width="5"/><path d="M37.9348 26.0748C35.9944 26.9578 35.9715 29.7058 37.8969 30.621L54.2875 38.4092C55.9429 39.1957 57.8549 37.9984 57.8704 36.1658L57.9981 20.8641C58.0132 19.0314 56.1214 17.8024 54.4531 18.5612L37.9348 26.0748Z" fill="white" stroke="white" stroke-width="5"/><path d="M28.0822 30.198C30.1289 26.1848 35.8628 26.1847 37.9095 30.198L47.828 49.6451C49.6996 53.3151 47.0339 57.6673 42.9143 57.6675H23.0774C18.9578 57.6673 16.2921 53.3151 18.1637 49.6451L28.0822 30.198Z" fill="white" stroke="white" stroke-width="5"/><path d="M32.5894 36.2713C32.7895 36.5487 33.2021 36.5487 33.4023 36.2713L42.7204 23.3608C42.9597 23.0292 42.7227 22.5658 42.3139 22.5655H23.6778C23.269 22.5658 23.032 23.0292 23.2713 23.3608L32.5894 36.2713Z" fill="white" stroke="white" stroke-width="5"/><path d="M34.4942 15.0936H31.4972L32.9957 9.57076L34.4942 15.0936Z" fill="white" stroke="white" stroke-width="5"/><rect x="63.482" y="10.9297" width="1.40815" height="49.7483" rx="0.7" fill="white" stroke="white" stroke-width="1.4"/><rect x="25.171" y="16.1448" width="15.6494" height="1.40815" rx="0.7" fill="white" stroke="white" stroke-width="1.4"/><path d="M64.0938 9.82849C64.0474 5.6907 63.3179 4.93077 59.1715 4.93077C63.3179 4.93077 64.0938 4.21112 64.0938 0C64.0938 4.21112 64.8536 4.93077 69 4.93077C64.8536 4.93077 64.0474 5.6907 64.0938 9.82849Z" fill="white"/><path d="M38.0903 64.487C39.8739 64.487 41.3766 62.8406 40.1154 61.5794C39.3443 60.8083 38.2984 60.375 37.2078 60.375C36.1173 60.375 35.0714 60.8083 34.3003 61.5794C33.0391 62.8406 34.5418 64.487 36.3254 64.487H38.0903Z" fill="white"/><path d="M29.8665 64.487C31.6501 64.487 33.1527 62.8406 31.8916 61.5794C31.1204 60.8083 30.0746 60.375 28.984 60.375C27.8935 60.375 26.8476 60.8083 26.0764 61.5794C24.8153 62.8406 26.318 64.487 28.1015 64.487H29.8665Z" fill="white"/><rect y="24.0698" width="3.81105" height="9.42733" rx="1.9" fill="white"/><circle cx="63.9858" cy="29.4856" r="2.5099" stroke="white" stroke-width="1.8"/></svg>
-      основа
-    </div>
     <div class="tag" id="tag">idle</div>
   </div>
 
   <div>
-    <div class="label">Действия</div>
-    <div class="row">
-      <button class="chip" data-act="revive">Тап → party</button>
-      <button class="chip" data-act="dance">Танец</button>
-      <button class="chip" data-act="cast">Колдует</button>
-      <button class="chip" id="sad" aria-pressed="false">Грустит</button>
-      <button class="chip" id="explode" aria-pressed="false">Фрагменты</button>
+    <div class="header"><span>Withrandir</span><svg viewBox="-3 -3 75 71" aria-hidden="true"><use href="#all"/></svg></div>
+    <p class="caption">Тот же маг в шапке, в реальном размере 56 × 53 pt. Здесь видно, читается ли стиль на маленьком знаке.</p>
+  </div>
+
+  <div>
+    <div class="label">Стиль</div>
+    <div class="row" id="styles">
+      <button class="chip" data-style="volume" aria-pressed="true">Серебро и объём</button>
+      <button class="chip" data-style="flat" aria-pressed="false">Как в лого</button>
     </div>
   </div>
   <div>
-    <div class="label">Цвет мантии · 8 состояний</div>
+    <div class="label">Действия</div>
+    <div class="row">
+      <button class="chip" data-act="revive">Тап → party</button>
+      <button class="chip" id="walk" aria-pressed="false">Странствует</button>
+      <button class="chip" data-act="cast">Колдует</button>
+    </div>
+  </div>
+  <div>
+    <div class="label">Свет звезды · 8 состояний</div>
     <div class="swatches" id="swatches"></div>
   </div>
 </div>
@@ -137,106 +161,69 @@ button:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
 <script>
 (() => {
   const $ = (s) => document.querySelector(s);
-  const svg = $('#svg');
+  const svg = $('#stageSvg');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const AMP = reduced ? 0.35 : 1;
 
-  // Восемь состояний: цвет и светлый тон — те же, что в ColorState.swift.
+  // Цвета состояний (ColorState.swift): звезда светится светлым тоном, маг остаётся серебряным.
   const STATES = [
-    ['white', '#FFFFFF', '#FFFFFF'], ['pink', '#ED7A92', '#FFA2B6'], ['red', '#D83B5C', '#FF5176'],
+    ['white', '#FFFFFF', '#BFE6FF'], ['pink', '#ED7A92', '#FFA2B6'], ['red', '#D83B5C', '#FF5176'],
     ['orange', '#FF6333', '#FCA286'], ['yellow', '#F3AD2C', '#FFD17C'], ['green', '#6FB52B', '#BDFD7F'],
     ['blue', '#045DC3', '#429AFF'], ['purple', '#553AC1', '#8B6EFF'],
   ];
-  const style = document.createElement('style');
-  document.head.appendChild(style);
-  let current = STATES[7];
-  function paint([id, main, light]) {
-    current = [id, main, light];
-    const white = id === 'white';
-    // У белой мантии детали и подсветка уходят в светлый тон неба, иначе белое сливается.
-    style.textContent = `
-      #svg .main { fill: ${main}; }
-      #svg .light { fill: ${white ? '#D8EDFF' : light}; }
-      #svg .detail { fill: ${white ? '#BFE1FF' : '#FFFFFF'}; }
-      #svg .glowfill { fill: ${white ? '#FFFFFF' : light}; }`;
-  }
-  paint(current);
+  let glowColor = '#BFE6FF';
+  const tint = (c) => { glowColor = c; $('#glowA').setAttribute('stop-color', c); $('#glowB').setAttribute('stop-color', c); };
 
-  // Пружины: каждый фрагмент догоняет цель с перелётом — отсюда «мультяшность».
   const P = {};
   const spring = (n, x, k = 180, d = 15) => (P[n] = { x, v: 0, t: x, k, d });
-  spring('y', 0, 280, 15); spring('sx', 1, 340, 13); spring('sy', 1, 340, 13); spring('rot', 0, 200, 14);
-  spring('wingL', 0, 200, 12); spring('wingR', 0, 200, 12); spring('tip', 0, 90, 7);
-  spring('footL', 0, 300, 18); spring('footR', 0, 300, 18); spring('glow', .35, 120, 12); spring('headY', 0);
-  spring('explode', 0, 120, 14);
+  spring('y', 0, 280, 15); spring('sx', 1, 340, 13); spring('sy', 1, 340, 13); spring('rot', 0, 160, 10);
+  spring('wing', 0, 200, 13); spring('hat', 0, 120, 9); spring('staffY', 0, 220, 14); spring('staffR', 0, 160, 12);
+  spring('glow', .45, 120, 12);
   const set = (o) => { for (const k in o) P[k].t = o[k]; };
 
-  let sad = false, action = null, queue = [], clock = 0;
+  let walking = false, action = null, queue = [], clock = 0, walkT = 0;
   const tag = $('#tag');
-  const BASE = () => sad
-    ? { y: 0, sx: 1.04, sy: .95, rot: 0, wingL: -16, wingR: -16, tip: 42, footL: 0, footR: 0, glow: .05, headY: 5 }
-    : { y: 0, sx: 1, sy: 1, rot: 0, wingL: 0, wingR: 0, tip: 0, footL: 0, footR: 0, glow: .35, headY: 0 };
-  const rest = () => { action = null; set(BASE()); tag.textContent = sad ? 'sad' : 'idle'; };
-  function play(name, steps) {
-    action = name; tag.textContent = name;
-    queue = steps.map(([at, fn]) => ({ at: clock + at, fn }));
-  }
+  const rest = () => { action = null; set({ y: 0, sx: 1, sy: 1, rot: 0, wing: 0, hat: 0, staffY: 0, staffR: 0, glow: .45 }); tag.textContent = walking ? 'странствует' : 'idle'; };
+  const play = (name, steps) => { action = name; tag.textContent = name; queue = steps.map(([at, fn]) => ({ at: clock + at, fn })); };
 
   const ACTS = {
+    // Как WizardRevive в приложении (покачивание от низа, подскок, вспышка звезды), только с приседом и приземлением.
     revive: () => play('тап → party', [
-      [0,    () => set({ sy: .86, sx: 1.12, wingL: -14, wingR: -14, y: 0 })],
-      [130,  () => set({ y: -58 * AMP, sy: 1.12, sx: .92, wingL: 38, wingR: 38, tip: -30, glow: 1.2 })],
-      [360,  () => set({ y: 0, wingL: 12, wingR: 12 })],
-      [500,  () => { set({ sy: .88, sx: 1.1 }); burst(18); }],
-      [620,  () => set({ sy: 1, sx: 1, wingL: 0, wingR: 0 })],
-      [1000, () => { tag.textContent = 'открывается party mode'; }],
-      [1700, rest],
+      [0,    () => set({ sy: .9, sx: 1.07, wing: -4 })],
+      [120,  () => set({ y: -9 * AMP, sy: 1.07, sx: .95, wing: 10, rot: 7 * AMP, hat: -6, glow: 1.4, staffY: -1.5 })],
+      [230,  () => set({ rot: -7 * AMP })],
+      [360,  () => set({ y: 0, rot: 0, staffY: 0 })],
+      [470,  () => { set({ sy: .92, sx: 1.06, wing: 2 }); burst(10); }],
+      [580,  () => set({ sy: 1, sx: 1, wing: 0 })],
+      [950,  () => { tag.textContent = 'открывается party mode'; }],
+      [1600, rest],
     ]),
-    dance: () => {
-      const steps = [];
-      for (let i = 0; i < 6; i++) {
-        const s = i % 2 ? 1 : -1, at = i * 260;
-        steps.push([at, () => set({ rot: 8 * s * AMP, footL: s < 0 ? 12 : 0, footR: s > 0 ? 12 : 0,
-          wingL: s < 0 ? 26 : -4, wingR: s > 0 ? 26 : -4, tip: -24 * s, sy: .95, y: -8 * AMP })]);
-        steps.push([at + 130, () => set({ footL: 0, footR: 0, sy: 1.03, y: 0 })]);
-      }
-      steps.push([6 * 260, rest]);
-      play('танец', steps);
-    },
     cast: () => play('колдует', [
-      [0,    () => set({ sy: .9, sx: 1.08, wingL: -10, wingR: -10, glow: .1 })],
-      [300,  () => { set({ sy: 1.1, sx: .94, y: -10 * AMP, wingL: 46, wingR: 46, tip: 0, glow: 1.8 }); burst(34); }],
-      [520,  () => burst(16)],
-      [1300, () => set({ y: 0, sy: 1, sx: 1, wingL: 10, wingR: 10, glow: .9 })],
+      [0,    () => set({ sy: .94, sx: 1.04, staffY: 1.2, glow: .2, wing: -3 })],
+      [320,  () => { set({ sy: 1.05, sx: .97, staffY: -5, staffR: -5, wing: 12, glow: 2.2, y: -1.5 }); burst(28); }],
+      [560,  () => burst(14)],
+      [1300, () => set({ staffY: 0, staffR: 0, wing: 0, glow: .9, y: 0, sy: 1, sx: 1 })],
       [1800, rest],
     ]),
   };
 
-  // Искры из звезды — цвета текущего состояния.
   const parts = [];
   function starPoint() {
-    const p = new DOMPoint(200, 4).matrixTransform($('#star').getScreenCTM());
+    const p = new DOMPoint(64.09, 4.93).matrixTransform($('#star').getScreenCTM());
     return p.matrixTransform(svg.getScreenCTM().inverse());
   }
   function burst(n) {
     if (reduced) n = Math.round(n / 4);
     const o = starPoint();
     for (let i = 0; i < n; i++) {
-      const a = Math.random() * Math.PI * 2, sp = 90 + Math.random() * 160, r = 3 + Math.random() * 4;
-      const node = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      node.setAttribute('d', `M0,${-r * 2} Q${r * .2},${-r * .2} ${r * 2},0 Q${r * .2},${r * .2} 0,${r * 2} Q${-r * .2},${r * .2} ${-r * 2},0 Q${-r * .2},${-r * .2} 0,${-r * 2}Z`);
-      node.setAttribute('fill', Math.random() < .5 ? '#fff' : (current[0] === 'white' ? '#BFE1FF' : current[2]));
-      $('#fx').appendChild(node);
-      parts.push({ node, x: o.x, y: o.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 0, max: .6 + Math.random() * .6 });
+      const a = Math.random() * Math.PI * 2, sp = 14 + Math.random() * 26, r = .5 + Math.random() * .8;
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      el.setAttribute('d', `M0,${-r * 2} Q${r * .2},${-r * .2} ${r * 2},0 Q${r * .2},${r * .2} 0,${r * 2} Q${-r * .2},${r * .2} ${-r * 2},0 Q${-r * .2},${-r * .2} 0,${-r * 2}Z`);
+      el.setAttribute('fill', Math.random() < .55 ? '#fff' : glowColor);
+      $('#fx').appendChild(el);
+      parts.push({ el, x: o.x, y: o.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 0, max: .6 + Math.random() * .6 });
     }
   }
-
-  // Фрагменты и куда они разлетаются в режиме «Фрагменты».
-  const PARTS = {
-    tipPart: [0, -56], cone: [0, -38], brim: [0, -20], head: [0, -4],
-    wingL: [-42, -4], wingR: [42, -4], collar: [0, 8], robe: [0, 20], feet: [0, 40],
-  };
-  const node = {}; for (const id in PARTS) node[id] = document.getElementById(id);
 
   let last = performance.now(), t = 0;
   function frame(now) {
@@ -244,34 +231,38 @@ button:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
     while (queue.length && queue[0].at <= clock) queue.shift().fn();
     for (const k in P) { const s = P[k]; s.v += (s.k * (s.t - s.x) - s.d * s.v) * dt; s.x += s.v * dt; }
 
-    const breath = Math.sin(t * 2.2) * .016 * AMP;
-    const flap = Math.sin(t * 2.2 + .8) * 3 * AMP;
-    $('#rig').setAttribute('transform',
-      `translate(0 ${P.y.x.toFixed(2)}) rotate(${P.rot.x.toFixed(2)} 200 386) translate(200 386) scale(${(P.sx.x - breath).toFixed(4)} ${(P.sy.x + breath).toFixed(4)}) translate(-200 -386)`);
-    const lift = Math.max(0, -P.y.x);
-    $('#shadow').setAttribute('rx', (96 - lift * .7).toFixed(1));
-
-    const e = P.explode.x;
-    for (const id in PARTS) {
-      const [ex, ey] = PARTS[id];
-      let tr = `translate(${(ex * e).toFixed(2)} ${(ey * e).toFixed(2)})`;
-      if (id === 'head') tr += ` translate(0 ${P.headY.x.toFixed(2)})`;
-      node[id].setAttribute('transform', tr);
+    // Шаг странника: ноги по очереди, корпус пружинит, посох ставится на каждый второй шаг.
+    let bob = 0, lean = 0, fL = 0, fR = 0, sw = 0, st = 0;
+    if (walking) {
+      walkT += dt;
+      const ph = walkT * Math.PI * 2 * .9;
+      fL = Math.max(0, Math.sin(ph)) * 1.6 * AMP;
+      fR = Math.max(0, -Math.sin(ph)) * 1.6 * AMP;
+      bob = -Math.abs(Math.sin(ph)) * .8 * AMP;
+      lean = Math.sin(ph) * 2.2 * AMP;
+      sw = Math.sin(ph) * 3 * AMP;
+      st = Math.min(0, Math.sin(ph / 2)) * 1.4 * AMP;
     }
-    document.querySelector('#wingL .flap').setAttribute('transform', `rotate(${(P.wingL.x + flap).toFixed(2)} 182 196)`);
-    document.querySelector('#wingR .flap').setAttribute('transform', `rotate(${(P.wingR.x + flap).toFixed(2)} 182 196)`);
-    $('#tip').setAttribute('transform', `rotate(${(P.tip.x + Math.sin(t * 1.6) * 5 * AMP).toFixed(2)} 200 66)`);
-    $('#footL').setAttribute('transform', `translate(0 ${(-P.footL.x).toFixed(2)})`);
-    $('#footR').setAttribute('transform', `translate(0 ${(-P.footR.x).toFixed(2)})`);
-    const g = Math.max(0, P.glow.x), tw = 1 + Math.sin(t * 3.1) * .08;
-    $('#glow').setAttribute('transform', `translate(200 4) scale(${((.5 + g * .42) * tw).toFixed(3)}) translate(-200 -4)`);
-    $('#glow').setAttribute('opacity', Math.min(.55, .2 + g * .3).toFixed(2));
+    const breath = Math.sin(t * 2) * .012 * AMP;
+    $('#rig').setAttribute('transform',
+      `translate(0 ${(P.y.x + bob).toFixed(3)}) rotate(${(P.rot.x + lean).toFixed(2)} 33 64.5) translate(33 64.5) scale(${(P.sx.x - breath).toFixed(4)} ${(P.sy.x + breath).toFixed(4)}) translate(-33 -64.5)`);
+    $('#shadow').setAttribute('rx', (17 + Math.min(0, P.y.x) * .8).toFixed(2));
+    const idleW = Math.sin(t * 2 + .6) * 1.2 * AMP;
+    $('#wingL').setAttribute('transform', `rotate(${(P.wing.x + idleW + sw).toFixed(2)} 27 28)`);
+    $('#wingR').setAttribute('transform', `rotate(${(-(P.wing.x + idleW) + sw).toFixed(2)} 39 28)`);
+    $('#hat').setAttribute('transform', `rotate(${(P.hat.x + Math.sin(t * 1.4) * 1.5 * AMP).toFixed(2)} 33 17)`);
+    $('#footL').setAttribute('transform', `translate(0 ${(-fL).toFixed(2)})`);
+    $('#footR').setAttribute('transform', `translate(0 ${(-fR).toFixed(2)})`);
+    $('#staff').setAttribute('transform', `translate(0 ${(P.staffY.x + st).toFixed(2)}) rotate(${P.staffR.x.toFixed(2)} 64 29.5)`);
+    const g = Math.max(0, P.glow.x), tw = 1 + Math.sin(t * 3.2) * .1;
+    $('#glow').setAttribute('transform', `translate(64.09 4.93) scale(${((.55 + g * .5) * tw).toFixed(3)}) translate(-64.09 -4.93)`);
+    $('#glow').setAttribute('opacity', Math.min(1, .4 + g * .35).toFixed(2));
 
     for (let i = parts.length - 1; i >= 0; i--) {
-      const p = parts[i]; p.life += dt; p.vy += 150 * dt; p.x += p.vx * dt; p.y += p.vy * dt;
+      const p = parts[i]; p.life += dt; p.vy += 24 * dt; p.x += p.vx * dt; p.y += p.vy * dt;
       const f = 1 - p.life / p.max;
-      if (f <= 0) { p.node.remove(); parts.splice(i, 1); continue; }
-      p.node.setAttribute('transform', `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) scale(${f.toFixed(2)})`);
+      if (f <= 0) { p.el.remove(); parts.splice(i, 1); continue; }
+      p.el.setAttribute('transform', `translate(${p.x.toFixed(2)} ${p.y.toFixed(2)}) scale(${f.toFixed(2)})`);
     }
     requestAnimationFrame(frame);
   }
@@ -279,26 +270,25 @@ button:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
 
   document.querySelectorAll('[data-act]').forEach((b) => b.addEventListener('click', () => ACTS[b.dataset.act]()));
   svg.addEventListener('click', () => ACTS.revive());
-  $('#sad').addEventListener('click', (ev) => {
-    sad = !sad; ev.currentTarget.setAttribute('aria-pressed', sad);
+  $('#walk').addEventListener('click', (e) => {
+    walking = !walking; walkT = 0; e.currentTarget.setAttribute('aria-pressed', walking);
     if (!action) rest();
   });
-  $('#explode').addEventListener('click', (ev) => {
-    const on = P.explode.t === 0; P.explode.t = on ? 1 : 0;
-    ev.currentTarget.setAttribute('aria-pressed', on);
-  });
+  document.querySelectorAll('[data-style]').forEach((b) => b.addEventListener('click', () => {
+    document.body.classList.toggle('flat', b.dataset.style === 'flat');
+    document.querySelectorAll('[data-style]').forEach((x) => x.setAttribute('aria-pressed', x === b));
+  }));
 
-  const sw = $('#swatches');
-  STATES.forEach((s) => {
+  const swEl = $('#swatches');
+  STATES.forEach((s, i) => {
     const b = document.createElement('button');
     b.className = 'swatch'; b.style.background = s[1];
-    b.setAttribute('aria-label', s[0]); b.setAttribute('aria-pressed', s === current);
+    b.setAttribute('aria-label', s[0]); b.setAttribute('aria-pressed', i === 0);
     b.addEventListener('click', () => {
-      paint(s);
-      sw.querySelectorAll('.swatch').forEach((x) => x.setAttribute('aria-pressed', x === b));
-      P.glow.v += 8;
+      tint(s[2]); P.glow.v += 10;
+      swEl.querySelectorAll('.swatch').forEach((x) => x.setAttribute('aria-pressed', x === b));
     });
-    sw.appendChild(b);
+    swEl.appendChild(b);
   });
   rest();
 })();
