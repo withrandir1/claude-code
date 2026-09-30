@@ -38,6 +38,7 @@ body.rec .phone { border-radius: 0; box-shadow: none; }
 .brand { font-weight: 900; font-size: calc(var(--u) * 40); letter-spacing: calc(var(--u) * -1.2); }
 .wizard { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: calc(var(--u) * 56); height: calc(var(--u) * 53); }
 .wizard svg { width: 100%; height: 100%; display: block; }
+.wizard.ink [fill="white"] { fill: var(--ink-c); } .wizard.ink [stroke="white"] { stroke: var(--ink-c); }
 
 .ring { position: absolute; left: 50%; top: calc(var(--u) * 174); width: calc(var(--u) * 299); height: calc(var(--u) * 299);
   transform: translateX(-50%); border-radius: 50%; }
@@ -90,15 +91,15 @@ body.rec .panel, body.rec .intro { display: none; }
 <div class="phone" id="phone">
   <div class="bg" id="bg"></div>
   <div class="glow" id="glow"></div>
-  <div class="status"><span>9:41</span><svg width="calc(1px)" viewBox="0 0 64 14" style="width:calc(var(--u)*62);height:auto" aria-hidden="true"><g fill="#fff"><rect x="0" y="9" width="3.5" height="5" rx="1"/><rect x="5.5" y="6.5" width="3.5" height="7.5" rx="1"/><rect x="11" y="4" width="3.5" height="10" rx="1"/><rect x="16.5" y="1" width="3.5" height="13" rx="1"/><path d="M30 5.5a10 10 0 0 1 14 0l-1.6 1.6a7.7 7.7 0 0 0-10.8 0zM33 8.6a5.6 5.6 0 0 1 8 0L37 12.6z"/><rect x="48" y="1.5" width="14" height="11" rx="3" fill="none" stroke="#fff" stroke-opacity=".5"/><rect x="49.8" y="3.3" width="10.4" height="7.4" rx="1.6"/></g></svg></div>
+  <div class="status" id="status"><span>9:41</span><svg width="calc(1px)" viewBox="0 0 64 14" style="width:calc(var(--u)*62);height:auto" aria-hidden="true"><g id="sbar" fill="#fff"><rect x="0" y="9" width="3.5" height="5" rx="1"/><rect x="5.5" y="6.5" width="3.5" height="7.5" rx="1"/><rect x="11" y="4" width="3.5" height="10" rx="1"/><rect x="16.5" y="1" width="3.5" height="13" rx="1"/><path d="M30 5.5a10 10 0 0 1 14 0l-1.6 1.6a7.7 7.7 0 0 0-10.8 0zM33 8.6a5.6 5.6 0 0 1 8 0L37 12.6z"/><rect x="48" y="1.5" width="14" height="11" rx="3" fill="none" stroke="currentColor" stroke-opacity=".5"/><rect x="49.8" y="3.3" width="10.4" height="7.4" rx="1.6"/></g></svg></div>
   <div class="island"></div>
   <div class="header">
     <svg class="logo" id="logo" viewBox="0 0 69 69" aria-hidden="true">
-      <circle cx="34.5" cy="34.5" r="29.3" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="10.4"/>
+      <circle cx="34.5" cy="34.5" r="29.3" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="10.4" id="logoRing"/>
       <path d="M50.5 34.5 C51.6 43 52.5 44 61 45.5 C52.5 47 51.6 48 50.5 56.5 C49.4 48 48.5 47 40 45.5 C48.5 44 49.4 43 50.5 34.5Z" fill="#fff" opacity=".95"/>
     </svg>
     <span class="brand" id="brand">Withrandir</span>
-    <div class="wizard"><svg viewBox="0 0 69 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div class="wizard" id="wizard"><svg viewBox="0 0 69 65" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="33.0959" cy="20.2587" r="4.81396" fill="white"/>
 <path d="M30.6104 49.9002C30.9978 52.8008 35.1936 52.8006 35.5809 49.9002L38.7111 26.4581C38.9118 24.9548 37.7429 23.6188 36.2264 23.6188H29.965C28.4487 23.619 27.2795 24.955 27.4803 26.4581L30.6104 49.9002Z" fill="white" stroke="white" stroke-width="5"/>
 <path d="M27.1578 26.0748C29.0982 26.9578 29.1211 29.7058 27.1957 30.621L10.8051 38.4092C9.1497 39.1957 7.23772 37.9984 7.22217 36.1658L7.09452 20.8641C7.0794 19.0314 8.97119 17.8024 10.6395 18.5612L27.1578 26.0748Z" fill="white" stroke="white" stroke-width="5"/>
@@ -188,6 +189,7 @@ const PEAK = {
 };
 
 // ---------- OKLab (как Domain/OKLab.swift) ----------
+// (PEARL объявлен ниже, после функций OKLab)
 const lin = c => c <= .04045 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4);
 const gam = c => { const v = c <= .0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - .055; return Math.min(1, Math.max(0, v)); };
 function lab(hex) {
@@ -222,6 +224,7 @@ const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const S = {
   color: STATES[q.get('c')] ? q.get('c') : 'red',
   mode: q.get('mode') === 'now' ? 'now' : 'peak',
+  orb: q.get('orb') || null,
   progress: 0, base: 0, intensity: 50, inPeak: false, peakAt: -9, sparkAt: -9, phase: 0,
 };
 if (q.get('rec')) document.body.classList.add('rec');
@@ -294,7 +297,7 @@ function drawOrb(size, color, dt) {
   orbCv.style.width = orbCv.style.height = size + 'px';
   const x = S.progress;
   const baseSpeed = (st.base || T.defaultBaseSpeed) * (.6 + .8 * x);    // Aura.Orbs.speed(of:x:)
-  const r = Orbs.resolvePreset(st.orb, 64);
+  const r = Orbs.resolvePreset(S.orb || st.orb, 64);
   let speed = baseSpeed * (1 + PEAK.burst * burst * (S.mode === 'peak' ? 1 : 0));
   // Сейчас в приложении: t = время × скорость, поэтому смена скорости рывком сдвигает фазу.
   // Новый пик: фаза копится, скорость меняется плавно.
@@ -331,6 +334,27 @@ function drawOrb(size, color, dt) {
     octx.beginPath(); octx.arc(d.x, d.y, d.r * (1 + .12 * pa), 0, Math.PI * 2); octx.fill();
   }
 }
+// Жемчуг для белого состояния. Кандидаты в DesignTokens.Pearl.
+const PEARL = {
+  // Насколько пятна палитры подмешаны к белому: на 50 почти белый перламутр, на 100 — отчётливый.
+  mixCalm: .9, mixPeak: .62,
+  ring: .62,                                   // кольцо светлее обычного: оно стоит на светлом
+  ink: { l: .56, a: .012, b: -.045 },          // текст: холодный жемчужный, не чёрный
+  glow: toWhite(lab(0x8B6EFF), .55),           // свечение кольца и подушки: светлый сиреневый
+  title: ['purple', 'pink', 'orange', 'yellow', 'green', 'blue', 'purple'].map(k => toWhite(lab(STATES[k].hex), .12)),
+  // Пятна перламутра: цвет палитры и его место (доли экрана), медленно плывут.
+  spots: [['purple', .12, .14], ['orange', .9, .2], ['yellow', .85, .62], ['green', .2, .72], ['blue', .55, .95], ['pink', .5, .38]],
+  drift: .045, period: 18,
+};
+function pearlBackground(x, t, inner) {
+  const m = PEARL.mixCalm + (PEARL.mixPeak - PEARL.mixCalm) * x;
+  const layers = PEARL.spots.map(([k, px, py], i) => {
+    const a = t * 2 * Math.PI / PEARL.period + i * 1.3;
+    const cx = (px + PEARL.drift * Math.cos(a)) * 100, cy = (py + PEARL.drift * Math.sin(a)) * 100;
+    return `radial-gradient(circle at ${cx.toFixed(1)}% ${cy.toFixed(1)}%, ${css(toWhite(lab(STATES[k].hex), m))} 0, ${css(toWhite(lab(STATES[k].hex), m), 0)} ${inner ? 70 : 55}%)`;
+  });
+  return layers.join(',') + ', #ffffff';
+}
 const WHEEL = T.wheel.map(k => toWhite(lab(STATES[k].hex), T.shimmerMix));
 function wheelAt(angle, t, a) {
   const turn = ((angle / (2 * Math.PI) + t / T.shimmerPeriod) % 1 + 1) % 1 * WHEEL.length;
@@ -347,7 +371,9 @@ function frame(now) {
   const base = lab(st.hex);
   const aura = sat(base, T.minChroma + (1 - T.minChroma) * x);             // Aura.saturated
   const pale = aura.l > T.paleL;
-  const content = s => pale ? `rgba(0,0,0,${s * .66})` : `rgba(255,255,255,${s})`;
+  // Жемчуг: у белого нет своей насыщенности, поэтому силу несёт перламутр из всей палитры.
+  const pearl = S.color === 'white' && peak;
+  const content = s => pearl ? css(PEARL.ink, s) : pale ? `rgba(0,0,0,${s * .66})` : `rgba(255,255,255,${s})`;
 
   thick.target = T.thickMin + (T.thickMax - T.thickMin) * x;
   thick.step(dt); peakAmt.step(dt); ringKick.step(dt); valuePop.step(dt); titlePop.step(dt); sparkS.step(dt);
@@ -356,22 +382,29 @@ function frame(now) {
   const breath = peak && S.inPeak && !REDUCED ? .5 + .5 * Math.sin((clock - S.peakAt) * 2 * Math.PI / PEAK.breathPeriod - Math.PI / 2) : 0;
 
   // фон: плоский цвет ауры (MainView.background), в пике — свет за кольцом
-  $('bg').style.background = css(aura);
+  $('bg').style.background = pearl ? pearlBackground(x, clock) : css(aura);
+  $('wizard').classList.toggle('ink', pearl); $('wizard').style.setProperty('--ink-c', css(PEARL.ink, .8));
+  $('status').style.color = pearl ? css(PEARL.ink) : '#fff';
+  $('sbar').setAttribute('fill', pearl ? css(PEARL.ink) : '#fff');
+  $('logoRing').setAttribute('stroke', pearl ? css(PEARL.ink, .35) : 'rgba(255,255,255,.55)');
   $('glow').style.opacity = (PEAK.glow * pa * (.82 + .18 * breath)).toFixed(3);
   $('glow').style.transform = `translate(-50%,-50%) scale(${(.9 + .1 * pa + .03 * breath).toFixed(4)})`;
   $('brand').style.color = content(1);
-  $('logo').style.opacity = pale ? .6 : 1;
+  $('logo').style.opacity = pale && !pearl ? .6 : 1;
 
   // кольцо
   const ring = $('ring');
   const kick = peak ? ringKick.x : 0;
-  ring.style.background = `rgba(255,255,255,${(T.haloOpacity + (peak ? .2 * pa + .06 * breath : 0)).toFixed(3)})`;
+  const ringA = (pearl ? PEARL.ring : T.haloOpacity) + (peak ? .2 * pa + .06 * breath : 0);
+  ring.style.background = `rgba(255,255,255,${ringA.toFixed(3)})`;
   ring.style.transform = `translateX(-50%) scale(${(1 + PEAK.ringBreath * kick).toFixed(4)})`;
   ring.style.boxShadow = peak && pa > .01 ? `0 0 ${(26 + 14 * breath) * u}px ${(4 * u).toFixed(1)}px rgba(255,255,255,${(.45 * pa).toFixed(3)})` : 'none';
   const coreSize = (T.ringSize - 2 * (thick.x + (peak ? 5 * kick : 0))) * u;
   const core = $('core');
   core.style.width = core.style.height = coreSize + 'px';
-  core.style.background = css(aura);
+  core.style.background = pearl ? pearlBackground(x, clock, true) : css(aura);
+  core.style.boxShadow = pearl ? `inset 0 0 ${18 * u}px rgba(255,255,255,.9)` : 'none';
+  ring.style.boxShadow = pearl ? `0 0 ${(22 + 26 * pa) * u}px ${css(PEARL.glow, .55 + .3 * pa)}` : ring.style.boxShadow;
   const orbColor = lift(aura, 0);
   const oh = $('orbHalo');
   oh.style.width = oh.style.height = coreSize + 'px';
@@ -414,10 +447,21 @@ function frame(now) {
   // Action Button: подушка (Shared/Pillow.swift) + имя цветом состояния
   const plate = $('plate');
   const glowR = 6 + (peak ? 16 * pa + 6 * breath : 0), glowA = .35 + (peak ? .5 * pa : 0);
-  plate.style.boxShadow = `inset 0 0 ${14 * u}px ${8 * u}px ${css(aura, .45)}, 0 0 ${glowR * u}px ${(peak ? 3 * pa : 0) * u}px rgba(255,255,255,${glowA.toFixed(3)})`;
+  plate.style.boxShadow = pearl
+    ? `inset 0 0 ${14 * u}px ${8 * u}px ${css(PEARL.glow, .35)}, 0 0 ${(18 + 10 * pa) * u}px ${css(PEARL.glow, .6 + .3 * pa)}`
+    : `inset 0 0 ${14 * u}px ${8 * u}px ${css(aura, .45)}, 0 0 ${glowR * u}px ${(peak ? 3 * pa : 0) * u}px rgba(255,255,255,${glowA.toFixed(3)})`;
   const title = $('title');
   title.textContent = st.name;
-  title.style.color = pale ? 'rgba(0,0,0,.66)' : css(lab(st.hex));
+  if (pearl) {
+    title.style.color = 'transparent';
+    title.style.backgroundImage = `linear-gradient(90deg, ${PEARL.title.map(c => css(c)).join(',')})`;
+    title.style.backgroundSize = '200% 100%';
+    title.style.backgroundPosition = `${(clock * 12) % 200}% 0`;
+    title.style.webkitBackgroundClip = title.style.backgroundClip = 'text';
+  } else {
+    title.style.backgroundImage = 'none';
+    title.style.color = pale ? 'rgba(0,0,0,.66)' : css(lab(st.hex));
+  }
   title.style.transform = `scale(${(1 + PEAK.titleScale * (peak ? titlePop.x : 0)).toFixed(4)})`;
   title.style.textShadow = peak && pa > .01 ? `0 0 ${14 * u * pa}px ${css(toWhite(lab(st.hex), .3), .45 * pa)}` : 'none';
 
@@ -465,5 +509,6 @@ for (const k of Object.keys(STATES)) {
 }
 setMode(S.mode);
 requestAnimationFrame(frame);
+if (q.get('p')) { setIntensity(+q.get('p')); S.base = S.progress; }
 if (q.get('demo')) document.fonts.ready.then(() => setTimeout(startDemo, 300));
 </script>
