@@ -1,0 +1,286 @@
+<title>Концепты мага</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* Layout: три больших концепта рядом, как листы художника; под каждым — идея, характер, движение, подпись. */
+:root {
+  --paper: #f3f9ff;
+  --card: #ffffff;
+  --ink: #0b3f7a;
+  --ink-soft: #5b86b8;
+  --line: #d6e8fb;
+  --sky: #0396ff;
+  --sky-hi: #7cc9ff;
+  --font: "Nunito", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+html, body { background: var(--paper); color: var(--ink); }
+body { font-family: var(--font); font-size: 16px; line-height: 1.5; }
+.wrap { max-width: 1160px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 64px; display: grid; gap: 28px; }
+h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 900; line-height: 1.05; margin: 0; text-wrap: balance; }
+.lead { margin: 8px 0 0; color: var(--ink-soft); font-weight: 600; max-width: 70ch; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); max-width: 480px; margin: 0 auto; } }
+.card { background: var(--card); border: 2px solid var(--line); border-radius: 28px; padding: 10px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.sky { border-radius: 20px; background: radial-gradient(80% 62% at 50% 38%, var(--sky-hi), var(--sky) 82%); aspect-ratio: 400 / 520; max-width: 100%; overflow: hidden; }
+.sky svg { display: block; width: 100%; height: 100%; }
+.meta { padding: 2px 8px 10px; display: grid; gap: 10px; }
+.num { font-size: 12px; font-weight: 900; letter-spacing: .12em; color: var(--sky); }
+.name { font-size: 24px; font-weight: 900; line-height: 1.1; }
+.idea { font-size: 15px; font-weight: 700; color: var(--ink); margin: 0; }
+dl { margin: 0; display: grid; gap: 8px; }
+dt { font-size: 11px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+dd { margin: 2px 0 0; font-size: 14px; font-weight: 600; color: var(--ink); }
+.note { background: var(--card); border: 2px solid var(--line); border-radius: 20px; padding: 14px 18px; font-weight: 700; color: var(--ink-soft); }
+.note b { color: var(--ink); }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Три мага</h1>
+    <p class="lead">Стиль: мягкая векторная иллюстрация с объёмом, как у Om Nom и игровых персонажей Duolingo. Свет сверху слева, голубой отсвет неба по краю, никакого чёрного. Все трое со спины и в серебре. Разные не одеждой, а идеей.</p>
+  </header>
+
+  <div class="grid">
+    <!-- 1. СТРАННИК -->
+    <article class="card">
+      <div class="sky">
+        <svg viewBox="0 0 400 520" role="img" aria-label="Странник: высокий маг в длинном плаще на ветру, с посохом-сферой">
+          <defs>
+            <linearGradient id="wCloak" x1="0" y1="0" x2="1" y2=".25"><stop offset="0" stop-color="#fbfdff"/><stop offset=".45" stop-color="#e6edf6"/><stop offset="1" stop-color="#aebfd6"/></linearGradient>
+            <linearGradient id="wHat" x1="0" y1="0" x2="1" y2=".3"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#e3eaf3"/><stop offset="1" stop-color="#a9bbd3"/></linearGradient>
+            <linearGradient id="wBrim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f8fc"/><stop offset="1" stop-color="#b3c3d9"/></linearGradient>
+            <linearGradient id="wHair" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d0dbe9"/></linearGradient>
+            <linearGradient id="wWood" x1="0" x2="1"><stop offset="0" stop-color="#e6c7a0"/><stop offset="1" stop-color="#9d7650"/></linearGradient>
+            <radialGradient id="wSkin" cx=".35" cy=".35"><stop offset="0" stop-color="#ffe0cc"/><stop offset="1" stop-color="#e9b393"/></radialGradient>
+            <radialGradient id="wOrb" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#d8f1ff"/><stop offset="1" stop-color="#86c9ff"/></radialGradient>
+            <radialGradient id="wGlow"><stop offset="0" stop-color="#d8f1ff" stop-opacity=".95"/><stop offset="1" stop-color="#d8f1ff" stop-opacity="0"/></radialGradient>
+            <filter id="wBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
+            <filter id="wSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
+            <pattern id="wTrim" width="16" height="14" patternUnits="userSpaceOnUse"><rect width="16" height="14" fill="#8fb8e6"/><path d="M3,11 L8,3 L13,11Z" fill="#ffffff"/></pattern>
+            <clipPath id="wCloakClip"><path d="M158,206 C140,260 128,340 112,420 C104,452 100,468 104,478 Q150,492 200,486 Q250,494 300,474 C306,462 296,440 286,414 C270,340 258,262 242,206 Q200,190 158,206Z"/></clipPath>
+          </defs>
+          <ellipse cx="200" cy="494" rx="112" ry="13" fill="#0a4f9c" opacity=".28" filter="url(#wBlur)"/>
+          <ellipse cx="176" cy="488" rx="20" ry="8" fill="#a3b9d6"/><ellipse cx="228" cy="490" rx="20" ry="8" fill="#a3b9d6"/>
+          <!-- плащ -->
+          <path d="M158,206 C140,260 128,340 112,420 C104,452 100,468 104,478 Q150,492 200,486 Q250,494 300,474 C306,462 296,440 286,414 C270,340 258,262 242,206 Q200,190 158,206Z" fill="url(#wCloak)"/>
+          <g clip-path="url(#wCloakClip)">
+            <path d="M188,232 C184,300 174,380 160,488" stroke="#9fb2cc" stroke-width="10" opacity=".35" fill="none" filter="url(#wSoft)"/>
+            <path d="M216,236 C224,310 238,390 254,490" stroke="#9fb2cc" stroke-width="12" opacity=".4" fill="none" filter="url(#wSoft)"/>
+            <path d="M166,240 C156,320 144,400 132,480" stroke="#ffffff" stroke-width="9" opacity=".7" fill="none" filter="url(#wSoft)"/>
+            <path d="M202,240 C202,320 206,400 210,488" stroke="#ffffff" stroke-width="6" opacity=".45" fill="none" filter="url(#wSoft)"/>
+            <ellipse cx="200" cy="272" rx="70" ry="16" fill="#8ea3c1" opacity=".35" filter="url(#wSoft)"/>
+            <path d="M104,478 Q150,492 200,486 Q250,494 300,474" stroke="url(#wTrim)" stroke-width="16" fill="none"/>
+            <path d="M242,206 C258,262 270,340 286,414 C296,440 306,462 300,474" stroke="#d6f0ff" stroke-width="6" opacity=".9" fill="none" filter="url(#wSoft)"/>
+          </g>
+          <!-- рукава -->
+          <path d="M162,222 C140,250 120,292 106,326 Q116,348 140,338 C150,312 164,282 178,254Z" fill="url(#wCloak)"/>
+          <path d="M106,326 Q116,348 140,338" stroke="url(#wTrim)" stroke-width="11" fill="none" stroke-linecap="round"/>
+          <path d="M238,222 C258,254 270,298 274,330 Q260,348 240,338 C236,308 230,278 222,252Z" fill="url(#wCloak)"/>
+          <path d="M274,330 Q260,348 240,338" stroke="url(#wTrim)" stroke-width="11" fill="none" stroke-linecap="round"/>
+          <!-- посох -->
+          <path d="M100,486 C96,420 106,360 102,300 C98,240 108,180 104,134" stroke="url(#wWood)" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <path d="M98,480 C94,420 103,360 99,300 C95,240 105,180 101,140" stroke="#f3dcbd" stroke-width="2.5" opacity=".8" fill="none" stroke-linecap="round"/>
+          <circle cx="104" cy="250" r="5" fill="#b08860"/><circle cx="100" cy="392" r="4.5" fill="#b08860"/>
+          <circle cx="104" cy="104" r="52" fill="url(#wGlow)"/>
+          <path d="M104,136 C86,132 80,116 88,96 M104,136 C122,132 128,116 120,96" stroke="url(#wWood)" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <circle cx="104" cy="104" r="21" fill="url(#wOrb)"/>
+          <circle cx="104" cy="106" r="8" fill="#bfe6ff"/>
+          <ellipse cx="97" cy="96" rx="6" ry="4" fill="#ffffff" opacity=".9" transform="rotate(-30 97 96)"/>
+          <circle cx="88" cy="96" r="3.2" fill="#b08860"/><circle cx="120" cy="96" r="3.2" fill="#b08860"/>
+          <!-- руки -->
+          <circle cx="114" cy="334" r="11" fill="url(#wSkin)"/>
+          <circle cx="260" cy="342" r="10" fill="url(#wSkin)"/>
+          <!-- пелерина -->
+          <path d="M148,214 Q200,184 252,214 Q264,240 246,258 Q200,274 154,258 Q136,240 148,214Z" fill="url(#wCloak)"/>
+          <path d="M154,258 Q200,274 246,258" stroke="url(#wTrim)" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <!-- волосы -->
+          <circle cx="170" cy="178" r="13" fill="url(#wHair)"/><circle cx="230" cy="178" r="13" fill="url(#wHair)"/>
+          <path d="M178,168 C166,214 170,262 186,302 Q198,324 210,300 C230,262 234,214 222,168Z" fill="url(#wHair)"/>
+          <path d="M190,184 C186,230 190,270 196,300 M208,184 C212,230 208,268 204,296" stroke="#d9e2ee" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <!-- шляпа -->
+          <g transform="rotate(-3 200 166)">
+            <ellipse cx="200" cy="168" rx="98" ry="21" fill="url(#wBrim)"/>
+            <ellipse cx="200" cy="163" rx="92" ry="15" fill="#f6f9fd"/>
+            <path d="M148,162 C156,120 170,82 190,54 C206,30 234,16 262,22 C278,26 278,42 262,42 C242,42 228,58 222,82 C226,114 238,140 252,162Z" fill="url(#wHat)"/>
+            <path d="M222,82 C226,114 238,140 252,162 L234,162 C222,138 214,110 214,86Z" fill="#8ea3c1" opacity=".35"/>
+            <path d="M162,150 C168,118 180,86 196,62" stroke="#ffffff" stroke-width="5" opacity=".8" fill="none" stroke-linecap="round"/>
+            <path d="M150,150 Q200,162 250,150 L252,164 Q200,176 148,164Z" fill="#8fb8e6"/>
+            <path d="M200,151 l3.4,6 6.6,1.2 -4.8,4.6 1.1,6.6 -6.3,-3.2 -6.3,3.2 1.1,-6.6 -4.8,-4.6 6.6,-1.2Z" fill="#ffd17c"/>
+            <circle cx="266" cy="32" r="8" fill="#8fb8e6"/><circle cx="263" cy="29" r="3" fill="#ffffff" opacity=".8"/>
+          </g>
+        </svg>
+      </div>
+      <div class="meta">
+        <div class="num">КОНЦЕПТ 1</div>
+        <div class="name">Странник</div>
+        <p class="idea">Высокий путник в длинном плаще, всегда в дороге.</p>
+        <dl>
+          <div><dt>Характер</dt><dd>Спокойный и мудрый. Ближе всех к исходному знаку и к Mithrandir.</dd></div>
+          <div><dt>Как живёт</dt><dd>Плащ и прядь волос вьются на ветру, шаг медленный, посох ставится в такт.</dd></div>
+          <div><dt>Подпись</dt><dd>Ветер: плащ всегда слегка развевается вправо.</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <!-- 2. МАЛЫШ -->
+    <article class="card">
+      <div class="sky">
+        <svg viewBox="0 0 400 520" role="img" aria-label="Малыш: маленький круглый маг в огромной мягкой шляпе с помпоном и посохом-звездой">
+          <defs>
+            <linearGradient id="kRobe" x1="0" y1="0" x2="1" y2=".4"><stop offset="0" stop-color="#fbfdff"/><stop offset=".5" stop-color="#e5ecf5"/><stop offset="1" stop-color="#aec0d8"/></linearGradient>
+            <linearGradient id="kHat" x1="0" y1="0" x2="1" y2=".35"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#e2e9f3"/><stop offset="1" stop-color="#a5b8d1"/></linearGradient>
+            <linearGradient id="kBrim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f8fc"/><stop offset="1" stop-color="#b1c1d8"/></linearGradient>
+            <linearGradient id="kBoot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c6d6ea"/><stop offset="1" stop-color="#94abc9"/></linearGradient>
+            <radialGradient id="kSkin" cx=".35" cy=".35"><stop offset="0" stop-color="#ffe0cc"/><stop offset="1" stop-color="#e9b393"/></radialGradient>
+            <radialGradient id="kGlow"><stop offset="0" stop-color="#fff4d6" stop-opacity=".95"/><stop offset="1" stop-color="#fff4d6" stop-opacity="0"/></radialGradient>
+            <filter id="kBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
+            <filter id="kSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
+            <pattern id="kTrim" width="14" height="12" patternUnits="userSpaceOnUse"><rect width="14" height="12" fill="#8fb8e6"/><circle cx="7" cy="6" r="2.6" fill="#ffffff"/></pattern>
+            <clipPath id="kHatClip"><path d="M142,318 C140,250 160,186 200,150 C236,118 286,110 312,134 C332,152 330,188 308,200 C292,208 280,196 286,180 C290,166 280,156 266,160 C246,166 240,196 244,230 C248,262 256,292 262,318Z"/></clipPath>
+          </defs>
+          <ellipse cx="200" cy="492" rx="104" ry="12" fill="#0a4f9c" opacity=".28" filter="url(#kBlur)"/>
+          <ellipse cx="172" cy="480" rx="25" ry="13" fill="url(#kBoot)"/><ellipse cx="230" cy="480" rx="25" ry="13" fill="url(#kBoot)"/>
+          <!-- тело -->
+          <path d="M142,352 C128,392 126,440 136,470 Q200,494 264,470 C274,440 272,392 258,352 Q200,328 142,352Z" fill="url(#kRobe)"/>
+          <path d="M136,470 Q200,494 264,470" stroke="url(#kTrim)" stroke-width="13" fill="none" stroke-linecap="round"/>
+          <path d="M258,352 C272,392 274,440 264,470" stroke="#d6f0ff" stroke-width="5" opacity=".9" fill="none" filter="url(#kSoft)"/>
+          <path d="M152,372 C146,404 146,436 152,462" stroke="#ffffff" stroke-width="8" opacity=".65" fill="none" filter="url(#kSoft)"/>
+          <!-- пояс с бантом -->
+          <path d="M140,418 Q200,436 260,418" stroke="#8fb8e6" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <ellipse cx="184" cy="426" rx="15" ry="8" fill="#8fb8e6" transform="rotate(-18 184 426)"/>
+          <ellipse cx="216" cy="426" rx="15" ry="8" fill="#8fb8e6" transform="rotate(18 216 426)"/>
+          <path d="M196,432 Q190,446 186,456 M204,432 Q210,446 214,456" stroke="#8fb8e6" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <circle cx="200" cy="428" r="6" fill="#a9c9ee"/>
+          <!-- ручки и посох -->
+          <path d="M156,362 C140,378 128,398 122,416 Q132,430 148,422 C152,406 160,390 170,378Z" fill="url(#kRobe)"/>
+          <path d="M244,362 C262,380 272,400 276,416 Q264,430 250,422 C248,406 240,390 230,378Z" fill="url(#kRobe)"/>
+          <rect x="112" y="226" width="9" height="262" rx="4.5" fill="#c9a27a"/>
+          <rect x="113" y="226" width="3" height="262" rx="1.5" fill="#ecd3b2"/>
+          <circle cx="116" cy="206" r="54" fill="url(#kGlow)"/>
+          <path d="M116,176 Q119,203 146,206 Q119,209 116,236 Q113,209 86,206 Q113,203 116,176Z" fill="#fffaf0"/>
+          <path d="M116,186 Q117.6,204 134,206 Q117.6,208 116,226 Q114.4,208 98,206 Q114.4,204 116,186Z" fill="#ffd17c" opacity=".7"/>
+          <circle cx="126" cy="420" r="10" fill="url(#kSkin)"/><circle cx="272" cy="422" r="9" fill="url(#kSkin)"/>
+          <!-- волосы из-под шляпы -->
+          <circle cx="150" cy="342" r="17" fill="#ffffff"/><circle cx="250" cy="342" r="17" fill="#ffffff"/>
+          <ellipse cx="200" cy="350" rx="40" ry="15" fill="#f6f9fd"/>
+          <!-- шляпа -->
+          <ellipse cx="200" cy="324" rx="126" ry="29" fill="url(#kBrim)"/>
+          <ellipse cx="200" cy="318" rx="118" ry="22" fill="#f6f9fd"/>
+          <path d="M142,318 C140,250 160,186 200,150 C236,118 286,110 312,134 C332,152 330,188 308,200 C292,208 280,196 286,180 C290,166 280,156 266,160 C246,166 240,196 244,230 C248,262 256,292 262,318Z" fill="url(#kHat)"/>
+          <g clip-path="url(#kHatClip)">
+            <path d="M244,230 C240,196 246,166 266,160 L276,176 C258,182 254,206 258,234Z" fill="#8ea3c1" opacity=".35"/>
+            <path d="M158,300 C156,250 170,204 204,170" stroke="#ffffff" stroke-width="8" opacity=".75" fill="none" filter="url(#kSoft)"/>
+            <path d="M262,318 C256,292 248,262 244,230" stroke="#d6f0ff" stroke-width="5" fill="none" filter="url(#kSoft)"/>
+          </g>
+          <path d="M144,300 Q200,316 260,300 L262,318 Q200,336 142,318Z" fill="url(#kTrim)"/>
+          <!-- заплатка со звездой -->
+          <rect x="182" y="232" width="34" height="30" rx="7" fill="#e6eef8" transform="rotate(-6 199 247)"/>
+          <rect x="182" y="232" width="34" height="30" rx="7" fill="none" stroke="#8fb8e6" stroke-width="2" stroke-dasharray="4 3" transform="rotate(-6 199 247)"/>
+          <path d="M199,238 l2.6,5 5.4,.9 -3.9,3.8 .9,5.4 -5,-2.6 -5,2.6 .9,-5.4 -3.9,-3.8 5.4,-.9Z" fill="#ffd17c"/>
+          <!-- помпон -->
+          <circle cx="306" cy="206" r="16" fill="#ffffff"/><circle cx="301" cy="200" r="6" fill="#ffffff"/>
+          <circle cx="306" cy="206" r="16" fill="none" stroke="#dfe7f1" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="meta">
+        <div class="num">КОНЦЕПТ 2</div>
+        <div class="name">Малыш</div>
+        <p class="idea">Маленький круглый маг, которого почти целиком занимает шляпа.</p>
+        <dl>
+          <div><dt>Характер</dt><dd>Милый и немного сонный, как Om Nom. Сразу хочется потрогать.</dd></div>
+          <div><dt>Как живёт</dt><dd>Шляпа перевешивает и пружинит от каждого шага, помпон болтается, посох выше хозяина.</dd></div>
+          <div><dt>Подпись</dt><dd>Шляпа — половина роста, мягкая, с заплаткой-звездой.</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <!-- 3. ХРАНИТЕЛЬ ЗВЁЗД -->
+    <article class="card">
+      <div class="sky">
+        <svg viewBox="0 0 400 520" role="img" aria-label="Хранитель звёзд: парящий маг в плаще со звёздной подкладкой, рядом висит посох-полумесяц">
+          <defs>
+            <linearGradient id="sCloak" x1="0" y1="0" x2="1" y2=".3"><stop offset="0" stop-color="#fdfdff"/><stop offset=".5" stop-color="#e8ebf8"/><stop offset="1" stop-color="#b7bfe4"/></linearGradient>
+            <linearGradient id="sHat" x1="0" y1="0" x2="1" y2=".25"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#e6e9f7"/><stop offset="1" stop-color="#aeb7e0"/></linearGradient>
+            <linearGradient id="sLining" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9aa8ff"/><stop offset="1" stop-color="#cfd6ff"/></linearGradient>
+            <linearGradient id="sFadeG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".68" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+            <radialGradient id="sGlow"><stop offset="0" stop-color="#e6ecff" stop-opacity=".95"/><stop offset="1" stop-color="#e6ecff" stop-opacity="0"/></radialGradient>
+            <radialGradient id="sFloor"><stop offset="0" stop-color="#e0f3ff" stop-opacity=".85"/><stop offset="1" stop-color="#e0f3ff" stop-opacity="0"/></radialGradient>
+            <filter id="sBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="10"/></filter>
+            <filter id="sSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
+            <mask id="sFade"><rect x="0" y="0" width="400" height="520" fill="url(#sFadeG)"/></mask>
+            <clipPath id="sCloakClip"><path d="M156,210 C132,270 124,350 140,420 C152,462 180,486 200,500 C220,486 248,462 260,420 C276,350 268,270 244,210 Q200,192 156,210Z"/></clipPath>
+          </defs>
+          <ellipse cx="200" cy="496" rx="96" ry="14" fill="url(#sFloor)"/>
+          <g transform="translate(0 -4)">
+            <!-- аура -->
+            <path d="M156,210 C132,270 124,350 140,420 C152,462 180,486 200,500 C220,486 248,462 260,420 C276,350 268,270 244,210 Q200,192 156,210Z" fill="#e6ecff" opacity=".55" filter="url(#sBlur)"/>
+            <!-- плащ-капля, тает книзу -->
+            <g mask="url(#sFade)">
+              <path d="M156,210 C132,270 124,350 140,420 C152,462 180,486 200,500 C220,486 248,462 260,420 C276,350 268,270 244,210 Q200,192 156,210Z" fill="url(#sCloak)"/>
+              <g clip-path="url(#sCloakClip)">
+                <path d="M184,236 C176,310 176,390 190,480" stroke="#9aa6d6" stroke-width="10" opacity=".35" fill="none" filter="url(#sSoft)"/>
+                <path d="M222,236 C232,310 234,390 214,480" stroke="#9aa6d6" stroke-width="10" opacity=".35" fill="none" filter="url(#sSoft)"/>
+                <path d="M162,240 C150,310 150,380 164,440" stroke="#ffffff" stroke-width="9" opacity=".7" fill="none" filter="url(#sSoft)"/>
+                <path d="M244,210 C268,270 276,350 260,420" stroke="#e1e8ff" stroke-width="6" fill="none" filter="url(#sSoft)"/>
+              </g>
+            </g>
+            <!-- искры, в которые тает подол -->
+            <g fill="#ffffff">
+              <path d="M184,470 q1,5 6,6 q-5,1 -6,6 q-1,-5 -6,-6 q5,-1 6,-6Z" opacity=".9"/>
+              <path d="M216,482 q.8,4 4.8,4.8 q-4,.8 -4.8,4.8 q-.8,-4 -4.8,-4.8 q4,-.8 4.8,-4.8Z" opacity=".8"/>
+              <path d="M198,500 q.7,3.4 4,4 q-3.3,.7 -4,4 q-.7,-3.3 -4,-4 q3.3,-.6 4,-4Z" opacity=".7"/>
+              <path d="M230,458 q.8,4 4.6,4.6 q-3.8,.8 -4.6,4.6 q-.8,-3.8 -4.6,-4.6 q3.8,-.8 4.6,-4.6Z" opacity=".75"/>
+              <path d="M170,452 q.6,3 3.6,3.6 q-3,.6 -3.6,3.6 q-.6,-3 -3.6,-3.6 q3,-.6 3.6,-3.6Z" opacity=".6"/>
+            </g>
+            <!-- рукава-крылья со звёздной подкладкой -->
+            <path d="M162,222 C132,234 102,260 86,300 Q104,322 128,306 C140,286 156,268 178,256Z" fill="url(#sCloak)"/>
+            <ellipse cx="107" cy="312" rx="25" ry="10" fill="url(#sLining)" transform="rotate(-32 107 312)"/>
+            <path d="M238,222 C268,234 298,260 314,300 Q296,322 272,306 C260,286 244,268 222,256Z" fill="url(#sCloak)"/>
+            <ellipse cx="293" cy="312" rx="25" ry="10" fill="url(#sLining)" transform="rotate(32 293 312)"/>
+            <g fill="#ffffff"><circle cx="100" cy="312" r="1.6"/><circle cx="112" cy="306" r="1.1"/><circle cx="118" cy="316" r="1.3"/><circle cx="286" cy="306" r="1.2"/><circle cx="296" cy="316" r="1.6"/><circle cx="302" cy="308" r="1"/></g>
+            <!-- пелерина -->
+            <path d="M152,216 Q200,190 248,216 Q258,236 242,250 Q200,264 158,250 Q142,236 152,216Z" fill="url(#sCloak)"/>
+            <!-- волосы-ленты -->
+            <path d="M184,176 C176,230 160,290 150,344 Q156,350 164,344 C180,292 194,238 196,186Z" fill="#ffffff"/>
+            <path d="M216,176 C224,230 240,290 250,344 Q244,350 236,344 C220,292 206,238 204,186Z" fill="#ffffff"/>
+            <path d="M184,172 C178,204 184,236 200,262 C216,236 222,204 216,172Z" fill="#f4f6fd"/>
+            <!-- шляпа -->
+            <ellipse cx="200" cy="174" rx="72" ry="15" fill="#c6cdec"/>
+            <ellipse cx="200" cy="170" rx="68" ry="11" fill="#f6f7fd"/>
+            <path d="M160,168 C170,120 184,72 196,30 C198,22 204,20 206,28 C214,72 228,120 240,168Z" fill="url(#sHat)"/>
+            <path d="M214,72 C222,110 230,140 240,168 L226,168 C218,138 212,106 210,76Z" fill="#9aa6d6" opacity=".35"/>
+            <path d="M172,150 C178,118 186,86 194,54" stroke="#ffffff" stroke-width="4" opacity=".8" fill="none" stroke-linecap="round"/>
+            <path d="M162,158 Q200,168 238,158 L240,170 Q200,180 160,170Z" fill="#aab6f0"/>
+            <path d="M206,104 A14,14 0 1 1 192,122 A11,11 0 1 0 206,104Z" fill="#ffd17c"/>
+            <circle cx="186" cy="82" r="2" fill="#ffd17c"/><circle cx="212" cy="140" r="2.4" fill="#ffd17c"/><circle cx="198" cy="58" r="1.6" fill="#ffd17c"/>
+            <circle cx="201" cy="26" r="16" fill="url(#sGlow)"/>
+          </g>
+          <!-- посох-полумесяц парит рядом -->
+          <g transform="translate(0 -14)">
+            <circle cx="326" cy="176" r="50" fill="url(#sGlow)"/>
+            <rect x="321" y="206" width="9" height="230" rx="4.5" fill="#dfe4f6"/>
+            <rect x="322" y="206" width="3" height="230" rx="1.5" fill="#ffffff"/>
+            <path d="M346,150 A30,30 0 1 1 306,152 A22,22 0 1 0 346,150Z" fill="#ffd17c"/>
+            <circle cx="326" cy="178" r="9" fill="#e9f4ff"/><circle cx="323" cy="175" r="3" fill="#ffffff"/>
+            <circle cx="290" cy="220" r="3.2" fill="#ffffff" opacity=".9"/><circle cx="360" cy="236" r="2.4" fill="#ffffff" opacity=".8"/><circle cx="352" cy="140" r="2" fill="#ffffff" opacity=".8"/>
+            <ellipse cx="326" cy="452" rx="18" ry="4" fill="#e0f3ff" opacity=".7"/>
+          </g>
+        </svg>
+      </div>
+      <div class="meta">
+        <div class="num">КОНЦЕПТ 3</div>
+        <div class="name">Хранитель звёзд</div>
+        <p class="idea">Парящий маг-дух, плащ тает в искры, посох висит рядом сам.</p>
+        <dl>
+          <div><dt>Характер</dt><dd>Загадочный и светлый. Магия видна в каждом движении, а не только в посохе.</dd></div>
+          <div><dt>Как живёт</dt><dd>Медленно дышит в воздухе, рукава раскрываются, как крылья, посох кружит рядом.</dd></div>
+          <div><dt>Подпись</dt><dd>Звёздная подкладка рукавов и полумесяц на шляпе.</dd></div>
+        </dl>
+      </div>
+    </article>
+  </div>
+
+  <p class="note"><b>Как направлять:</b> назови номер и что поменять. Например: «1, но шляпа как у 2» или «3, только стоит на земле». Дальше доводим до одного финального мага.</p>
+</div>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="t2">
+  <title id="t2">Маг Withrandir со спины</title>
+  <defs>
+    <!-- Два цвета персонажа: белый (шляпа, волосы, звезда) и серебристо-голубой (плащ, лента, ботинки, посох). Фон — небо приложения, чуть приглушённое. -->
+    <linearGradient id="white" x1=".1" y1="0" x2=".85" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="#f4f8fd"/><stop offset="1" stop-color="#e6eef8"/>
+    </linearGradient>
+    <linearGradient id="silver" x1=".1" y1="0" x2=".85" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#d4e2f4"/><stop offset=".7" stop-color="#c2d4ec"/><stop offset="1" stop-color="#b3c8e6"/>
+    </linearGradient>
+    <linearGradient id="silverDeep" x1="0" y1="0" x2="1" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#b3c8e6"/><stop offset="1" stop-color="#9db6dc"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="400" fill="#1f97f2"/>
+
+  <g id="mage" stroke-linejoin="round" stroke-linecap="round">
+    <!-- 1. посох -->
+    <path d="M330,370 L318,118" stroke="url(#silverDeep)" stroke-width="18" fill="none"/>
+    <!-- 2. ботинки -->
+    <ellipse cx="168" cy="378" rx="30" ry="14" fill="url(#silverDeep)"/>
+    <ellipse cx="232" cy="378" rx="30" ry="14" fill="url(#silverDeep)"/>
+    <!-- 3. плащ с рукавами: одна сплошная масса -->
+    <path d="M170,196 C146,200 120,210 98,224 C72,240 58,256 60,276 C62,294 80,302 98,296 C108,293 116,288 122,284 C114,306 104,326 100,344 C96,364 112,374 136,374 Q200,384 264,374 C288,374 304,364 300,344 C296,326 286,306 278,284 C284,288 292,293 302,296 C320,302 338,294 340,276 C342,256 328,240 302,224 C280,210 254,200 230,196 Q200,190 170,196Z" fill="url(#silver)"/>
+    <!-- 4. волосы по спине -->
+    <path d="M174,146 C166,194 172,236 200,264 C228,236 234,194 226,146Z" fill="url(#white)"/>
+    <!-- 5. поля шляпы -->
+    <ellipse cx="200" cy="150" rx="118" ry="30" fill="url(#white)" transform="rotate(-4 200 150)"/>
+    <!-- 6. колпак с тупым загнутым кончиком -->
+    <path d="M142,148 C146,108 160,72 184,50 C204,32 232,24 256,30 C272,34 280,48 272,58 C266,66 254,64 246,64 C232,68 224,84 224,102 C224,122 236,138 258,148 Z" fill="url(#white)"/>
+    <!-- 7. лента -->
+    <path d="M145,128 C180,139 222,139 255,127 L258,148 C222,159 180,159 142,148 Z" fill="url(#silver)"/>
+    <!-- звезда на посохе -->
+    <path d="M318,70 Q323,92 344,96 Q323,100 318,122 Q313,100 292,96 Q313,92 318,70Z" fill="url(#white)" stroke="url(#white)" stroke-width="9"/>
+  </g>
+</svg>

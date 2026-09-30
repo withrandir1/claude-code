@@ -1,0 +1,192 @@
+<title>Маг Withrandir · арт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap">
+<style>
+/* Layout: один маг крупно, под ним проверки на маленьком размере и принципы композиции. */
+:root { --paper:#f3f9ff; --card:#fff; --ink:#0b3f7a; --soft:#5b86b8; --line:#d6e8fb; --sky:#0396ff; --sky-hi:#57b9ff; --font:"Nunito",system-ui,-apple-system,sans-serif; color-scheme:light; }
+html,body{background:var(--paper);color:var(--ink)}
+body{font-family:var(--font)}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:24px 56px;display:grid;gap:18px}
+h1{margin:0;font-size:clamp(28px,5vw,40px);font-weight:900;line-height:1.05}
+h2{margin:0;font-size:20px;font-weight:900}
+p{margin:0;color:var(--soft);font-weight:700}
+.hero{border-radius:28px;overflow:hidden}
+.hero svg{display:block;width:100%;height:auto}
+.tests{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:560px){.tests{grid-template-columns:minmax(0,1fr)}}
+.test{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:14px;display:grid;gap:10px;justify-items:center;align-content:start;text-align:center}
+.test b{font-size:14px}
+.test span{font-size:12px;color:var(--soft);font-weight:700}
+.px32{width:32px;height:32px;border-radius:6px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;background:linear-gradient(180deg,var(--sky),var(--sky-hi));border-radius:14px;padding:8px 10px;color:#fff;font-weight:900;font-size:15px}
+.header svg{width:53px;height:53px;border-radius:10px}
+.header span{color:#fff;font-size:15px}
+.sil{width:88px;height:88px;border-radius:14px}
+ul{margin:0;padding-left:20px;display:grid;gap:6px;font-weight:700}
+</style>
+<div class="wrap">
+  <header><h1>Маг Withrandir</h1><p>Композиция вместо деталей: одна сильная фигура, которую узнаёшь с первого взгляда.</p></header>
+  <div class="hero"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="t2">
+  <title id="t2">Маг Withrandir со спины</title>
+  <defs>
+    <!-- Два цвета персонажа: белый (шляпа, волосы, звезда) и серебристо-голубой (плащ, лента, ботинки, посох). Фон — небо приложения, чуть приглушённое. -->
+    <linearGradient id="white" x1=".1" y1="0" x2=".85" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="#f4f8fd"/><stop offset="1" stop-color="#e6eef8"/>
+    </linearGradient>
+    <linearGradient id="silver" x1=".1" y1="0" x2=".85" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#d4e2f4"/><stop offset=".7" stop-color="#c2d4ec"/><stop offset="1" stop-color="#b3c8e6"/>
+    </linearGradient>
+    <linearGradient id="silverDeep" x1="0" y1="0" x2="1" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#b3c8e6"/><stop offset="1" stop-color="#9db6dc"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="400" fill="#1f97f2"/>
+
+  <g id="mage" stroke-linejoin="round" stroke-linecap="round">
+    <!-- 1. посох -->
+    <path d="M330,370 L318,118" stroke="url(#silverDeep)" stroke-width="18" fill="none"/>
+    <!-- 2. ботинки -->
+    <ellipse cx="168" cy="378" rx="30" ry="14" fill="url(#silverDeep)"/>
+    <ellipse cx="232" cy="378" rx="30" ry="14" fill="url(#silverDeep)"/>
+    <!-- 3. плащ с рукавами: одна сплошная масса -->
+    <path d="M170,196 C146,200 120,210 98,224 C72,240 58,256 60,276 C62,294 80,302 98,296 C108,293 116,288 122,284 C114,306 104,326 100,344 C96,364 112,374 136,374 Q200,384 264,374 C288,374 304,364 300,344 C296,326 286,306 278,284 C284,288 292,293 302,296 C320,302 338,294 340,276 C342,256 328,240 302,224 C280,210 254,200 230,196 Q200,190 170,196Z" fill="url(#silver)"/>
+    <!-- 4. волосы по спине -->
+    <path d="M174,146 C166,194 172,236 200,264 C228,236 234,194 226,146Z" fill="url(#white)"/>
+    <!-- 5. поля шляпы -->
+    <ellipse cx="200" cy="150" rx="118" ry="30" fill="url(#white)" transform="rotate(-4 200 150)"/>
+    <!-- 6. колпак с тупым загнутым кончиком -->
+    <path d="M142,148 C146,108 160,72 184,50 C204,32 232,24 256,30 C272,34 280,48 272,58 C266,66 254,64 246,64 C232,68 224,84 224,102 C224,122 236,138 258,148 Z" fill="url(#white)"/>
+    <!-- 7. лента -->
+    <path d="M145,128 C180,139 222,139 255,127 L258,148 C222,159 180,159 142,148 Z" fill="url(#silver)"/>
+    <!-- звезда на посохе -->
+    <path d="M318,70 Q323,92 344,96 Q323,100 318,122 Q313,100 292,96 Q313,92 318,70Z" fill="url(#white)" stroke="url(#white)" stroke-width="9"/>
+  </g>
+</svg>
+</div>
+  <div class="tests">
+    <div class="test"><svg class="px32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="t2">
+  <title id="t2">Маг Withrandir со спины</title>
+  <defs>
+    <!-- Два цвета персонажа: белый (шляпа, волосы, звезда) и серебристо-голубой (плащ, лента, ботинки, посох). Фон — небо приложения, чуть приглушённое. -->
+    <linearGradient id="white" x1=".1" y1="0" x2=".85" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="#f4f8fd"/><stop offset="1" stop-color="#e6eef8"/>
+    </linearGradient>
+    <linearGradient id="silver" x1=".1" y1="0" x2=".85" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#d4e2f4"/><stop offset=".7" stop-color="#c2d4ec"/><stop offset="1" stop-color="#b3c8e6"/>
+    </linearGradient>
+    <linearGradient id="silverDeep" x1="0" y1="0" x2="1" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#b3c8e6"/><stop offset="1" stop-color="#9db6dc"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="400" fill="#1f97f2"/>
+
+  <g id="mage" stroke-linejoin="round" stroke-linecap="round">
+    <!-- 1. посох -->
+    <path d="M330,370 L318,118" stroke="url(#silverDeep)" stroke-width="18" fill="none"/>
+    <!-- 2. ботинки -->
+    <ellipse cx="168" cy="378" rx="30" ry="14" fill="url(#silverDeep)"/>
+    <ellipse cx="232" cy="378" rx="30" ry="14" fill="url(#silverDeep)"/>
+    <!-- 3. плащ с рукавами: одна сплошная масса -->
+    <path d="M170,196 C146,200 120,210 98,224 C72,240 58,256 60,276 C62,294 80,302 98,296 C108,293 116,288 122,284 C114,306 104,326 100,344 C96,364 112,374 136,374 Q200,384 264,374 C288,374 304,364 300,344 C296,326 286,306 278,284 C284,288 292,293 302,296 C320,302 338,294 340,276 C342,256 328,240 302,224 C280,210 254,200 230,196 Q200,190 170,196Z" fill="url(#silver)"/>
+    <!-- 4. волосы по спине -->
+    <path d="M174,146 C166,194 172,236 200,264 C228,236 234,194 226,146Z" fill="url(#white)"/>
+    <!-- 5. поля шляпы -->
+    <ellipse cx="200" cy="150" rx="118" ry="30" fill="url(#white)" transform="rotate(-4 200 150)"/>
+    <!-- 6. колпак с тупым загнутым кончиком -->
+    <path d="M142,148 C146,108 160,72 184,50 C204,32 232,24 256,30 C272,34 280,48 272,58 C266,66 254,64 246,64 C232,68 224,84 224,102 C224,122 236,138 258,148 Z" fill="url(#white)"/>
+    <!-- 7. лента -->
+    <path d="M145,128 C180,139 222,139 255,127 L258,148 C222,159 180,159 142,148 Z" fill="url(#silver)"/>
+    <!-- звезда на посохе -->
+    <path d="M318,70 Q323,92 344,96 Q323,100 318,122 Q313,100 292,96 Q313,92 318,70Z" fill="url(#white)" stroke="url(#white)" stroke-width="9"/>
+  </g>
+</svg>
+<b>32 px</b><span>Маг всё ещё маг</span></div>
+    <div class="test"><div class="header"><span>Withrandir</span><svg class="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="t2">
+  <title id="t2">Маг Withrandir со спины</title>
+  <defs>
+    <!-- Два цвета персонажа: белый (шляпа, волосы, звезда) и серебристо-голубой (плащ, лента, ботинки, посох). Фон — небо приложения, чуть приглушённое. -->
+    <linearGradient id="white" x1=".1" y1="0" x2=".85" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="#f4f8fd"/><stop offset="1" stop-color="#e6eef8"/>
+    </linearGradient>
+    <linearGradient id="silver" x1=".1" y1="0" x2=".85" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#d4e2f4"/><stop offset=".7" stop-color="#c2d4ec"/><stop offset="1" stop-color="#b3c8e6"/>
+    </linearGradient>
+    <linearGradient id="silverDeep" x1="0" y1="0" x2="1" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#b3c8e6"/><stop offset="1" stop-color="#9db6dc"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="400" fill="#1f97f2"/>
+
+  <g id="mage" stroke-linejoin="round" stroke-linecap="round">
+    <!-- 1. посох -->
+    <path d="M330,370 L318,118" stroke="url(#silverDeep)" stroke-width="18" fill="none"/>
+    <!-- 2. ботинки -->
+    <ellipse cx="168" cy="378" rx="30" ry="14" fill="url(#silverDeep)"/>
+    <ellipse cx="232" cy="378" rx="30" ry="14" fill="url(#silverDeep)"/>
+    <!-- 3. плащ с рукавами: одна сплошная масса -->
+    <path d="M170,196 C146,200 120,210 98,224 C72,240 58,256 60,276 C62,294 80,302 98,296 C108,293 116,288 122,284 C114,306 104,326 100,344 C96,364 112,374 136,374 Q200,384 264,374 C288,374 304,364 300,344 C296,326 286,306 278,284 C284,288 292,293 302,296 C320,302 338,294 340,276 C342,256 328,240 302,224 C280,210 254,200 230,196 Q200,190 170,196Z" fill="url(#silver)"/>
+    <!-- 4. волосы по спине -->
+    <path d="M174,146 C166,194 172,236 200,264 C228,236 234,194 226,146Z" fill="url(#white)"/>
+    <!-- 5. поля шляпы -->
+    <ellipse cx="200" cy="150" rx="118" ry="30" fill="url(#white)" transform="rotate(-4 200 150)"/>
+    <!-- 6. колпак с тупым загнутым кончиком -->
+    <path d="M142,148 C146,108 160,72 184,50 C204,32 232,24 256,30 C272,34 280,48 272,58 C266,66 254,64 246,64 C232,68 224,84 224,102 C224,122 236,138 258,148 Z" fill="url(#white)"/>
+    <!-- 7. лента -->
+    <path d="M145,128 C180,139 222,139 255,127 L258,148 C222,159 180,159 142,148 Z" fill="url(#silver)"/>
+    <!-- звезда на посохе -->
+    <path d="M318,70 Q323,92 344,96 Q323,100 318,122 Q313,100 292,96 Q313,92 318,70Z" fill="url(#white)" stroke="url(#white)" stroke-width="9"/>
+  </g>
+</svg>
+</div><b>В шапке</b><span>Реальный размер знака</span></div>
+    <div class="test"><svg class="sil" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-labelledby="t2">
+  <title id="t2">Маг Withrandir со спины</title>
+  <defs>
+    <!-- Два цвета персонажа: белый (шляпа, волосы, звезда) и серебристо-голубой (плащ, лента, ботинки, посох). Фон — небо приложения, чуть приглушённое. -->
+    <linearGradient id="white" x1=".1" y1="0" x2=".85" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".7" stop-color="#f4f8fd"/><stop offset="1" stop-color="#e6eef8"/>
+    </linearGradient>
+    <linearGradient id="silver" x1=".1" y1="0" x2=".85" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#d4e2f4"/><stop offset=".7" stop-color="#c2d4ec"/><stop offset="1" stop-color="#b3c8e6"/>
+    </linearGradient>
+    <linearGradient id="silverDeep" x1="0" y1="0" x2="1" y2="1" color-interpolation="linearRGB">
+      <stop offset="0" stop-color="#b3c8e6"/><stop offset="1" stop-color="#9db6dc"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="400" fill="#0b3f7a"/>
+
+  <g id="mage" stroke-linejoin="round" stroke-linecap="round">
+    <!-- 1. посох -->
+    <path d="M330,370 L318,118" stroke="#ffffff" stroke-width="18" fill="none"/>
+    <!-- 2. ботинки -->
+    <ellipse cx="168" cy="378" rx="30" ry="14" fill="#ffffff"/>
+    <ellipse cx="232" cy="378" rx="30" ry="14" fill="#ffffff"/>
+    <!-- 3. плащ с рукавами: одна сплошная масса -->
+    <path d="M170,196 C146,200 120,210 98,224 C72,240 58,256 60,276 C62,294 80,302 98,296 C108,293 116,288 122,284 C114,306 104,326 100,344 C96,364 112,374 136,374 Q200,384 264,374 C288,374 304,364 300,344 C296,326 286,306 278,284 C284,288 292,293 302,296 C320,302 338,294 340,276 C342,256 328,240 302,224 C280,210 254,200 230,196 Q200,190 170,196Z" fill="#ffffff"/>
+    <!-- 4. волосы по спине -->
+    <path d="M174,146 C166,194 172,236 200,264 C228,236 234,194 226,146Z" fill="#ffffff"/>
+    <!-- 5. поля шляпы -->
+    <ellipse cx="200" cy="150" rx="118" ry="30" fill="#ffffff" transform="rotate(-4 200 150)"/>
+    <!-- 6. колпак с тупым загнутым кончиком -->
+    <path d="M142,148 C146,108 160,72 184,50 C204,32 232,24 256,30 C272,34 280,48 272,58 C266,66 254,64 246,64 C232,68 224,84 224,102 C224,122 236,138 258,148 Z" fill="#ffffff"/>
+    <!-- 7. лента -->
+    <path d="M145,128 C180,139 222,139 255,127 L258,148 C222,159 180,159 142,148 Z" fill="#ffffff"/>
+    <!-- звезда на посохе -->
+    <path d="M318,70 Q323,92 344,96 Q323,100 318,122 Q313,100 292,96 Q313,92 318,70Z" fill="#ffffff" stroke="#ffffff" stroke-width="9"/>
+  </g>
+</svg>
+<b>Одна заливка</b><span>Силуэт читается сам</span></div>
+  </div>
+  <h2>На чём держится</h2>
+  <ul>
+    <li>Семь крупных форм: колпак, поля, лента, волосы, плащ с рукавами, ботинки, посох со звездой.</li>
+    <li>Одна главная черта — шляпа с тупым кончиком, загнутым вбок. Она почти половина роста.</li>
+    <li>Два цвета персонажа: белый (шляпа, волосы, звезда) и серебристо-голубой (плащ, лента, ботинки, посох). Фон — небо приложения.</li>
+    <li>Плащ и рукава — одно пятно, как в твоём знаке, только без углов. Тяжёлый низ даёт устойчивость.</li>
+    <li>Со спины маг читается по трём вещам: изгиб шляпы, белая прядь волос, посох.</li>
+  </ul>
+</div>
